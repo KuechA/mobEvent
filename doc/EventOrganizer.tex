@@ -1,0 +1,83 @@
+\documentclass[oneside, a4]{article}
+
+\usepackage{graphicx}
+\usepackage[american]{babel}
+\usepackage{umlaute}
+\usepackage{picture}
+\usepackage{tabularx}
+\usepackage{trfsigns}
+\usepackage{prettyref}
+\usepackage{titleref}
+\usepackage{nameref}
+\usepackage{subfig}
+\usepackage{bm}
+\usepackage{adjustbox}
+\usepackage{varwidth}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage[colorlinks, pdfpagelabels, pdfstartview = FitH, bookmarksopen = true, bookmarksnumbered = true,
+linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black, pagebackref = true, pdftex, pdfauthor={Berkay Köksal, Alexander Küchler}, pdftitle={Event Organizer}] {hyperref}
+
+\title{Event Organizer}
+\author{Berkay K\"oksal \and Alexander K\"uchler}
+\date{\today}
+
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\usepackage{enumitem}
+\setlist{itemsep=0.1em}
+
+\begin{document}
+\maketitle
+
+%\setcounter{tocdepth}{2}
+%\tableofcontents
+%\newpage
+
+\section{Application Description}
+The event organizer (name TBD) is an Android app to facilitate creating events and inviting people. The core of the application, namely organizing an event, can be used in two different modes:
+\begin{enumerate}
+\item Planned event
+\item Spontaneous event
+\end{enumerate}
+
+For both modes, the user creates an event (including a start and end time, location, type of event and eventually a name). In the planned event mode, the user can invite specific people (friends) while for the spontaneous event, it is also possible to send an invitation to people which are close to the user's current location. Like this, he is able to spontaneously gather people based on their location.
+
+Apart from this, all people joining an event should be able to share pictures of the event in the app and influence the event's outcome e.g. by voting for music on a party. Also, a chatroom should be available to communicate with the people before or after the event.
+
+For all kinds of events, the organizing person can add a list of required material (e.g. drinks or food) so that the guests can register to bring some of the material and thus easing the organization.
+
+Finally, every user invited to an event is provided additional information like the weather forecast for outdoor events and whether he is available on the date when the event is scheduled.
+
+\section{Features}
+The features of our event organization app include
+\begin{itemize}
+\item Create an event (e.g. party, sports, hiking, lunch, ...)
+	\begin{itemize}
+	\item Invite friends
+	\item Invite people in a close area. I.e., the user can specify a radius to invite people and the people are notified if they are interested in this kind of events
+	\end{itemize}
+\item Chatroom for event
+\item Enable music organization/voting during the event
+\item Share pictures of the event
+\item Who brings what?
+\item Get some additional information for the event 
+	\begin{itemize}
+	\item Weather forecast for outdoor events
+	\item Check if timeslot is free in your calendar
+	\end{itemize}
+\item Share the event in other networks e.g. on facebook
+\end{itemize}
+
+We therefore plan to use Google API (maps), firebase database to provide a real time database, and OpenWeatherMap API to retrieve the weather forecast.
+
+\section{Team}
+The team consists of two people:
+\begin{itemize}
+\item Berkay K\"oksal: Core developer + UI
+\item Alexander K\"uchler: Core developer + UI
+\end{itemize}
+
+
+\end{document}
