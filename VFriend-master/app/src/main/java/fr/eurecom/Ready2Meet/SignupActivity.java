@@ -66,7 +66,7 @@ public class SignupActivity extends AppCompatActivity {
                 String password = inputPassword.getText().toString().trim();
                 final String displayname = name.getText().toString().trim();
 
-                if (TextUtils.isEmpty(displayname)) {
+                if (TextUtils.isEmpty(displayname) && !displayname.contains("/")) {
                     Toast.makeText(getApplicationContext(), "Enter name!", Toast.LENGTH_SHORT).show();
                     return;
                 }
