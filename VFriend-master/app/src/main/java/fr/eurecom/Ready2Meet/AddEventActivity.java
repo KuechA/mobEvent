@@ -50,9 +50,12 @@ public class AddEventActivity extends AppCompatActivity {
                 myRef.setValue(((EditText) findViewById(R.id.edittext_picture)).getText().toString());
 
                 myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/current");
-                myRef.setValue("0");
+                myRef.setValue("1");
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/owner");
+                myRef.setValue(user.getUid());
 
                 myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/owner");
                 myRef.setValue(user.getUid());
@@ -61,7 +64,7 @@ public class AddEventActivity extends AppCompatActivity {
                 myRef.setValue("");
 
                 myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/Participants");
-                myRef.setValue("");
+                myRef.setValue(user.getUid());
 
             }
         });
