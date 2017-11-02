@@ -25,6 +25,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +42,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import static fr.eurecom.Ready2Meet.R.id.imageView;
 import static fr.eurecom.Ready2Meet.R.id.textView;
 
 public class Main2Activity extends AppCompatActivity
@@ -94,7 +97,8 @@ public class Main2Activity extends AppCompatActivity
 
                 String name = user.getDisplayName();
                 String email = user.getEmail();
-                Uri photoUrl = user.getPhotoUrl();
+
+
                 final TextView textforname = (TextView) header.findViewById(R.id.textView);
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("Users/"+uid+"/DisplayName");
@@ -121,12 +125,33 @@ public class Main2Activity extends AppCompatActivity
                     }
                 });
 
-                    // Name, email address, and profile photo Url
-
-
 
                 TextView text2 = (TextView) header.findViewById(R.id.textView2);
                     text2.setText(email);
+
+
+                final ImageView imgview = (ImageView) header.findViewById(R.id.imageView);
+
+                myRef = database.getReference("Users/"+uid+"/ProfilePictureURL");
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        String value = dataSnapshot.getValue(String.class);
+                        Picasso.with(getApplicationContext()).load(value).into(imgview);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+
+                    }
+                });
+
+
+
             }
 
         }

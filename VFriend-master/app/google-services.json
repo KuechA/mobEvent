@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "385430695443-99847tkirkiuqiv1ea4bsb0l6l04oaps.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.eurecom.Ready2Meet",
+            "certificate_hash": "46ee864c13bab15c04c2298c4da6e59977c11147"
+          }
+        },
+        {
           "client_id": "385430695443-pgu5jjp8ilfvmemf05vep7ejaj5nr0e9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385430695443-pgu5jjp8ilfvmemf05vep7ejaj5nr0e9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
