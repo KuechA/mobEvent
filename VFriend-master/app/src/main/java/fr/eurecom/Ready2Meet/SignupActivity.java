@@ -115,6 +115,9 @@ public class SignupActivity extends AppCompatActivity {
                                 myRef = database.getReference("Users/"+signupEUID+"/ParticipatingEvents");
                                 myRef.setValue("1");
 
+                                DatabaseReference myRef2 = database.getReference("Events/1/Participants/"+user.getUid());
+                                myRef2.setValue("");
+
                                 myRef = database.getReference("Users/"+signupEUID+"/ProfilePictureURL");
                                 myRef.setValue("http://static2.businessinsider.com/image/5899ffcf6e09a897008b5c04-1200/.jpg");
 

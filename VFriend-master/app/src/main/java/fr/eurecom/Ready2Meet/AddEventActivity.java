@@ -54,17 +54,31 @@ public class AddEventActivity extends AppCompatActivity {
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/owner");
-                myRef.setValue(user.getUid());
+                final DatabaseReference myRef3 = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/owner");
 
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/owner");
-                myRef.setValue(user.getUid());
+
+                DatabaseReference myRef2 = database.getReference("Users/"+user.getUid()+"/DisplayName");
+                myRef2.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        String value = dataSnapshot.getValue(String.class);
+                        myRef3.setValue(value);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+
+                    }
+                });
 
                 myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/WhoReported");
                 myRef.setValue("");
 
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/Participants");
-                myRef.setValue(user.getUid());
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/Participants/"+user.getUid());
+                myRef.setValue("");
 
             }
         });
