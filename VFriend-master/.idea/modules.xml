@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/VFriend.iml" filepath="$PROJECT_DIR$/VFriend.iml" />
       <module fileurl="file://$PROJECT_DIR$/VFriend-master.iml" filepath="$PROJECT_DIR$/VFriend-master.iml" />
-      <module fileurl="file://$PROJECT_DIR$/VFriend-master.iml" filepath="$PROJECT_DIR$/VFriend-master.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
