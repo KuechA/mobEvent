@@ -1,6 +1,7 @@
 package fr.eurecom.Ready2Meet;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -99,7 +102,21 @@ public class SignupActivity extends AppCompatActivity {
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
 
-                                String signupEUID = auth.getCurrentUser().getUid();
+                                FirebaseUser user = auth.getCurrentUser();
+                                String signupEUID = user.getUid();
+
+                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(displayname)
+                                        .setPhotoUri(Uri.parse("http://static2.businessinsider.com/image/5899ffcf6e09a897008b5c04-1200/.jpg"))
+                                        .build();
+                                user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        // Nothing to do here
+                                    }
+                                });
+                                String name = user.getDisplayName();
+                                Uri photoUri = user.getPhotoUrl();
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference("Users/"+signupEUID+"/DisplayName");
@@ -110,8 +127,6 @@ public class SignupActivity extends AppCompatActivity {
 
                                 myRef = database.getReference("Users/"+signupEUID+"/ProfilePictureURL");
                                 myRef.setValue("http://static2.businessinsider.com/image/5899ffcf6e09a897008b5c04-1200/.jpg");
-
-
 
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),

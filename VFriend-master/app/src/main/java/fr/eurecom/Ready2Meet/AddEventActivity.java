@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -14,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class AddEventActivity extends AppCompatActivity {
-    private String ownername = "";
+    public String ownername = "bla";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,32 +28,33 @@ public class AddEventActivity extends AppCompatActivity {
 
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/title");
-                myRef.setValue(findViewById(R.id.edittext_title).toString());
+                DatabaseReference myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/title");
+                myRef.setValue(((EditText) findViewById(R.id.edittext_title)).getText().toString());
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/description");
-                myRef.setValue(findViewById(R.id.edittext_description).toString());
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/description");
+                myRef.setValue(((EditText) findViewById(R.id.edittext_description)).getText().toString());
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/time");
-                myRef.setValue(findViewById(R.id.edittext_time).toString());
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/time");
+                myRef.setValue(((EditText) findViewById(R.id.edittext_time)).getText().toString());
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/place");
-                myRef.setValue(findViewById(R.id.edittext_place).toString());
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/place");
+                myRef.setValue(((EditText) findViewById(R.id.edittext_place)).getText().toString());
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/capacity");
-                myRef.setValue(findViewById(R.id.edittext_capacity).toString());
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/capacity");
+                myRef.setValue(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/category");
-                myRef.setValue(findViewById(R.id.edittext_category).toString());
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/category");
+                myRef.setValue(((EditText) findViewById(R.id.edittext_category)).getText().toString());
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/picture");
-                myRef.setValue(findViewById(R.id.edittext_picture).toString());
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/picture");
+                myRef.setValue(((EditText) findViewById(R.id.edittext_picture)).getText().toString());
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/current");
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/current");
                 myRef.setValue("0");
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 myRef = database.getReference("Users/"+user.getUid()+"/DisplayName");
+                ownername = user.getDisplayName();
 
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -71,13 +73,13 @@ public class AddEventActivity extends AppCompatActivity {
                 });
 
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/owner");
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/owner");
                 myRef.setValue(ownername);
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/WhoReported");
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/WhoReported");
                 myRef.setValue("");
 
-                myRef = database.getReference("Events/"+findViewById(R.id.txt_eventid).toString()+"/Participants");
+                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/Participants");
                 myRef.setValue("");
 
             }
