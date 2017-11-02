@@ -105,6 +105,7 @@
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimaryDark"
             android:text="@string/btn_remove"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
