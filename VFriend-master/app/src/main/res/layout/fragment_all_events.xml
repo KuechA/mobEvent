@@ -1,0 +1,79 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fr.eurecom.Ready2Meet.AllEvents">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:layout_marginBottom="4dp"
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="100"
+
+                >
+
+
+
+                <ImageView
+
+                    android:layout_height="40dp"
+                    android:layout_width="40dp"
+                    android:layout_marginLeft="4dp"
+                    android:padding="4dp"
+                    android:id="@+id/imgEventHistory"
+                    android:src="@android:drawable/btn_plus"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="All Events"
+                    android:padding="4dp"
+                    android:gravity="center|start"
+                    android:layout_weight="100"
+                    android:textSize="20sp"
+                    android:textColor="#ffff"
+                    android:id="@+id/txtEventHistory" />
+
+                <ToggleButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="#ffffff"
+                    android:layout_marginRight="8dp"
+                    android:padding="4dp"
+                    android:id="@+id/togglerbutton2"
+                    android:gravity="center"
+                    android:textOff=""
+                    android:textOn=""
+                    android:checked="false" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <ListView
+            android:id="@+id/listofevents"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="8dp">
+        </ListView>
+
+    </LinearLayout>
+
+</FrameLayout>

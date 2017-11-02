@@ -188,13 +188,16 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment;
         if (id == R.id.nav_camera) {
-            fragment = new DashboardFragment();
+
+            startActivity(new Intent(Main2Activity.this, AddEventActivity.class));
+
+
+
+        } else if (id == R.id.nav_allevents) {
+            fragment = new AllEvents();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_new, fragment);
             ft.commit();
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
 
         } else if (id == R.id.nav_slideshow) {
 
