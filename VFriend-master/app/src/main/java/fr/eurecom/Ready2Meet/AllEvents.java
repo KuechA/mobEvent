@@ -4,9 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 
 public class AllEvents extends Fragment {
@@ -57,8 +67,25 @@ public class AllEvents extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_all_events, container, false);
 
+        final ListView listView = (ListView) view.findViewById(R.id.listofevents);
+        // TODO: Retrieve list of events from firebase and add tem to the listView.
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Events");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Event post = postSnapshot.getValue(Event.class);
+                    Log.d("EVENTS", "Received " + post.toString());
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: Error handling
+            }
+        });
 
         return view;
     }
