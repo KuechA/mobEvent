@@ -102,8 +102,14 @@ public class SignupActivity extends AppCompatActivity {
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference("Users/"+signupEUID+"/DisplayName");
-
                                 myRef.setValue(displayname);
+
+                                myRef = database.getReference("Users/"+signupEUID+"/ParticipatingEvents");
+                                myRef.setValue("1");
+
+                                myRef = database.getReference("Users/"+signupEUID+"/ProfilePictureURL");
+                                myRef.setValue("http://static2.businessinsider.com/image/5899ffcf6e09a897008b5c04-1200/.jpg");
+
 
 
                                 if (!task.isSuccessful()) {

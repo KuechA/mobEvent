@@ -36,6 +36,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static fr.eurecom.Ready2Meet.R.id.textView;
 
@@ -87,21 +92,41 @@ public class Main2Activity extends AppCompatActivity
                     // UID specific to the provider
                     String uid = user.getUid();
 
-                    // Name, email address, and profile photo Url
-                    String name = user.getDisplayName();
-                    String email = user.getEmail();
-                    Uri photoUrl = user.getPhotoUrl();
+                String name = user.getDisplayName();
+                String email = user.getEmail();
+                Uri photoUrl = user.getPhotoUrl();
+                final TextView textforname = (TextView) header.findViewById(R.id.textView);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("Users/"+uid+"/DisplayName");
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        String value = dataSnapshot.getValue(String.class);
 
-                    TextView text = (TextView) header.findViewById(R.id.textView);
-                    if(name == null) {
-                    text.setText("Not Defined");
+                        if(value == null) {
+                            textforname.setText("Not Defined");
+                        }
+                        else
+                        {
+                            textforname.setText(value);
+                        }
                     }
-                    else
-                    {
-                    text.setText(name);
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+
                     }
-                    text = (TextView) header.findViewById(R.id.textView2);
-                    text.setText(email);
+                });
+
+                    // Name, email address, and profile photo Url
+
+
+
+                TextView text2 = (TextView) header.findViewById(R.id.textView2);
+                    text2.setText(email);
             }
 
         }
