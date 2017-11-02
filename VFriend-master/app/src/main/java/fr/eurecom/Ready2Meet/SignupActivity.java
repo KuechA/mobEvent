@@ -106,8 +106,6 @@ public class SignupActivity extends AppCompatActivity {
 
                                 String signupEUID = user.getUid();
 
-                                String name = user.getDisplayName();
-
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference("Users/"+signupEUID+"/DisplayName");
                                 myRef.setValue(displayname);
