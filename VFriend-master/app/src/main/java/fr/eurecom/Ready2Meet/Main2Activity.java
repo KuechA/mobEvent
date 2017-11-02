@@ -122,9 +122,8 @@ public class Main2Activity extends AppCompatActivity
 
 
                 final ImageView imgview = (ImageView) header.findViewById(R.id.imageView);
-                Picasso.with(getApplicationContext()).load(user.getPhotoUrl()).fit().into(imgview);
 
-                /*myRef = database.getReference("Users/"+uid+"/ProfilePictureURL");
+                myRef = database.getReference("Users/"+uid+"/ProfilePictureURL");
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,7 +139,7 @@ public class Main2Activity extends AppCompatActivity
                         // Failed to read value
 
                     }
-                });*/
+                });
 
 
 

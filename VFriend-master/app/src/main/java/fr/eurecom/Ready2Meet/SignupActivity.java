@@ -103,20 +103,10 @@ public class SignupActivity extends AppCompatActivity {
                                 // signed in user can be handled in the listener.
 
                                 FirebaseUser user = auth.getCurrentUser();
+
                                 String signupEUID = user.getUid();
 
-                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(displayname)
-                                        .setPhotoUri(Uri.parse("http://static2.businessinsider.com/image/5899ffcf6e09a897008b5c04-1200/.jpg"))
-                                        .build();
-                                user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        // Nothing to do here
-                                    }
-                                });
                                 String name = user.getDisplayName();
-                                Uri photoUri = user.getPhotoUrl();
 
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference("Users/"+signupEUID+"/DisplayName");

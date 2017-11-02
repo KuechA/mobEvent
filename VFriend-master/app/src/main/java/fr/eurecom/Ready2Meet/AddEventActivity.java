@@ -53,28 +53,9 @@ public class AddEventActivity extends AppCompatActivity {
                 myRef.setValue("0");
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                myRef = database.getReference("Users/"+user.getUid()+"/DisplayName");
-                ownername = user.getDisplayName();
-
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        ownername = dataSnapshot.getValue(String.class);
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-
-                    }
-                });
-
 
                 myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/owner");
-                myRef.setValue(ownername);
+                myRef.setValue(user.getUid());
 
                 myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/WhoReported");
                 myRef.setValue("");
