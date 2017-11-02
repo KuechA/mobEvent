@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "385430695443",
+    "firebase_url": "https://ready2meet-e0286.firebaseio.com",
+    "project_id": "ready2meet-e0286",
+    "storage_bucket": "ready2meet-e0286.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385430695443:android:bac454631c02cd43",
+        "android_client_info": {
+          "package_name": "fr.eurecom.Ready2Meet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385430695443-pgu5jjp8ilfvmemf05vep7ejaj5nr0e9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA70HeJh8CTmgL6Oa-ynmRMZEMBrKSCqzY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
