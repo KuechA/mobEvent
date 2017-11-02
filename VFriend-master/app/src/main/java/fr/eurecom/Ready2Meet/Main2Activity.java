@@ -130,7 +130,7 @@ public class Main2Activity extends AppCompatActivity
                         // This method is called once with the initial value and again
                         // whenever data at this location is updated.
                         String value = dataSnapshot.getValue(String.class);
-                        Picasso.with(getApplicationContext()).load(value).into(imgview);
+                        Picasso.with(getApplicationContext()).load(value).fit().into(imgview);
 
                     }
 
