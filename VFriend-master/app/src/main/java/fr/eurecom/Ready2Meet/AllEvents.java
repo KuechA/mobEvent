@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -13,6 +15,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.eurecom.Ready2Meet.database.Event;
 
@@ -68,6 +73,8 @@ public class AllEvents extends Fragment {
         final ListView listView = (ListView) view.findViewById(R.id.listofevents);
         // TODO: Retrieve list of events from firebase and add tem to the listView.
 
+        final List<String> items = new ArrayList<>();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Events");
         myRef.addValueEventListener(new ValueEventListener() {
@@ -76,6 +83,7 @@ public class AllEvents extends Fragment {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Event post = postSnapshot.getValue(Event.class);
                     Log.d("EVENTS", "Received " + post.toString());
+                    items.add(post.toString());
                 }
             }
 
@@ -84,6 +92,8 @@ public class AllEvents extends Fragment {
                 // TODO: Error handling
             }
         });
+
+        Log.d("EVENTS", "All events received: " + items.toString());
 
         return view;
     }
