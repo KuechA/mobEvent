@@ -21,6 +21,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import fr.eurecom.Ready2Meet.database.User;
+
 public class SignupActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword, name;
@@ -106,18 +108,12 @@ public class SignupActivity extends AppCompatActivity {
 
                                 String signupEUID = user.getUid();
 
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference("Users/"+signupEUID+"/DisplayName");
-                                myRef.setValue(displayname);
+                                String profilePictureUrl = "http://static2.businessinsider.com/image/5899ffcf6e09a897008b5c04-1200/.jpg";
+                                User userObj = new User(displayname, "1", profilePictureUrl);
 
-                                myRef = database.getReference("Users/"+signupEUID+"/ParticipatingEvents");
-                                myRef.setValue("1");
-
-                                DatabaseReference myRef2 = database.getReference("Events/1/Participants/"+user.getUid());
-                                myRef2.setValue("");
-
-                                myRef = database.getReference("Users/"+signupEUID+"/ProfilePictureURL");
-                                myRef.setValue("http://static2.businessinsider.com/image/5899ffcf6e09a897008b5c04-1200/.jpg");
+                                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                                mDatabase.child("Events").child("1").child("Participants").child(signupEUID).setValue(true);
+                                mDatabase.child("Users").child(signupEUID).setValue(userObj);
 
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),

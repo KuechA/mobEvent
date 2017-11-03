@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
+import fr.eurecom.Ready2Meet.database.User;
 
 public class AddEventActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,51 +58,26 @@ public class AddEventActivity extends AppCompatActivity
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             if (user != null) {
-                // UID specific to the provider
                 String uid = user.getUid();
 
                 final TextView textforname = (TextView) header.findViewById(R.id.textView);
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("Users/" + uid + "/DisplayName");
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        String value = dataSnapshot.getValue(String.class);
-
-                        if (value == null) {
-                            textforname.setText("Not Defined");
-                        } else {
-                            textforname.setText(value);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-
-                    }
-                });
+                final ImageView imgview = (ImageView) header.findViewById(R.id.imageView);
 
                 TextView text2 = (TextView) header.findViewById(R.id.textView2);
                 text2.setText(user.getEmail());
 
-                final ImageView imgview = (ImageView) header.findViewById(R.id.imageView);
-                myRef = database.getReference("Users/" + uid + "/ProfilePictureURL");
-                myRef.addValueEventListener(new ValueEventListener() {
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users/" + uid);
+                mDatabase.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        String value = dataSnapshot.getValue(String.class);
-                        Picasso.with(getApplicationContext()).load(value).fit().into(imgview);
-
+                    public void onDataChange(DataSnapshot snapshot) {
+                        User user = snapshot.getValue(User.class);
+                        textforname.setText(user.DisplayName);
+                        Picasso.with(getApplicationContext()).load(user.ProfilePictureURL).fit().into(imgview);
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
+                    public void onCancelled(DatabaseError databaseError) {
+                        // TODO: Error handling
                     }
                 });
             }
@@ -138,7 +114,7 @@ public class AddEventActivity extends AppCompatActivity
                 participants.put(user.getUid(), true);
                 String owner = user.getUid();
 
-                final Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories,
+                Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories,
                         capacity, picture, place, startTime, endTime,
                         participants, whoReported);
 
