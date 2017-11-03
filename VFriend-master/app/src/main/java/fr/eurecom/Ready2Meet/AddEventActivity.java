@@ -29,6 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AddEventActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth auth;
@@ -116,61 +119,31 @@ public class AddEventActivity extends AppCompatActivity
 
         createEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/title");
-                myRef.setValue(((EditText) findViewById(R.id.edittext_title)).getText().toString());
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/description");
-                myRef.setValue(((EditText) findViewById(R.id.edittext_description)).getText().toString());
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/time");
-                myRef.setValue(((EditText) findViewById(R.id.edittext_time)).getText().toString());
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/place");
-                myRef.setValue(((EditText) findViewById(R.id.edittext_place)).getText().toString());
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/capacity");
-                myRef.setValue(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/category");
-                myRef.setValue(((EditText) findViewById(R.id.edittext_category)).getText().toString());
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/picture");
-                myRef.setValue(((EditText) findViewById(R.id.edittext_picture)).getText().toString());
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/current");
-                myRef.setValue("1");
-
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                final DatabaseReference myRef3 = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/owner");
+                String eventId = ((EditText) findViewById(R.id.txt_eventid)).getText().toString(); // TODO: Change this to owner + incrementing count
 
+                String eventTitle = ((EditText) findViewById(R.id.edittext_title)).getText().toString();
+                String eventDescription = ((EditText) findViewById(R.id.edittext_description)).getText().toString();
+                String place = ((EditText) findViewById(R.id.edittext_place)).getText().toString();
+                Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
+                String startTime = ((EditText) findViewById(R.id.edittext_starttime)).getText().toString();
+                String endTime = ((EditText) findViewById(R.id.edittext_endtime)).getText().toString();
+                Map<String, Boolean> categories = new HashMap<>();
+                categories.put(((EditText) findViewById(R.id.edittext_category)).getText().toString(), true);
+                String picture = ((EditText) findViewById(R.id.edittext_picture)).getText().toString();
+                Long current = Long.valueOf(1);
+                Map<String, Boolean> whoReported = new HashMap<>();
+                Map<String, Boolean> participants = new HashMap<>();
+                participants.put(user.getUid(), true);
+                String owner = user.getUid();
 
-                DatabaseReference myRef2 = database.getReference("Users/"+user.getUid()+"/DisplayName");
-                myRef2.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        String value = dataSnapshot.getValue(String.class);
-                        myRef3.setValue(value);
-                    }
+                final Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories,
+                        capacity, picture, place, startTime, endTime,
+                        participants, whoReported);
 
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-
-                    }
-                });
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/WhoReported");
-                myRef.setValue("");
-
-                myRef = database.getReference("Events/"+((EditText) findViewById(R.id.txt_eventid)).getText().toString()+"/Participants/"+user.getUid());
-                myRef.setValue("");
-
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("Events").child(eventId).setValue(newEvent);
             }
         });
     }
