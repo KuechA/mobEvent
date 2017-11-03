@@ -1,11 +1,9 @@
 package fr.eurecom.Ready2Meet;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,6 +29,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.eurecom.Ready2Meet.database.Event;
 
 public class AddEventActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
