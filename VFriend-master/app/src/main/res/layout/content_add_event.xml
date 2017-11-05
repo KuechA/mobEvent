@@ -92,8 +92,11 @@
                 android:id="@+id/show_starttime_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80"
-                android:text="Select"/>
+                android:layout_weight="75"
+                android:text="Select"
+                android:gravity="right"
+                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+                style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
 
         <LinearLayout
@@ -112,8 +115,11 @@
                 android:id="@+id/show_endtime_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80"
-                android:text="Select"/>
+                android:layout_weight="75"
+                android:gravity="right"
+                android:text="Select"
+                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+                style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
 
         <LinearLayout

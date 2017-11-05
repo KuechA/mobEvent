@@ -15,16 +15,28 @@
             android:layout_weight="50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date"/>
+            android:text="Date"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"/>
 
         <Button
             android:id="@+id/btn_time_picker"
             android:layout_weight="50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Time"/>
+            android:text="Time"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
     <DatePicker
         android:id="@+id/date_picker"
@@ -37,6 +49,11 @@
         android:layout_height="wrap_content"
         android:timePickerMode="spinner"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -48,14 +65,21 @@
             android:layout_weight="50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ok" />
+            android:text="Ok"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"/>
 
         <Button
             android:id="@+id/cancel_dialog"
             android:layout_weight="50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cancel"/>
+            android:text="Cancel"
+            style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
 
 </LinearLayout>

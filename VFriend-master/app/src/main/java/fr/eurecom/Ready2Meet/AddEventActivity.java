@@ -42,6 +42,10 @@ import fr.eurecom.Ready2Meet.database.User;
 
 public class AddEventActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
+    private Calendar startDate = null;
+
     private FirebaseAuth auth;
 
     private void setToolbar() {
@@ -141,8 +145,8 @@ public class AddEventActivity extends AppCompatActivity
                     public void onDismiss(DialogInterface dialogI) {
                         Calendar result = dialog.getResult();
                         if(result != null) {
-                            SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
                             showStartTimeButton.setText(format.format(result.getTime()));
+                            startDate = result;
                         }
                     }
                 });
@@ -153,6 +157,7 @@ public class AddEventActivity extends AppCompatActivity
         showEndTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final DateTimePickerDialog dialog = new DateTimePickerDialog(AddEventActivity.this);
+                dialog.setMinDate(startDate);
                 dialog.show();
 
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -160,7 +165,6 @@ public class AddEventActivity extends AppCompatActivity
                     public void onDismiss(DialogInterface dialogI) {
                         Calendar result = dialog.getResult();
                         if(result != null) {
-                            SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
                             showEndTimeButton.setText(format.format(result.getTime()));
                         }
                     }

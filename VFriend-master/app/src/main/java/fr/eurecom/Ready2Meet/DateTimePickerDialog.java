@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -20,6 +20,7 @@ public class DateTimePickerDialog extends Dialog {
     private DatePicker datePicker;
 
     private Calendar result;
+    private Calendar minDate;
 
     public DateTimePickerDialog(@NonNull Context context) {
         super(context);
@@ -83,12 +84,16 @@ public class DateTimePickerDialog extends Dialog {
         final Button setTimeButton = (Button) findViewById(R.id.ok_date_time_dialog);
         setTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                DatePicker datePicker = (DatePicker) findViewById(R.id.date_picker);
-                TimePicker timePicker = (TimePicker) findViewById(R.id.time_picker);
-
                 result = new GregorianCalendar(datePicker.getYear(),
                         datePicker.getMonth(), datePicker.getDayOfMonth(),
                         timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+
+                if(minDate != null && result.compareTo(minDate) < 0) {
+                    Toast.makeText(getContext(), "The selected date is too small", Toast.LENGTH_LONG).show();
+                    result = null;
+                    return;
+                }
+
                 DateTimePickerDialog.this.dismiss();
             }
         });
@@ -96,5 +101,12 @@ public class DateTimePickerDialog extends Dialog {
 
     public Calendar getResult() {
         return result;
+    }
+
+    public void setMinDate(Calendar date) {
+        if(date != null) {
+            datePicker.setMinDate(date.getTimeInMillis());
+            minDate = date;
+        }
     }
 }
