@@ -3,6 +3,7 @@ package fr.eurecom.Ready2Meet;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -27,6 +29,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +38,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -52,7 +59,11 @@ public class AddEventActivity extends AppCompatActivity
 
     private SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
     private Calendar startDate = null;
-    private int PLACE_PICKER_REQUEST = 1;
+    private String pictureUri = null;
+    private String eventId = null;
+
+    private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int PICK_GALLERY = 2;
 
     private String[] eventCategories = {"Sport", "Party", "Outdoor", "Others"};
 
@@ -110,17 +121,22 @@ public class AddEventActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
+        Uri defaultPicture = Uri.parse("https://firebasestorage.googleapis.com/v0/b/ready2meet-e0286.appspot.com/o/EventPhotos%2FDefault.jpg?alt=media&token=c6a16086-728b-43a5-b169-fae8b07a5070");
+        Picasso.with(getApplicationContext()).load(defaultPicture).fit().centerCrop()
+                .into((ImageButton) findViewById(R.id.eventImage));
+
         setToolbar();
 
         final Map<String, Boolean> categories = new HashMap<>();
 
         Button createEventButton = (Button) findViewById(R.id.createevent);
 
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        eventId = user.getUid(); // TODO: Add number of the user's events (counter)!
+
         createEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                String eventId = ((EditText) findViewById(R.id.txt_eventid)).getText().toString(); // TODO: Change this to owner + incrementing count
 
                 String eventTitle = ((EditText) findViewById(R.id.edittext_title)).getText().toString();
                 String eventDescription = ((EditText) findViewById(R.id.edittext_description)).getText().toString();
@@ -128,7 +144,6 @@ public class AddEventActivity extends AppCompatActivity
                 Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
                 String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText().toString();
                 String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText().toString();
-                String picture = ((EditText) findViewById(R.id.edittext_picture)).getText().toString();
                 Long current = Long.valueOf(1);
                 Map<String, Boolean> whoReported = new HashMap<>();
                 Map<String, Boolean> participants = new HashMap<>();
@@ -136,7 +151,7 @@ public class AddEventActivity extends AppCompatActivity
                 String owner = user.getUid();
 
                 Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories,
-                        capacity, picture, place, startTime, endTime,
+                        capacity, pictureUri, place, startTime, endTime,
                         participants, whoReported);
 
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -208,6 +223,15 @@ public class AddEventActivity extends AppCompatActivity
             }
         });
 
+        ImageButton photoButton = (ImageButton) findViewById(R.id.eventImage);
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_GALLERY);
+            }
+        });
+
     }
 
     @Override
@@ -270,6 +294,29 @@ public class AddEventActivity extends AppCompatActivity
                 Button getLocationButton = (Button) findViewById(R.id.find_location_button);
                 getLocationButton.setText(place.getAddress());
             }
+        } else if(requestCode == PICK_GALLERY && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child("EventPhotos").child(eventId);
+
+            storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(AddEventActivity.this, "Successfully uploaded image to database", Toast.LENGTH_LONG);
+
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    pictureUri = downloadUri.toString();
+
+                    Picasso.with(getApplicationContext()).load(downloadUri).fit().centerCrop()
+                            .into((ImageButton) findViewById(R.id.eventImage));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AddEventActivity.this, "Couldn't upload image to database", Toast.LENGTH_LONG);
+                }
+            });
         }
+
     }
 }
