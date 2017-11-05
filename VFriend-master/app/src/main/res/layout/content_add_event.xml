@@ -178,12 +178,18 @@
                 android:layout_weight="25"
                 android:text="Category:"/>
 
-            <EditText
+            <fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner
+                android:id="@+id/category_selector"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="75"/>
+
+            <!--<EditText
                 android:id="@+id/edittext_category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="80"
-                android:text="Sport"/>
+                android:text="Sport"/>-->
         </LinearLayout>
 
         <LinearLayout

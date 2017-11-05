@@ -40,10 +40,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
 import fr.eurecom.Ready2Meet.database.User;
+import fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner;
 
 public class AddEventActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +53,8 @@ public class AddEventActivity extends AppCompatActivity
     private SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
     private Calendar startDate = null;
     private int PLACE_PICKER_REQUEST = 1;
+
+    private String[] eventCategories = {"Sport", "Party", "Outdoor", "Others"};
 
     private FirebaseAuth auth;
 
@@ -108,6 +112,8 @@ public class AddEventActivity extends AppCompatActivity
 
         setToolbar();
 
+        final Map<String, Boolean> categories = new HashMap<>();
+
         Button createEventButton = (Button) findViewById(R.id.createevent);
 
         createEventButton.setOnClickListener(new View.OnClickListener() {
@@ -122,8 +128,6 @@ public class AddEventActivity extends AppCompatActivity
                 Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
                 String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText().toString();
                 String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText().toString();
-                Map<String, Boolean> categories = new HashMap<>();
-                categories.put(((EditText) findViewById(R.id.edittext_category)).getText().toString(), true);
                 String picture = ((EditText) findViewById(R.id.edittext_picture)).getText().toString();
                 Long current = Long.valueOf(1);
                 Map<String, Boolean> whoReported = new HashMap<>();
@@ -192,6 +196,18 @@ public class AddEventActivity extends AppCompatActivity
                 }
             }
         });
+
+        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) findViewById(R.id.category_selector);
+        categorySpinner.setItems(eventCategories);
+        categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
+            @Override
+            public void selectedStrings(List<String> strings) {
+                for(String category : strings) {
+                    categories.put(category, true);
+                }
+            }
+        });
+
     }
 
     @Override
