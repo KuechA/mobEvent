@@ -21,7 +21,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +50,7 @@ public class AddEventActivity extends AppCompatActivity
 
     private SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
     private Calendar startDate = null;
+    private int PLACE_PICKER_REQUEST = 1;
 
     private FirebaseAuth auth;
 
@@ -112,7 +118,7 @@ public class AddEventActivity extends AppCompatActivity
 
                 String eventTitle = ((EditText) findViewById(R.id.edittext_title)).getText().toString();
                 String eventDescription = ((EditText) findViewById(R.id.edittext_description)).getText().toString();
-                String place = ((EditText) findViewById(R.id.edittext_place)).getText().toString();
+                String place = ((Button) findViewById(R.id.find_location_button)).getText().toString();
                 Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
                 String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText().toString();
                 String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText().toString();
@@ -171,6 +177,21 @@ public class AddEventActivity extends AppCompatActivity
                 });
             }
         });
+
+        Button getLocationButton = (Button) findViewById(R.id.find_location_button);
+        getLocationButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                try {
+                    startActivityForResult(builder.build(AddEventActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -224,5 +245,15 @@ public class AddEventActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_event);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                Button getLocationButton = (Button) findViewById(R.id.find_location_button);
+                getLocationButton.setText(place.getAddress());
+            }
+        }
     }
 }

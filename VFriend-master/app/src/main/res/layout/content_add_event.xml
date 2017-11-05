@@ -134,12 +134,15 @@
                 android:layout_weight="25"
                 android:text="Place:"/>
 
-            <EditText
-                android:id="@+id/edittext_place"
+            <Button
+                android:id="@+id/find_location_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80"
-                android:text="Valbonne"/>
+                android:layout_weight="75"
+                android:gravity="right"
+                android:text="Select"
+                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+                style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
 
         <LinearLayout
