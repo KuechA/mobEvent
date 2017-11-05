@@ -1,5 +1,7 @@
 package fr.eurecom.Ready2Meet;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,9 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,8 +110,8 @@ public class AddEventActivity extends AppCompatActivity
                 String eventDescription = ((EditText) findViewById(R.id.edittext_description)).getText().toString();
                 String place = ((EditText) findViewById(R.id.edittext_place)).getText().toString();
                 Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
-                String startTime = ((EditText) findViewById(R.id.edittext_starttime)).getText().toString();
-                String endTime = ((EditText) findViewById(R.id.edittext_endtime)).getText().toString();
+                String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText().toString();
+                String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText().toString();
                 Map<String, Boolean> categories = new HashMap<>();
                 categories.put(((EditText) findViewById(R.id.edittext_category)).getText().toString(), true);
                 String picture = ((EditText) findViewById(R.id.edittext_picture)).getText().toString();
@@ -120,6 +127,44 @@ public class AddEventActivity extends AppCompatActivity
 
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                 mDatabase.child("Events").child(eventId).setValue(newEvent);
+            }
+        });
+
+        final Button showStartTimeButton = (Button) findViewById(R.id.show_starttime_button);
+        showStartTimeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final DateTimePickerDialog dialog = new DateTimePickerDialog(AddEventActivity.this);
+                dialog.show();
+
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogI) {
+                        Calendar result = dialog.getResult();
+                        if(result != null) {
+                            SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
+                            showStartTimeButton.setText(format.format(result.getTime()));
+                        }
+                    }
+                });
+            }
+        });
+
+        final Button showEndTimeButton = (Button) findViewById(R.id.show_endtime_button);
+        showEndTimeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final DateTimePickerDialog dialog = new DateTimePickerDialog(AddEventActivity.this);
+                dialog.show();
+
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogI) {
+                        Calendar result = dialog.getResult();
+                        if(result != null) {
+                            SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
+                            showEndTimeButton.setText(format.format(result.getTime()));
+                        }
+                    }
+                });
             }
         });
     }

@@ -88,12 +88,12 @@
                 android:layout_weight="25"
                 android:text="Start Time:"/>
 
-            <EditText
-                android:id="@+id/edittext_starttime"
+            <Button
+                android:id="@+id/show_starttime_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="80"
-                android:text="21:00"/>
+                android:text="Select"/>
         </LinearLayout>
 
         <LinearLayout
@@ -108,12 +108,12 @@
                 android:layout_weight="25"
                 android:text="End Time:"/>
 
-            <EditText
-                android:id="@+id/edittext_endtime"
+            <Button
+                android:id="@+id/show_endtime_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="80"
-                android:text="24:00"/>
+                android:text="Select"/>
         </LinearLayout>
 
         <LinearLayout

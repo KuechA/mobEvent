@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100">
+
+        <Button
+            android:id="@+id/btn_date_picker"
+            android:layout_weight="50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date"/>
+
+        <Button
+            android:id="@+id/btn_time_picker"
+            android:layout_weight="50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Time"/>
+
+    </LinearLayout>
+
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100">
+
+        <Button
+            android:id="@+id/ok_date_time_dialog"
+            android:layout_weight="50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ok" />
+
+        <Button
+            android:id="@+id/cancel_dialog"
+            android:layout_weight="50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel"/>
+    </LinearLayout>
+
+</LinearLayout>
