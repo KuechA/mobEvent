@@ -9,11 +9,12 @@
     tools:showIn="@layout/app_bar_add_event">
 
     <ScrollView
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:padding="8dp"
         android:fillViewport="true"
         tools:layout_editor_absoluteY="8dp"
+        android:background="@color/light_grey"
         tools:layout_editor_absoluteX="8dp">
 
     <LinearLayout
@@ -42,14 +43,6 @@
             android:layout_centerHorizontal="true"
             android:layout_height="200dp" />
 
-        <EditText
-            android:id="@+id/txt_eventid"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:text="1"
-            />
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,27 +61,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="80"
                 android:text="TestTitle"/>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Description:"/>
-
-            <EditText
-                android:id="@+id/edittext_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="80"
-                android:text="asaksfhkashdkasd"/>
         </LinearLayout>
 
         <LinearLayout
@@ -198,6 +170,26 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="75"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="25"
+                android:text="Description:"/>
+
+            <EditText
+                android:id="@+id/edittext_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="80"
+                android:text="asaksfhkashdkasd"/>
         </LinearLayout>
 
         <Button
