@@ -44,8 +44,7 @@ public class MultiSelectSpinner extends Spinner implements
     public MultiSelectSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        simple_adapter = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item);
+        simple_adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item);
         super.setAdapter(simple_adapter);
     }
 
@@ -67,7 +66,8 @@ public class MultiSelectSpinner extends Spinner implements
     @Override
     public boolean performClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Please select!!!");
+        builder.setTitle("Please select");
+
         builder.setMultiChoiceItems(_items, mSelection, this);
         _itemsAtStart = getSelectedItemsAsString();
         builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
@@ -115,8 +115,7 @@ public class MultiSelectSpinner extends Spinner implements
             mSelection[index] = true;
             mSelectionAtStart[index] = true;
         } else {
-            throw new IllegalArgumentException("Index " + index
-                    + " is out of bounds.");
+            throw new IllegalArgumentException("Index " + index + " is out of bounds.");
         }
         simple_adapter.clear();
         simple_adapter.add(buildSelectedItemString());

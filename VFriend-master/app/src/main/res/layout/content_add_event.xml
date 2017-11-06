@@ -14,7 +14,6 @@
         android:padding="8dp"
         android:fillViewport="true"
         tools:layout_editor_absoluteY="8dp"
-        android:background="@color/light_grey"
         tools:layout_editor_absoluteX="8dp">
 
     <LinearLayout
@@ -190,6 +189,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="80"
+                android:inputType="textMultiLine"
+                android:lines="8"
                 android:text="asaksfhkashdkasd"/>
         </LinearLayout>
 
