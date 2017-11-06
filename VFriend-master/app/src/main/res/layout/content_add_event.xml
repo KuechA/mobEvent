@@ -11,224 +11,224 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
         android:fillViewport="true"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
-
-
-        <ImageButton
-            android:id="@+id/eventImage"
-            android:layout_width="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_height="200dp" />
+        android:padding="8dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_constraintBottom_creator="1"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1"
+            tools:layout_constraintTop_creator="1">
 
-            <TextView
-                android:layout_width="0dp"
+
+            <ImageButton
+                android:id="@+id/eventImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Title:"/>
+                android:orientation="horizontal"
+                android:weightSum="100">
 
-            <EditText
-                android:id="@+id/edittext_title"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Title:" />
+
+                <EditText
+                    android:id="@+id/edittext_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:text="TestTitle" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="75"
-                android:text="TestTitle"/>
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:weightSum="100">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Start Time:" />
 
-            <TextView
-                android:layout_width="0dp"
+                <Button
+                    android:id="@+id/show_starttime_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+                    android:gravity="right"
+                    android:text="Select" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Start Time:"/>
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="End Time:" />
+
+                <Button
+                    android:id="@+id/show_endtime_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+                    android:gravity="right"
+                    android:text="Select" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Place:" />
+
+                <Button
+                    android:id="@+id/find_location_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+                    android:gravity="right"
+                    android:text="Select" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Capacity:" />
+
+                <EditText
+                    android:id="@+id/edittext_capacity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:inputType="number"
+                    android:text="10" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Category:" />
+
+                <fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner
+                    android:id="@+id/category_selector"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Notification area:" />
+
+                <EditText
+                    android:id="@+id/edittext_area"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:inputType="number"
+                    android:text="1" />
+
+                <Spinner
+                    android:id="@+id/spinner_area_unit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:text="Description:" />
+
+                <EditText
+                    android:id="@+id/edittext_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:inputType="textMultiLine"
+                    android:lines="8"
+                    android:text="asaksfhkashdkasd" />
+            </LinearLayout>
 
             <Button
-                android:id="@+id/show_starttime_button"
-                android:layout_width="0dp"
+                android:id="@+id/createevent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="75"
-                android:text="Select"
-                android:gravity="right"
-                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-                style="?android:attr/borderlessButtonStyle"/>
+                android:minHeight="48dp"
+                android:text="Create Event" />
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="End Time:"/>
-
-            <Button
-                android:id="@+id/show_endtime_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="75"
-                android:gravity="right"
-                android:text="Select"
-                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-                style="?android:attr/borderlessButtonStyle"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Place:"/>
-
-            <Button
-                android:id="@+id/find_location_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="75"
-                android:gravity="right"
-                android:text="Select"
-                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-                style="?android:attr/borderlessButtonStyle"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Capacity:"/>
-
-            <EditText
-                android:id="@+id/edittext_capacity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="75"
-                android:inputType="number"
-                android:text="10"/>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Category:"/>
-
-            <fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner
-                android:id="@+id/category_selector"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="75"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Notification area:"/>
-
-            <EditText
-                android:id="@+id/edittext_area"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="45"
-                android:inputType="number"
-                android:text="1"/>
-
-            <Spinner
-                android:id="@+id/spinner_area_unit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="30"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Description:"/>
-
-            <EditText
-                android:id="@+id/edittext_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="75"
-                android:inputType="textMultiLine"
-                android:lines="8"
-                android:text="asaksfhkashdkasd"/>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/createevent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="Create Event"/>
-
-    </LinearLayout>
 
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
