@@ -58,7 +58,7 @@
                 android:id="@+id/edittext_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80"
+                android:layout_weight="75"
                 android:text="TestTitle"/>
         </LinearLayout>
 
@@ -147,7 +147,7 @@
                 android:id="@+id/edittext_capacity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80"
+                android:layout_weight="75"
                 android:inputType="number"
                 android:text="10"/>
         </LinearLayout>
@@ -182,13 +182,40 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="25"
+                android:text="Notification area:"/>
+
+            <EditText
+                android:id="@+id/edittext_area"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="45"
+                android:inputType="number"
+                android:text="1"/>
+
+            <Spinner
+                android:id="@+id/spinner_area_unit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="25"
                 android:text="Description:"/>
 
             <EditText
                 android:id="@+id/edittext_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80"
+                android:layout_weight="75"
                 android:inputType="textMultiLine"
                 android:lines="8"
                 android:text="asaksfhkashdkasd"/>

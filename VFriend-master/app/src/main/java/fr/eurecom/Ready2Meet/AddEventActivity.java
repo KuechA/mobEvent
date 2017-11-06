@@ -16,11 +16,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -116,16 +119,29 @@ public class AddEventActivity extends AppCompatActivity
         }
     }
 
+    private void setUiElements() {
+        // Set default picture for ImageButton
+        Uri defaultPicture = Uri.parse("https://firebasestorage.googleapis.com/v0/b/ready2meet-e0286.appspot.com/o/EventPhotos%2FDefault.jpg?alt=media&token=c6a16086-728b-43a5-b169-fae8b07a5070");
+        Picasso.with(getApplicationContext()).load(defaultPicture).fit().centerCrop()
+                .into((ImageButton) findViewById(R.id.eventImage));
+
+        // Set spinner for radius selection
+        Spinner areaUnitSpinner = (Spinner) findViewById(R.id.spinner_area_unit);
+        List<String> areaUnits = new ArrayList<>();
+        areaUnits.add("km");
+        areaUnits.add("m");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, areaUnits);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        areaUnitSpinner.setAdapter(dataAdapter);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
-        Uri defaultPicture = Uri.parse("https://firebasestorage.googleapis.com/v0/b/ready2meet-e0286.appspot.com/o/EventPhotos%2FDefault.jpg?alt=media&token=c6a16086-728b-43a5-b169-fae8b07a5070");
-        Picasso.with(getApplicationContext()).load(defaultPicture).fit().centerCrop()
-                .into((ImageButton) findViewById(R.id.eventImage));
-
         setToolbar();
+        setUiElements();
 
         final Map<String, Boolean> categories = new HashMap<>();
 
@@ -146,6 +162,10 @@ public class AddEventActivity extends AppCompatActivity
                 Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
                 String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText().toString();
                 String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText().toString();
+
+                Long notificationArea = Long.parseLong(((EditText) findViewById(R.id.edittext_area)).getText().toString());
+                notificationArea = ((Spinner) findViewById(R.id.spinner_area_unit)).getSelectedItem().toString().equals("km") ? notificationArea * 1000 : notificationArea;
+
                 Long current = Long.valueOf(1);
                 Map<String, Boolean> whoReported = new HashMap<>();
                 Map<String, Boolean> participants = new HashMap<>();
@@ -154,7 +174,7 @@ public class AddEventActivity extends AppCompatActivity
 
                 Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories,
                         capacity, pictureUri, place, startTime, endTime,
-                        participants, whoReported);
+                        participants, whoReported, notificationArea);
 
                 eventData.setValue(newEvent);
             }
