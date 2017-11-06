@@ -166,6 +166,13 @@ public class AddEventActivity extends AppCompatActivity
                 Long notificationArea = Long.parseLong(((EditText) findViewById(R.id.edittext_area)).getText().toString());
                 notificationArea = ((Spinner) findViewById(R.id.spinner_area_unit)).getSelectedItem().toString().equals("km") ? notificationArea * 1000 : notificationArea;
 
+                // Restrict area from 0 to 10 km
+                if(notificationArea < 0) {
+                    notificationArea = Long.valueOf(0);
+                } else if(notificationArea > 10000) {
+                    notificationArea = Long.valueOf(10000);
+                }
+
                 Long current = Long.valueOf(1);
                 Map<String, Boolean> whoReported = new HashMap<>();
                 Map<String, Boolean> participants = new HashMap<>();
