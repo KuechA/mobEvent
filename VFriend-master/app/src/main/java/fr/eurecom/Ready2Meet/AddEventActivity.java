@@ -133,7 +133,8 @@ public class AddEventActivity extends AppCompatActivity
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        eventId = user.getUid(); // TODO: Add number of the user's events (counter)!
+        final DatabaseReference eventData = FirebaseDatabase.getInstance().getReference().child("Events").push();
+        eventId = eventData.getKey();
 
         createEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -154,8 +155,7 @@ public class AddEventActivity extends AppCompatActivity
                         capacity, pictureUri, place, startTime, endTime,
                         participants, whoReported);
 
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                mDatabase.child("Events").child(eventId).setValue(newEvent);
+                eventData.setValue(newEvent);
             }
         });
 
