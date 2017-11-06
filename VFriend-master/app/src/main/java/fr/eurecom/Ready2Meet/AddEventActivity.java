@@ -133,6 +133,7 @@ public class AddEventActivity extends AppCompatActivity
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // Push empty object to list of events in the database to create a unique key
         final DatabaseReference eventData = FirebaseDatabase.getInstance().getReference().child("Events").push();
         eventId = eventData.getKey();
 
@@ -297,7 +298,7 @@ public class AddEventActivity extends AppCompatActivity
         } else if(requestCode == PICK_GALLERY && resultCode == RESULT_OK) {
             Uri uri = data.getData();
 
-            StorageReference storage = FirebaseStorage.getInstance().getReference().child("EventPhotos").child(eventId);
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child("EventPhotos").child(eventId + "/startPhoto");
 
             storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
