@@ -1,6 +1,8 @@
 package fr.eurecom.Ready2Meet;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +19,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import fr.eurecom.Ready2Meet.database.User;
 
 
 /**
@@ -24,9 +33,9 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class AccountOptions extends Fragment {
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
-            changeEmail, changePassword, sendEmail, remove, signOut;
+            changeEmail, changePassword, sendEmail, remove, signOut, changeDisplayName, changeProfilePicture;
 
-    private EditText oldEmail, newEmail, password, newPassword;
+    private EditText oldEmail, newEmail, password, newPassword,newDisplayName;
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
@@ -82,11 +91,17 @@ public class AccountOptions extends Fragment {
         sendEmail = (Button) view.findViewById(R.id.send);
         remove = (Button) view.findViewById(R.id.remove);
         signOut = (Button) view.findViewById(R.id.sign_out);
+        changeDisplayName = (Button) view.findViewById(R.id.change_display_name);
+        changeProfilePicture = (Button) view.findViewById(R.id.change_profile_picture);
+
+
 
         oldEmail = (EditText) view.findViewById(R.id.old_email);
         newEmail = (EditText) view.findViewById(R.id.new_email);
         password = (EditText) view.findViewById(R.id.password);
         newPassword = (EditText) view.findViewById(R.id.newPassword);
+        newDisplayName = (EditText) view.findViewById(R.id.newDisplayName);
+
 
         oldEmail.setVisibility(View.GONE);
         newEmail.setVisibility(View.GONE);
@@ -96,6 +111,7 @@ public class AccountOptions extends Fragment {
         changePassword.setVisibility(View.GONE);
         sendEmail.setVisibility(View.GONE);
         remove.setVisibility(View.GONE);
+        newDisplayName.setVisibility(View.GONE);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
@@ -114,6 +130,7 @@ public class AccountOptions extends Fragment {
                 changePassword.setVisibility(View.GONE);
                 sendEmail.setVisibility(View.GONE);
                 remove.setVisibility(View.GONE);
+                newDisplayName.setVisibility(View.GONE);
             }
         });
 
@@ -143,6 +160,33 @@ public class AccountOptions extends Fragment {
             }
         });
 
+
+        changeDisplayName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                oldEmail.setVisibility(View.GONE);
+                newEmail.setVisibility(View.GONE);
+                password.setVisibility(View.GONE);
+                newPassword.setVisibility(View.GONE);
+                changeEmail.setVisibility(View.GONE);
+                changePassword.setVisibility(View.GONE);
+                sendEmail.setVisibility(View.GONE);
+                remove.setVisibility(View.GONE);
+
+if(newDisplayName.getVisibility() == View.VISIBLE) {
+    FirebaseUser user = auth.getCurrentUser();
+
+    String signupEUID = user.getUid();
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    mDatabase.child("Users").child(signupEUID).child("DisplayName").setValue(newDisplayName.getText().toString());
+    Toast.makeText(getActivity(), "Display Name Updated!", Toast.LENGTH_LONG).show();
+}
+    newDisplayName.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +198,14 @@ public class AccountOptions extends Fragment {
                 changePassword.setVisibility(View.VISIBLE);
                 sendEmail.setVisibility(View.GONE);
                 remove.setVisibility(View.GONE);
+                newDisplayName.setVisibility(View.GONE);
+
+
+
+
+
+
+
             }
         });
 
@@ -199,6 +251,10 @@ public class AccountOptions extends Fragment {
                 changePassword.setVisibility(View.GONE);
                 sendEmail.setVisibility(View.VISIBLE);
                 remove.setVisibility(View.GONE);
+                newDisplayName.setVisibility(View.GONE);
+
+
+
             }
         });
 
@@ -257,6 +313,24 @@ public class AccountOptions extends Fragment {
                 signOut();
             }
         });
+
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("Users").child(user.getUid()).child("DisplayName").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String post = dataSnapshot.getValue(String.class);
+                newDisplayName.setText(post);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+
+
 
 
         return view;
