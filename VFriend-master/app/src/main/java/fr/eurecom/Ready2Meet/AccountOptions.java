@@ -4,6 +4,7 @@ package fr.eurecom.Ready2Meet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,10 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,8 +30,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import fr.eurecom.Ready2Meet.database.User;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -35,10 +47,13 @@ public class AccountOptions extends Fragment {
     private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
             changeEmail, changePassword, sendEmail, remove, signOut, changeDisplayName, changeProfilePicture;
 
-    private EditText oldEmail, newEmail, password, newPassword,newDisplayName;
+    private EditText oldEmail, newEmail, password, newPassword, newDisplayName;
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+
+    private static final int PICK_GALLERY = 2;
+    private String pictureUri = null;
 
     public AccountOptions() {
         // Required empty public constructor
@@ -51,6 +66,7 @@ public class AccountOptions extends Fragment {
 
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,7 +76,6 @@ public class AccountOptions extends Fragment {
         // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // toolbar.setTitle(getString(R.string.app_name));
         // setSupportActionBar(toolbar);
-
 
 
         //get firebase auth instance
@@ -93,7 +108,6 @@ public class AccountOptions extends Fragment {
         signOut = (Button) view.findViewById(R.id.sign_out);
         changeDisplayName = (Button) view.findViewById(R.id.change_display_name);
         changeProfilePicture = (Button) view.findViewById(R.id.change_profile_picture);
-
 
 
         oldEmail = (EditText) view.findViewById(R.id.old_email);
@@ -161,6 +175,7 @@ public class AccountOptions extends Fragment {
         });
 
 
+
         changeDisplayName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,19 +188,42 @@ public class AccountOptions extends Fragment {
                 sendEmail.setVisibility(View.GONE);
                 remove.setVisibility(View.GONE);
 
-if(newDisplayName.getVisibility() == View.VISIBLE) {
-    FirebaseUser user = auth.getCurrentUser();
+                if (newDisplayName.getVisibility() == View.VISIBLE) {
+                    FirebaseUser user = auth.getCurrentUser();
 
-    String signupEUID = user.getUid();
-    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    mDatabase.child("Users").child(signupEUID).child("DisplayName").setValue(newDisplayName.getText().toString());
-    Toast.makeText(getActivity(), "Display Name Updated!", Toast.LENGTH_LONG).show();
-}
-    newDisplayName.setVisibility(View.VISIBLE);
+                    String signupEUID = user.getUid();
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("Users").child(signupEUID).child("DisplayName").setValue(newDisplayName.getText().toString());
+                    Toast.makeText(getActivity(), "Display Name Updated!", Toast.LENGTH_LONG).show();
+                }
+                newDisplayName.setVisibility(View.VISIBLE);
 
 
             }
         });
+
+        changeProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                oldEmail.setVisibility(View.GONE);
+                newEmail.setVisibility(View.GONE);
+                password.setVisibility(View.GONE);
+                newPassword.setVisibility(View.GONE);
+                changeEmail.setVisibility(View.GONE);
+                changePassword.setVisibility(View.GONE);
+                sendEmail.setVisibility(View.GONE);
+                remove.setVisibility(View.GONE);
+                newDisplayName.setVisibility(View.GONE);
+
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_GALLERY);
+
+
+            }
+        });
+
+
 
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,11 +237,6 @@ if(newDisplayName.getVisibility() == View.VISIBLE) {
                 sendEmail.setVisibility(View.GONE);
                 remove.setVisibility(View.GONE);
                 newDisplayName.setVisibility(View.GONE);
-
-
-
-
-
 
 
             }
@@ -223,11 +256,11 @@ if(newDisplayName.getVisibility() == View.VISIBLE) {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                           Toast.makeText(getActivity(), "Password is updated, sign in with new password!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Password is updated, sign in with new password!", Toast.LENGTH_SHORT).show();
                                             signOut();
                                             progressBar.setVisibility(View.GONE);
                                         } else {
-                                           Toast.makeText(getActivity(), "Failed to update password!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Failed to update password!", Toast.LENGTH_SHORT).show();
                                             progressBar.setVisibility(View.GONE);
                                         }
                                     }
@@ -252,7 +285,6 @@ if(newDisplayName.getVisibility() == View.VISIBLE) {
                 sendEmail.setVisibility(View.VISIBLE);
                 remove.setVisibility(View.GONE);
                 newDisplayName.setVisibility(View.GONE);
-
 
 
             }
@@ -330,9 +362,6 @@ if(newDisplayName.getVisibility() == View.VISIBLE) {
         });
 
 
-
-
-
         return view;
     }
 
@@ -360,6 +389,33 @@ if(newDisplayName.getVisibility() == View.VISIBLE) {
     //sign out method
     public void signOut() {
         auth.signOut();
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == PICK_GALLERY && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child("ProfilePictures").child(auth.getCurrentUser().getUid());
+
+            storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    pictureUri = downloadUri.toString();
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid()).child("ProfilePictureURL").setValue(pictureUri.toString());
+                    Toast.makeText(getActivity(), "Done", Toast.LENGTH_LONG);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "Couldn't upload image to database", Toast.LENGTH_LONG);
+                }
+            });
+        }
+
+
     }
 
 }
