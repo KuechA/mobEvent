@@ -32,6 +32,7 @@ public class AllEvents extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    final List<Event> eventlist = new ArrayList<>();
 
     public AllEvents() {
         // Required empty public constructor
@@ -70,30 +71,31 @@ public class AllEvents extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_all_events, container, false);
 
-        final ListView listView = (ListView) view.findViewById(R.id.listofevents);
+
         // TODO: Retrieve list of events from firebase and add tem to the listView.
 
-        final List<String> items = new ArrayList<>();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Events");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Event post = postSnapshot.getValue(Event.class);
-                    Log.d("EVENTS", "Received " + post.toString());
-                    items.add(post.toString());
-                }
-            }
+        final ListView listView = (ListView) view.findViewById(R.id.listofevents);
+        FirebaseDatabase.getInstance().getReference().child("Events")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        eventlist.clear();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Event eventread = snapshot.getValue(Event.class);
+                            eventlist.add(eventread);
+                        }
+                        ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), R.layout.row_events,eventlist);
+                        listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        listView.invalidateViews();
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // TODO: Error handling
-            }
-        });
 
-        Log.d("EVENTS", "All events received: " + items.toString());
 
         return view;
     }
