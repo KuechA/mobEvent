@@ -9,10 +9,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import fr.eurecom.Ready2Meet.database.User;
 
@@ -29,8 +36,8 @@ public class SignupActivity extends AppCompatActivity {
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-
-
+    private String imageURL = "https://firebasestorage.googleapis.com/v0/b/ready2meet-e0286.appspot.com/o/ProfilePictures%2FDefaultProfilePicture.jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635";
+    private Uri imageUri = null;
 
 
     @Override
@@ -38,6 +45,8 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        ImageView imgview = (ImageView) findViewById(R.id.imageView);
+        Picasso.with(getApplicationContext()).load(imageURL).fit().into(imgview);
 
 //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -108,7 +117,32 @@ public class SignupActivity extends AppCompatActivity {
 
                                 String signupEUID = user.getUid();
 
-                                String profilePictureUrl = "http://static2.businessinsider.com/image/5899ffcf6e09a897008b5c04-1200/.jpg";
+
+                                StorageReference storage = FirebaseStorage.getInstance().getReference().child("ProfilePictures").child(auth.getCurrentUser().getUid());
+if(imageUri != null) {
+    storage.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        @Override
+        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            Uri downloadUri = taskSnapshot.getDownloadUrl();
+            imageURL = downloadUri.toString();
+            FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid()).child("ProfilePictureURL").setValue(imageURL.toString());
+
+            ImageView imgview = (ImageView) findViewById(R.id.imageView);
+            Picasso.with(getApplicationContext()).load(imageURL).fit().into(imgview);
+
+
+            Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG);
+        }
+    }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+            Toast.makeText(getApplication(), "Couldn't upload image to database", Toast.LENGTH_LONG);
+        }
+    });
+}
+
+
+                                String profilePictureUrl = imageURL;
                                 User userObj = new User(displayname, "1", profilePictureUrl);
 
                                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -128,6 +162,15 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        ImageView imgView = (ImageView) findViewById(R.id.imageView);
+        imgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 2);
+            }
+        });
 
     }
     @Override
@@ -135,5 +178,16 @@ public class SignupActivity extends AppCompatActivity {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode == 2 && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            imageUri = uri;
+
+            ImageView imgview = (ImageView) findViewById(R.id.imageView);
+            Picasso.with(getApplicationContext()).load(imageUri).fit().into(imgview);
+        }
+
+
+    }
 }

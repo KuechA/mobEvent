@@ -17,15 +17,15 @@
 
 
         <ImageView
-            android:layout_width="@dimen/logo_w_h"
-            android:layout_height="@dimen/logo_w_h"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/imageView"
 
+            />
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/displayname"
