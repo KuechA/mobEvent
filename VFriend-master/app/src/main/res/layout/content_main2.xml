@@ -9,18 +9,11 @@
     tools:showIn="@layout/app_bar_main2"
     android:padding="8dp">
 
-
-
     <fragment
         android:id="@+id/container_new"
         android:name="fr.eurecom.Ready2Meet.DashboardFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_dashboard"
-
- />
-
-
-
+        tools:layout="@layout/fragment_dashboard"/>
 
 </android.support.constraint.ConstraintLayout>

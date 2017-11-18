@@ -99,8 +99,4 @@ public class AllEvents extends Fragment {
 
         return view;
     }
-
-
-
-
 }
