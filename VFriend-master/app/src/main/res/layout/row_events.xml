@@ -1,79 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:orientation="vertical">
+
         <LinearLayout
-            android:layout_gravity="top"
+            android:id="@+id/imglayout"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="@color/colorPrimary"
-            android:id="@+id/imglayout"
-            android:showDividers="middle"
+            android:layout_gravity="top"
             android:layout_marginTop="4dp"
+            android:background="@color/colorPrimary"
+            android:showDividers="middle">
 
-
-            >
             <ImageView
-                android:contentDescription="EventResmi"
+                android:id="@+id/eventpicture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/eventpicture"
-                android:src="@drawable/defaulteventpicture"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
+                android:background="@color/colorPrimary"
+                android:contentDescription="EventResmi"
                 android:scaleType="centerCrop"
 
 
-                android:background="@color/colorPrimary"/>
+                android:src="@drawable/default_event_picture" />
         </LinearLayout>
+
         <LinearLayout
-            android:layout_gravity="top"
+            android:id="@+id/onerow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
             android:background="@color/colorPrimaryDark"
-            android:id="@+id/onerow"
-            android:showDividers="middle"
-
-
-            >
+            android:showDividers="middle">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:showDividers="middle"
-                android:background="#ffffff"
+                android:layout_marginBottom="2dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
-                android:layout_marginBottom="2dp"
-
-                >
-
+                android:background="#ffffff"
+                android:orientation="vertical"
+                android:showDividers="middle">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
                     android:id="@+id/txteventname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="#ffffff"
-                    android:text="Some Random Event"/>
+                    android:gravity="center"
+                    android:text="Some Random Event"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:gravity="center"
-                    android:textStyle="italic"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:id="@+id/txtcategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="#ffffff"
-                    android:text="Sport, Party, Outdoor, Etc"/>
+                    android:gravity="center"
+                    android:text="Sport, Party, Outdoor, Etc"
+                    android:textSize="15sp"
+                    android:textStyle="italic" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,20 +76,18 @@
                     android:background="#ffffff">
 
                     <TextView
-                        android:textIsSelectable="true"
+                        android:id="@+id/txteventdescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/txteventdescription"
-                        android:background="#ffffff"
-                        android:textSize="17sp"
-                        android:lineSpacingExtra="1.5dp"
-                        android:padding="8dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:text="Lorem ipsum dolor sit amet, et noluisse complectitur has, ne duo cibo causae, nec ex corrumpit neglegentur. Feugait tincidunt eos ad, porro vituperata id est. Mel dicit voluptua invenire eu, no nisl imperdiet definitionem sit, ne labore ornatus lobortis vix.otidieque. Pri eu choro veniam, hinc modus dissentias his an"/>
-
-
+                        android:background="#ffffff"
+                        android:lineSpacingExtra="1.5dp"
+                        android:padding="8dp"
+                        android:text="Lorem ipsum dolor sit amet, et noluisse complectitur has, ne duo cibo causae, nec ex corrumpit neglegentur. Feugait tincidunt eos ad, porro vituperata id est. Mel dicit voluptua invenire eu, no nisl imperdiet definitionem sit, ne labore ornatus lobortis vix.otidieque. Pri eu choro veniam, hinc modus dissentias his an"
+                        android:textIsSelectable="true"
+                        android:textSize="17sp" />
                 </LinearLayout>
 
 
@@ -105,197 +98,179 @@
                     android:orientation="vertical"
                     android:weightSum="100">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="50"
-                    android:weightSum="1"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="center"
-                        android:src="@drawable/dateicon"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
-                        android:gravity="center|start"
-                        />
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="100"
-                        android:background="#ffffff">
-
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_height="0dp"
-                            android:layout_weight="50">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_height="match_parent"
-
-                            android:id="@+id/txtstarttime"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ffffff"
-                            android:maxLines="1"
-                            android:textSize="20sp"
-                            android:gravity="center|start"
-                            android:text="18.00" />
-                            <TextView
-                                android:layout_height="match_parent"
-                                android:layout_width="wrap_content"
-                                android:text=" - "
-                                android:background="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center|start"
-                                />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_height="match_parent"
-
-                                android:id="@+id/txtendtime"
-                                android:layout_marginBottom="2dp"
-                                android:background="#ffffff"
-                                android:maxLines="1"
-                                android:textSize="20sp"
-                                android:gravity="center|start"
-                                android:text="21.00" />
-
-                        </LinearLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_height="0dp"
-                            android:layout_weight="50"
-                            android:id="@+id/txtdate"
-                            android:background="#ffffff"
-                            android:maxLines="1"
-                            android:textSize="16sp"
-                            android:gravity="center|start"
-                            android:text="18.01.2017" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="10dp"
-                        android:layout_height="match_parent"
-                        android:background="#ffffff"
-                        android:minWidth="4dp"
-                        >
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-
-                        android:layout_height="match_parent"
-                        android:id="@+id/txtlocation"
-                        android:background="#ffffff"
-                        android:textAlignment="viewEnd"
-                        android:textSize="15sp"
-                        android:gravity="center|end"
-                        android:text="Some Location"
-                        />
-                    <LinearLayout
-                        android:layout_width="4dp"
-                        android:layout_height="match_parent"
-                        android:background="#ffffff"
-                        />
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/locationicon"
-                        android:scaleType="centerCrop"
-                        android:gravity="center|end"
-                        android:layout_marginRight="4dp"
-                        android:layout_marginEnd="4dp"/>
-
-                </LinearLayout>
-
-
-                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="50"
-                        android:weightSum="1"
                         android:baselineAligned="false"
-                        android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/ic_menu_camera"
-                        android:scaleType="centerCrop"
-                        android:gravity="center"
-                        android:layout_marginRight="4dp"
-                        android:layout_marginEnd="4dp"/>
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:id="@+id/txtcurrent"
-                        android:background="#ffffff"
-                        android:textAlignment="viewEnd"
-                        android:textSize="18sp"
-                        android:gravity="center|end"
-                        android:text="3"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="#ffffff"
-                        android:textAlignment="viewEnd"
-                        android:textSize="18sp"
-                        android:gravity="center|end"
-                        android:text=" / "
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:id="@+id/txtcapacity"
-                        android:background="#ffffff"
-                        android:textAlignment="viewEnd"
-                        android:textSize="18sp"
-                        android:gravity="center|end"
-                        android:text="10"
-                        />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginStart="4dp"
+                            android:gravity="center|start"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/dateicon" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="#ffffff"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff"
+                            android:orientation="vertical"
+                            android:weightSum="100">
 
-                        android:textSize="15sp"
-                        android:gravity="center"
-                        android:text="Participant list will come here after"
-                        />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="50"
+                                android:orientation="horizontal">
 
+                                <TextView
+                                    android:id="@+id/txtstarttime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginBottom="2dp"
+                                    android:background="#ffffff"
+                                    android:gravity="center|start"
+                                    android:maxLines="1"
+                                    android:text="18.00"
+                                    android:textSize="20sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="#ffffff"
+                                    android:gravity="center|start"
+                                    android:text=" - "
+                                    android:textSize="20sp" />
+
+                                <TextView
+                                    android:id="@+id/txtendtime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginBottom="2dp"
+                                    android:background="#ffffff"
+                                    android:gravity="center|start"
+                                    android:maxLines="1"
+                                    android:text="21.00"
+                                    android:textSize="20sp" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/txtdate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="50"
+                                android:background="#ffffff"
+                                android:gravity="center|start"
+                                android:maxLines="1"
+                                android:text="18.01.2017"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="10dp"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff"
+                            android:minWidth="4dp"></LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txtlocation"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#ffffff"
+                            android:gravity="center|end"
+                            android:text="Some Location"
+                            android:textAlignment="viewEnd"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="4dp"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginRight="4dp"
+                            android:gravity="center|end"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/locationicon" />
 
                     </LinearLayout>
 
 
-            </LinearLayout>
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="50"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginRight="4dp"
+                            android:gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@android:drawable/ic_menu_camera" />
 
+                        <TextView
+                            android:id="@+id/txtcurrent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff"
+                            android:gravity="center|end"
+                            android:text="3"
+                            android:textAlignment="viewEnd"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff"
+                            android:gravity="center|end"
+                            android:text=" / "
+                            android:textAlignment="viewEnd"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/txtcapacity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff"
+                            android:gravity="center|end"
+                            android:text="10"
+                            android:textAlignment="viewEnd"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#ffffff"
+
+                            android:gravity="center"
+                            android:text="Participant list will come here after"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
-
-
-
-
-
-
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
