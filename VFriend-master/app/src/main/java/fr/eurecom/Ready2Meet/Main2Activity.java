@@ -1,6 +1,8 @@
 package fr.eurecom.Ready2Meet;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -14,9 +16,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +30,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import fr.eurecom.Ready2Meet.database.Event;
@@ -62,6 +71,7 @@ public class Main2Activity extends AppCompatActivity
 
             if (user != null) {
 
+
                 // Id of the provider (ex: google.com)
                 String providerId = user.getProviderId();
 
@@ -69,7 +79,7 @@ public class Main2Activity extends AppCompatActivity
                 String uid = user.getUid();
 
                 final TextView textforname = (TextView) header.findViewById(R.id.textView);
-                final ImageView imgview = (ImageView) header.findViewById(R.id.imageView);
+                final de.hdodenhof.circleimageview.CircleImageView imgview = (de.hdodenhof.circleimageview.CircleImageView) header.findViewById(R.id.imageView);
 
                 TextView text2 = (TextView) header.findViewById(R.id.textView2);
                 text2.setText(user.getEmail());
@@ -80,6 +90,9 @@ public class Main2Activity extends AppCompatActivity
                     public void onDataChange(DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
                         textforname.setText(user.DisplayName);
+
+
+
                         Picasso.with(getApplicationContext()).load(user.ProfilePictureURL).fit().into(imgview);
                     }
 
@@ -92,8 +105,47 @@ public class Main2Activity extends AppCompatActivity
 
         }
 
-    }
 
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerview = navigationView.getHeaderView(0);
+        Button changeprofilepicture = (Button) headerview.findViewById(R.id.changeprofilepicture);
+        changeprofilepicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 2);
+            }
+        });
+
+
+
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 2 && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child("ProfilePictures").child(auth.getCurrentUser().getUid());
+            storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    String pictureUri = "";
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    pictureUri = downloadUri.toString();
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid()).child("ProfilePictureURL").setValue(pictureUri.toString());
+                    Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplication(), "Couldn't upload image to database", Toast.LENGTH_LONG);
+                }
+            });
+        }
+
+
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
