@@ -260,15 +260,25 @@
                             android:textAlignment="viewEnd"
                             android:textSize="18sp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="#ffffff"
 
-                            android:gravity="center"
-                            android:text="Participant list will come here after"
-                            android:textSize="15sp" />
+
+                        <HorizontalScrollView
+                            android:id="@+id/horizontalScrollView1"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="top|center"
+                            >
+
+                            <LinearLayout
+                                android:id="@+id/participants"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal" >
+
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
                     </LinearLayout>
                 </LinearLayout>
 

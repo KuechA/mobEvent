@@ -38,7 +38,7 @@ public class DashboardFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         // TODO: Retrieve list of events from firebase and add tem to the listView.
-
+/*
         final ListView listView = (ListView) view.findViewById(R.id.start_page_list_of_events);
         FirebaseDatabase.getInstance().getReference().child("Events")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -58,6 +58,7 @@ public class DashboardFragment extends Fragment {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+                */
         return view;
     }
 
