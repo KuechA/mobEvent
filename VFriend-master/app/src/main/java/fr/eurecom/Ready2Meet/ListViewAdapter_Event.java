@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import fr.eurecom.Ready2Meet.database.Event;
@@ -79,6 +80,7 @@ public class ListViewAdapter_Event  extends ArrayAdapter<Event> {
     {
         TextView txtTitle, txtCategories, txtDescription, txtStarttime, txtEndtime, txtDate, txtPlace, txtCurrent, txtCapacity;
         ImageView eventpicture;
+        net.igenius.customcheckbox.CustomCheckBox participatingcheckbox;
     }
 
 
@@ -104,6 +106,7 @@ public class ListViewAdapter_Event  extends ArrayAdapter<Event> {
             viewHolder.txtCapacity = (TextView)convertView.findViewById(R.id.txtcapacity);
             viewHolder.txtDescription = (TextView)convertView.findViewById(R.id.txteventdescription);
             viewHolder.eventpicture = (ImageView)convertView.findViewById(R.id.eventpicture);
+            viewHolder.participatingcheckbox=(net.igenius.customcheckbox.CustomCheckBox) convertView.findViewById(R.id.participatingcheckbox);
             /*
             TODO: Font will be changed using the Helvetica.otf file. Code is written file is missing currently.
             Typeface type = Typeface.createFromAsset(getContext().getAssets(),"fonts/Helvetica2.otf");
@@ -162,6 +165,14 @@ public class ListViewAdapter_Event  extends ArrayAdapter<Event> {
                 .load(info.picture)
                 .into(viewHolder.eventpicture);
 
+        viewHolder.participatingcheckbox.setChecked(Boolean.FALSE);
+        for (String key : info.Participants.keySet()) {
+            if(key.equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+            {
+                viewHolder.participatingcheckbox.setChecked(Boolean.TRUE);
+            }
+
+        }
 
         return convertView;
     }
