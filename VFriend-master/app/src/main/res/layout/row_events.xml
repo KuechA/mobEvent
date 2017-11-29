@@ -26,7 +26,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:background="@color/colorPrimary"
-                android:contentDescription="EventResmi"
+                android:contentDescription="EventPicture"
                 android:scaleType="centerCrop"
 
 
@@ -261,21 +261,18 @@
                             android:textSize="18sp" />
 
 
-
                         <HorizontalScrollView
                             android:id="@+id/horizontalScrollView1"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="match_parent"
-                            android:layout_gravity="top|center"
-                            >
+                            android:layout_gravity="top|center">
 
                             <LinearLayout
                                 android:id="@+id/participants"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:orientation="horizontal" >
-
 
                             </LinearLayout>
                         </HorizontalScrollView>
@@ -288,31 +285,22 @@
                     android:layout_height="50dp"
                     android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Participating: "
-                            android:layout_gravity="start|center"
-                            android:textSize="20sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Participating: "
+                        android:layout_gravity="start|center"
+                        android:textSize="20sp"/>
 
-
-<net.igenius.customcheckbox.CustomCheckBox
-    android:id="@+id/participatingcheckbox"
-    android:layout_width="50dp"
-    android:layout_height="match_parent"
-    app:duration="1"
-    app:color_tick="#ffffff"
-    app:color_unchecked="#ffffff"
-    app:color_checked="#00ff00"
-
-
-    />
-
-
-
-
+                    <net.igenius.customcheckbox.CustomCheckBox
+                        android:id="@+id/participatingcheckbox"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        app:duration="1"
+                        app:color_tick="#ffffff"
+                        app:color_unchecked="#ffffff"
+                        app:color_checked="#00ff00" />
                 </LinearLayout>
-
 
             </LinearLayout>
         </LinearLayout>
