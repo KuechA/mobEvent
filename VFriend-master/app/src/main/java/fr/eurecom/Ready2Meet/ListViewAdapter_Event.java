@@ -4,9 +4,12 @@ package fr.eurecom.Ready2Meet;
  * Created by koksa on 9.11.2017.
  */
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +21,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import net.igenius.customcheckbox.CustomCheckBox;
 
 import fr.eurecom.Ready2Meet.database.Event;
 
@@ -146,16 +152,25 @@ public class ListViewAdapter_Event extends ArrayAdapter<Event> {
             }
         }
 
+        viewHolder.participatingcheckbox.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
+                Map<String, Object> updateRequest = new HashMap(1);
+                updateRequest.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), isChecked);
+                FirebaseDatabase.getInstance().getReference().child("Events/" + info.id + "/Participants").updateChildren(updateRequest);
+            }
+        });
+
         for (String key : info.Participants.keySet()) {
             StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
             ImageView ii = new ImageView(viewHolder.participants.getContext());
+            ii.setPadding(0, 0, 4, 0);
+            ii.setLayoutParams(new LinearLayout.LayoutParams(viewHolder.participants.getHeight(), viewHolder.participants.getHeight()));
+            viewHolder.participants.addView(ii);
             Glide.with(viewHolder.participants.getContext())
                     .using(new FirebaseImageLoader())
                     .load(storageRef)
                     .into(ii);
-            ii.setPadding(0, 0, 4, 0);
-            ii.setLayoutParams(new LinearLayout.LayoutParams(viewHolder.participants.getHeight(), viewHolder.participants.getHeight()));
-            viewHolder.participants.addView(ii);
         }
 
         //This deleted elements after the limit. but not working properly

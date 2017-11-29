@@ -17,7 +17,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
 
@@ -83,6 +85,7 @@ public class AllEvents extends Fragment {
                         eventlist.clear();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Event eventread = snapshot.getValue(Event.class);
+                            eventread.id = snapshot.getKey();
                             eventlist.add(eventread);
                         }
                         ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), R.layout.row_events,eventlist);

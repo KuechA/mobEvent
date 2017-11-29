@@ -3,6 +3,7 @@ package fr.eurecom.Ready2Meet.database;
 import java.util.Map;
 
 public class Event {
+    public String id;
     public String title;
     public String description;
     public String owner;
