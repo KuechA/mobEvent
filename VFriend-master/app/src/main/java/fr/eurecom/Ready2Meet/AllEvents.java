@@ -76,9 +76,6 @@ public class AllEvents extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_all_events, container, false);
 
 
-        // TODO: Retrieve list of events from firebase and add tem to the listView.
-
-
         final RecyclerView listView = (RecyclerView) view.findViewById(R.id.listofevents);
         FirebaseDatabase.getInstance().getReference().child("Events")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
