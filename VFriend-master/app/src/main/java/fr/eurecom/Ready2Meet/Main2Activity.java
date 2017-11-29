@@ -1,13 +1,12 @@
 package fr.eurecom.Ready2Meet;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,9 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.content.Intent;
+import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,11 +33,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import fr.eurecom.Ready2Meet.database.Event;
 import fr.eurecom.Ready2Meet.database.User;
 
-public class Main2Activity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth auth;
 
     @Override
@@ -47,30 +43,25 @@ public class Main2Activity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
 
-
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (auth.getCurrentUser() != null) {
+        if(auth.getCurrentUser() != null) {
 
             View header = navigationView.getHeaderView(0);
 
-
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
-            if (user != null) {
-
+            if(user != null) {
 
                 // Id of the provider (ex: google.com)
                 String providerId = user.getProviderId();
@@ -91,8 +82,6 @@ public class Main2Activity extends AppCompatActivity
                         User user = snapshot.getValue(User.class);
                         textforname.setText(user.DisplayName);
 
-
-
                         Picasso.with(getApplicationContext()).load(user.ProfilePictureURL).fit().into(imgview);
                     }
 
@@ -104,8 +93,6 @@ public class Main2Activity extends AppCompatActivity
             }
 
         }
-
-
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerview = navigationView.getHeaderView(0);
@@ -119,12 +106,11 @@ public class Main2Activity extends AppCompatActivity
             }
         });
 
-
-
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 2 && resultCode == RESULT_OK) {
+        if(requestCode == 2 && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             StorageReference storage = FirebaseStorage.getInstance().getReference().child("ProfilePictures").child(auth.getCurrentUser().getUid());
             storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -144,12 +130,12 @@ public class Main2Activity extends AppCompatActivity
             });
         }
 
-
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -171,7 +157,7 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(id == R.id.action_settings) {
             return true;
         }
 
@@ -184,33 +170,30 @@ public class Main2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment;
-        if (id == R.id.nav_add_event) {
+        if(id == R.id.nav_add_event) {
 
             startActivity(new Intent(Main2Activity.this, AddEventActivity.class));
 
-
-
-        } else if (id == R.id.nav_allevents) {
+        } else if(id == R.id.nav_allevents) {
             fragment = new AllEvents();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_new, fragment);
             ft.commit();
 
-        } else if (id == R.id.nav_messages) {
+        } else if(id == R.id.nav_messages) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if(id == R.id.nav_manage) {
 
             fragment = new AccountOptions();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_new, fragment);
             ft.commit();
 
-        } else if (id == R.id.nav_share) {
+        } else if(id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if(id == R.id.nav_send) {
 
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

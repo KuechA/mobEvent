@@ -4,27 +4,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
-
 
 public class AllEvents extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -48,6 +40,7 @@ public class AllEvents extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
+     *
      * @return A new instance of fragment AllEvents.
      */
     // TODO: Rename and change types and number of parameters
@@ -63,42 +56,38 @@ public class AllEvents extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if(getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_all_events, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_all_events, container, false);
 
         final RecyclerView listView = (RecyclerView) view.findViewById(R.id.listofevents);
-        FirebaseDatabase.getInstance().getReference().child("Events")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        eventlist.clear();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Event eventread = snapshot.getValue(Event.class);
-                            eventread.id = snapshot.getKey();
-                            eventlist.add(eventread);
-                        }
-                        ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), eventlist);
-                        listView.setAdapter(adapter);
-                        listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
-                        adapter.notifyDataSetChanged();
-                        //listView.invalidateViews();
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+        FirebaseDatabase.getInstance().getReference().child("Events").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                eventlist.clear();
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Event eventread = snapshot.getValue(Event.class);
+                    eventread.id = snapshot.getKey();
+                    eventlist.add(eventread);
+                }
+                ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), eventlist);
+                listView.setAdapter(adapter);
+                listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
+                adapter.notifyDataSetChanged();
+                //listView.invalidateViews();
+            }
 
-
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         return view;
     }
