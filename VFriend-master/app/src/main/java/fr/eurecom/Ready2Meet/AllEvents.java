@@ -2,6 +2,8 @@ package fr.eurecom.Ready2Meet;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +79,7 @@ public class AllEvents extends Fragment {
         // TODO: Retrieve list of events from firebase and add tem to the listView.
 
 
-        final ListView listView = (ListView) view.findViewById(R.id.listofevents);
+        final RecyclerView listView = (RecyclerView) view.findViewById(R.id.listofevents);
         FirebaseDatabase.getInstance().getReference().child("Events")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -88,10 +90,11 @@ public class AllEvents extends Fragment {
                             eventread.id = snapshot.getKey();
                             eventlist.add(eventread);
                         }
-                        ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), R.layout.row_events,eventlist);
+                        ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), eventlist);
                         listView.setAdapter(adapter);
+                        listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
                         adapter.notifyDataSetChanged();
-                        listView.invalidateViews();
+                        //listView.invalidateViews();
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {

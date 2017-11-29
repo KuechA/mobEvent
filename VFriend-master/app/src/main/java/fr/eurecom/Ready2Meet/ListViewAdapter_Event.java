@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,128 +32,64 @@ import net.igenius.customcheckbox.CustomCheckBox;
 import fr.eurecom.Ready2Meet.database.Event;
 
 
-public class ListViewAdapter_Event extends ArrayAdapter<Event> {
-
-    private int layoutResourceId;
+public class ListViewAdapter_Event extends RecyclerView.Adapter<ListViewAdapter_Event.EventViewHolder> {
     public List<Event> events;
-    public LayoutInflater layoutInflater;
-    public ViewHolder viewHolder;
+    private Context context;
 
-
-    public ListViewAdapter_Event(Context context, int layoutResourceId, List<Event> eventlist) {
-
-        super(context, layoutResourceId, eventlist);
-
-        this.layoutResourceId = layoutResourceId;
+    public ListViewAdapter_Event(Context context, List<Event> eventlist) {
         this.events = eventlist;
-        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        this.context = context;
     }
-
 
     @Override
-    public int getCount() {
-        if (events != null)
-            return events.size();
-        else
-            return 0;
+    public ListViewAdapter_Event.EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View v = inflater.inflate(R.layout.row_events, parent, false);
+        EventViewHolder vh = new EventViewHolder(v);
+        return vh;
     }
-
 
     @Override
-    public Event getItem(int position) {
-        return events.get(position);
-    }
-
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public static class ViewHolder {
-        TextView txtTitle, txtCategories, txtDescription, txtStarttime, txtEndtime, txtDate, txtPlace, txtCurrent, txtCapacity;
-        ImageView eventpicture;
-        net.igenius.customcheckbox.CustomCheckBox participatingcheckbox;
-        LinearLayout participants;
-    }
-
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        viewHolder = null;
-
-
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(layoutResourceId, parent, false);
-
-            viewHolder = new ViewHolder();
-
-            viewHolder.txtTitle = (TextView) convertView.findViewById(R.id.txteventname);
-            viewHolder.txtCategories = (TextView) convertView.findViewById(R.id.txtcategories);
-            viewHolder.txtStarttime = (TextView) convertView.findViewById(R.id.txtstarttime);
-            viewHolder.txtEndtime = (TextView) convertView.findViewById(R.id.txtendtime);
-            viewHolder.txtDate = (TextView) convertView.findViewById(R.id.txtdate);
-            viewHolder.txtPlace = (TextView) convertView.findViewById(R.id.txtlocation);
-            viewHolder.txtCurrent = (TextView) convertView.findViewById(R.id.txtcurrent);
-            viewHolder.txtCapacity = (TextView) convertView.findViewById(R.id.txtcapacity);
-            viewHolder.txtDescription = (TextView) convertView.findViewById(R.id.txteventdescription);
-            viewHolder.eventpicture = (ImageView) convertView.findViewById(R.id.eventpicture);
-            viewHolder.participatingcheckbox = (net.igenius.customcheckbox.CustomCheckBox) convertView.findViewById(R.id.participatingcheckbox);
-            viewHolder.participants = (LinearLayout) convertView.findViewById(R.id.participants);
-
-            convertView.setTag(viewHolder);
-
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+    public void onBindViewHolder(final EventViewHolder holder, int position) {
         final Event info = events.get(position);
-        viewHolder.txtDescription.setText(info.description);
-        viewHolder.txtTitle.setText(info.title);
+        holder.txtDescription.setText(info.description);
+        holder.txtTitle.setText(info.title);
 
         //TODO: Loop the categories to generate one big string of list for it
-        viewHolder.txtCategories.setText("Sport");
-
+        holder.txtCategories.setText("Sport");
 
         //TODO: Parse dates of start end and date of day
-
-
         String parsedstarttime = info.startTime;
         parsedstarttime = (parsedstarttime.substring(parsedstarttime.lastIndexOf(" at") + 3));
         String parsedendtime = info.endTime;
         parsedendtime = (parsedendtime.substring(parsedendtime.lastIndexOf(" at") + 3));
 
-
-        viewHolder.txtEndtime.setText(parsedendtime);
-        viewHolder.txtStarttime.setText(parsedstarttime);
+        holder.txtEndtime.setText(parsedendtime);
+        holder.txtStarttime.setText(parsedstarttime);
 
         String temp = info.startTime;
 
         String parseddate = temp.substring(temp.lastIndexOf(" at") + 3);
         parseddate = (temp.replaceAll((temp.substring(temp.lastIndexOf(" at") + 3)), "")).replaceAll(" at", "");
-        viewHolder.txtDate.setText(parseddate);
+        holder.txtDate.setText(parseddate);
 
+        holder.txtPlace.setText(info.place);
+        holder.txtCurrent.setText(Long.toString(info.current));
+        holder.txtCapacity.setText(Long.toString(info.capacity));
 
-        viewHolder.txtPlace.setText(info.place);
-        viewHolder.txtCurrent.setText(Long.toString(info.current));
-        viewHolder.txtCapacity.setText(Long.toString(info.capacity));
-
-
-        Picasso
-                .with(getContext())
+        Picasso.with(context)
                 .load(info.picture)
-                .into(viewHolder.eventpicture);
+                .into(holder.eventpicture);
 
-        viewHolder.participatingcheckbox.setChecked(Boolean.FALSE);
+        holder.participatingcheckbox.setChecked(Boolean.FALSE);
         for (String key : info.Participants.keySet()) {
             if (key.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                viewHolder.participatingcheckbox.setChecked(Boolean.TRUE);
+                holder.participatingcheckbox.setChecked(Boolean.TRUE);
                 break;
             }
         }
 
-        viewHolder.participatingcheckbox.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
+        holder.participatingcheckbox.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
                 Map<String, Object> updateRequest = new HashMap(1);
@@ -163,26 +100,59 @@ public class ListViewAdapter_Event extends ArrayAdapter<Event> {
 
         for (String key : info.Participants.keySet()) {
             StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
-            ImageView ii = new ImageView(viewHolder.participants.getContext());
+            ImageView ii = new ImageView(holder.participants.getContext());
             ii.setPadding(0, 0, 4, 0);
-            ii.setLayoutParams(new LinearLayout.LayoutParams(viewHolder.participants.getHeight(), viewHolder.participants.getHeight()));
-            viewHolder.participants.addView(ii);
-            Glide.with(viewHolder.participants.getContext())
+            ii.setLayoutParams(new LinearLayout.LayoutParams(holder.participants.getHeight(), holder.participants.getHeight()));
+            holder.participants.addView(ii);
+            Glide.with(holder.participants.getContext())
                     .using(new FirebaseImageLoader())
                     .load(storageRef)
                     .into(ii);
         }
 
         //This deleted elements after the limit. but not working properly
-        viewHolder.participants.post(new Runnable() {
+        holder.participants.post(new Runnable() {
             public void run() {
-                while (info.Participants.size() < viewHolder.participants.getChildCount()) {
-                    viewHolder.participants.removeViewAt(viewHolder.participants.getChildCount() - 1);
+                while (info.Participants.size() < holder.participants.getChildCount()) {
+                    holder.participants.removeViewAt(holder.participants.getChildCount() - 1);
                 }
             }
         });
-
-        return convertView;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return events != null ? events.size() : 0;
+    }
+
+    public static class EventViewHolder  extends RecyclerView.ViewHolder {
+        TextView txtTitle, txtCategories, txtDescription, txtStarttime, txtEndtime, txtDate, txtPlace, txtCurrent, txtCapacity;
+        ImageView eventpicture;
+        net.igenius.customcheckbox.CustomCheckBox participatingcheckbox;
+        LinearLayout participants;
+        View layout;
+
+        public EventViewHolder(View itemView) {
+            super(itemView);
+            layout = itemView;
+
+            txtTitle = (TextView) itemView.findViewById(R.id.txteventname);
+            txtCategories = (TextView) itemView.findViewById(R.id.txtcategories);
+            txtStarttime = (TextView) itemView.findViewById(R.id.txtstarttime);
+            txtEndtime = (TextView) itemView.findViewById(R.id.txtendtime);
+            txtDate = (TextView) itemView.findViewById(R.id.txtdate);
+            txtPlace = (TextView) itemView.findViewById(R.id.txtlocation);
+            txtCurrent = (TextView) itemView.findViewById(R.id.txtcurrent);
+            txtCapacity = (TextView) itemView.findViewById(R.id.txtcapacity);
+            txtDescription = (TextView) itemView.findViewById(R.id.txteventdescription);
+            eventpicture = (ImageView) itemView.findViewById(R.id.eventpicture);
+            participatingcheckbox = (net.igenius.customcheckbox.CustomCheckBox) itemView.findViewById(R.id.participatingcheckbox);
+            participants = (LinearLayout) itemView.findViewById(R.id.participants);
+        }
+    }
 }
