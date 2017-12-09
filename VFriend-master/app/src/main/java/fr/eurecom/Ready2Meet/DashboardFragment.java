@@ -20,10 +20,11 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
-    final List<Event> eventlist = new ArrayList<>();
+    final List<Event> eventlist = new ArrayList();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         // Inflate the layout for this fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
@@ -40,7 +41,8 @@ public class DashboardFragment extends Fragment {
                             Event eventread = snapshot.getValue(Event.class);
                             eventlist.add(eventread);
                         }
-                        ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), R.layout.row_events,eventlist);
+                        ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), R
+                        .layout.row_events,eventlist);
                         listView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         listView.invalidateViews();

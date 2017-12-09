@@ -59,15 +59,19 @@ public class AddEventActivity extends ToolbarActivity {
 
     private void setUiElements() {
         // Set default picture for ImageButton
-        Uri defaultPicture = Uri.parse("https://firebasestorage.googleapis.com/v0/b/ready2meet-e0286.appspot.com/o/EventPhotos%2FDefault.jpg?alt=media&token=c6a16086-728b-43a5-b169-fae8b07a5070");
-        Picasso.with(getApplicationContext()).load(defaultPicture).fit().centerCrop().into((ImageButton) findViewById(R.id.eventImage));
+        Uri defaultPicture = Uri.parse("https://firebasestorage.googleapis" + "" + "" + "" + "" +
+                ".com/v0/b/ready2meet-e0286.appspot.com/o/EventPhotos%2FDefault" + "" + "" + "" +
+                ".jpg?alt=media&token=c6a16086-728b-43a5-b169-fae8b07a5070");
+        Picasso.with(getApplicationContext()).load(defaultPicture).fit().centerCrop().into(
+                (ImageButton) findViewById(R.id.eventImage));
 
         // Set spinner for radius selection
         Spinner areaUnitSpinner = (Spinner) findViewById(R.id.spinner_area_unit);
         List<String> areaUnits = new ArrayList<>();
         areaUnits.add("km");
         areaUnits.add("m");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, areaUnits);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout
+                .simple_spinner_item, areaUnits);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         areaUnitSpinner.setAdapter(dataAdapter);
     }
@@ -77,18 +81,28 @@ public class AddEventActivity extends ToolbarActivity {
         createEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Push empty object to list of events in the database to create a unique key
-                final DatabaseReference eventData = FirebaseDatabase.getInstance().getReference().child("Events").push();
+                final DatabaseReference eventData = FirebaseDatabase.getInstance().getReference()
+                        .child("Events").push();
                 eventId = eventData.getKey();
 
-                String eventTitle = ((EditText) findViewById(R.id.edittext_title)).getText().toString();
-                String eventDescription = ((EditText) findViewById(R.id.edittext_description)).getText().toString();
-                String place = ((Button) findViewById(R.id.find_location_button)).getText().toString();
-                Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity)).getText().toString());
-                String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText().toString();
-                String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText().toString();
+                String eventTitle = ((EditText) findViewById(R.id.edittext_title)).getText()
+                        .toString();
+                String eventDescription = ((EditText) findViewById(R.id.edittext_description))
+                        .getText().toString();
+                String place = ((Button) findViewById(R.id.find_location_button)).getText()
+                        .toString();
+                Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity))
+                        .getText().toString());
+                String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText()
+                        .toString();
+                String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText()
+                        .toString();
 
-                Long notificationArea = Long.parseLong(((EditText) findViewById(R.id.edittext_area)).getText().toString());
-                notificationArea = ((Spinner) findViewById(R.id.spinner_area_unit)).getSelectedItem().toString().equals("km") ? notificationArea * 1000 : notificationArea;
+                Long notificationArea = Long.parseLong(((EditText) findViewById(R.id
+                        .edittext_area)).getText().toString());
+                notificationArea = ((Spinner) findViewById(R.id.spinner_area_unit))
+                        .getSelectedItem().toString().equals("km") ? notificationArea * 1000 :
+                        notificationArea;
 
                 // Restrict area from 0 to 10 km
                 if(notificationArea < 0) {
@@ -103,7 +117,9 @@ public class AddEventActivity extends ToolbarActivity {
                 participants.put(user.getUid(), true);
                 String owner = user.getUid();
 
-                Event newEvent = new Event(eventTitle, eventDescription, owner, current, getCategories(), capacity, pictureUri, place, startTime, endTime, participants, whoReported, notificationArea);
+                Event newEvent = new Event(eventTitle, eventDescription, owner, current,
+                        getCategories(), capacity, pictureUri, place, startTime, endTime,
+                        participants, whoReported, notificationArea);
 
                 eventData.setValue(newEvent);
             }
@@ -113,7 +129,8 @@ public class AddEventActivity extends ToolbarActivity {
     private Map<String, Boolean> getCategories() {
         final Map<String, Boolean> categories = new HashMap<>();
 
-        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) findViewById(R.id.category_selector);
+        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) findViewById(R.id
+                .category_selector);
         categorySpinner.setItems(eventCategories);
         categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
             @Override
@@ -184,7 +201,8 @@ public class AddEventActivity extends ToolbarActivity {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
                 try {
-                    startActivityForResult(builder.build(AddEventActivity.this), PLACE_PICKER_REQUEST);
+                    startActivityForResult(builder.build(AddEventActivity.this),
+                            PLACE_PICKER_REQUEST);
                 } catch(GooglePlayServicesRepairableException e) {
                     e.printStackTrace();
                 } catch(GooglePlayServicesNotAvailableException e) {
@@ -214,22 +232,27 @@ public class AddEventActivity extends ToolbarActivity {
         } else if(requestCode == PICK_GALLERY && resultCode == RESULT_OK) {
             Uri uri = data.getData();
 
-            StorageReference storage = FirebaseStorage.getInstance().getReference().child("EventPhotos").child(eventId + "/startPhoto");
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child
+                    ("EventPhotos").child(eventId + "/startPhoto");
 
-            storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask
+                    .TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(AddEventActivity.this, "Successfully uploaded image to database", Toast.LENGTH_LONG);
+                    Toast.makeText(AddEventActivity.this, "Successfully uploaded image to " +
+                            "database", Toast.LENGTH_LONG);
 
                     Uri downloadUri = taskSnapshot.getDownloadUrl();
                     pictureUri = downloadUri.toString();
 
-                    Picasso.with(getApplicationContext()).load(downloadUri).fit().centerCrop().into((ImageButton) findViewById(R.id.eventImage));
+                    Picasso.with(getApplicationContext()).load(downloadUri).fit().centerCrop()
+                            .into((ImageButton) findViewById(R.id.eventImage));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(AddEventActivity.this, "Couldn't upload image to database", Toast.LENGTH_LONG);
+                    Toast.makeText(AddEventActivity.this, "Couldn't upload image to database",
+                            Toast.LENGTH_LONG);
                 }
             });
         }
