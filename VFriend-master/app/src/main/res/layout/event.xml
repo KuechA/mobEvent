@@ -7,46 +7,29 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/imglayout"
+        <ImageView
+            android:id="@+id/eventpicture"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_gravity="top"
-            android:layout_marginTop="4dp"
             android:background="@color/colorPrimary"
-            android:showDividers="middle">
-
-            <ImageView
-                android:id="@+id/eventpicture"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:background="@color/colorPrimary"
-                android:contentDescription="EventPicture"
-                android:scaleType="centerCrop"
-
-
-                android:src="@drawable/default_event_picture" />
-        </LinearLayout>
+            android:contentDescription="EventPicture"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_event_picture" />
 
         <LinearLayout
             android:id="@+id/onerow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:background="@color/colorPrimaryDark"
             android:showDividers="middle">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
                 android:background="#ffffff"
                 android:orientation="vertical"
                 android:showDividers="middle">
@@ -81,12 +64,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
                         android:background="#ffffff"
                         android:lineSpacingExtra="1.5dp"
                         android:padding="8dp"
-                        android:maxLines="2"
                         android:text="Lorem ipsum dolor sit amet, et noluisse complectitur has, ne duo cibo causae, nec ex corrumpit neglegentur. Feugait tincidunt eos ad, porro vituperata id est. Mel dicit voluptua invenire eu, no nisl imperdiet definitionem sit, ne labore ornatus lobortis vix.otidieque. Pri eu choro veniam, hinc modus dissentias his an"
                         android:textIsSelectable="true"
                         android:textSize="17sp" />
@@ -112,8 +92,6 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginStart="4dp"
                             android:gravity="center|start"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_date_range_black" />
@@ -222,15 +200,12 @@
                         android:orientation="horizontal"
                         android:weightSum="1">
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="4dp"
-                            android:layout_marginRight="4dp"
-                            android:gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@android:drawable/ic_menu_camera" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Participants: "
+                            android:layout_gravity="start|center"
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/txtcurrent"
@@ -280,7 +255,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -289,7 +263,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Participating: "
+                        android:text="Participate: "
                         android:layout_gravity="start|center"
                         android:textSize="20sp" />
 
@@ -301,6 +275,18 @@
                         app:color_tick="#ffffff"
                         app:color_unchecked="#ffffff"
                         app:color_checked="#00ff00" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Show Chat"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>
