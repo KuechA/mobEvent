@@ -115,7 +115,7 @@
                             android:layout_marginStart="4dp"
                             android:gravity="center|start"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/dateicon" />
+                            android:src="@drawable/ic_date_range_black" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -208,7 +208,7 @@
                             android:layout_marginRight="4dp"
                             android:gravity="center|end"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/locationicon" />
+                            android:src="@drawable/ic_location_on_black" />
 
                     </LinearLayout>
 
@@ -272,7 +272,7 @@
                                 android:id="@+id/participants"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal" >
+                                android:orientation="horizontal">
 
                             </LinearLayout>
                         </HorizontalScrollView>
@@ -290,7 +290,7 @@
                         android:layout_height="wrap_content"
                         android:text="Participating: "
                         android:layout_gravity="start|center"
-                        android:textSize="20sp"/>
+                        android:textSize="20sp" />
 
                     <net.igenius.customcheckbox.CustomCheckBox
                         android:id="@+id/participatingcheckbox"
