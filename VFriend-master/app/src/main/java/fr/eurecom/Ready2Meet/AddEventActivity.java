@@ -1,30 +1,19 @@
 package fr.eurecom.Ready2Meet;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -35,11 +24,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,17 +34,15 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
-import fr.eurecom.Ready2Meet.database.User;
 import fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner;
+import fr.eurecom.Ready2Meet.uiExtensions.ToolbarActivity;
 
-public class AddEventActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class AddEventActivity extends ToolbarActivity {
 
     private SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
     private Calendar startDate = null;
@@ -70,60 +54,10 @@ public class AddEventActivity extends AppCompatActivity
 
     private String[] eventCategories = {"Sport", "Party", "Outdoor", "Others"};
 
-    private FirebaseAuth auth;
-
-    private void setToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_add_event);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_event);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        auth = FirebaseAuth.getInstance();
-
-        if(auth.getCurrentUser() != null) {
-            View header = navigationView.getHeaderView(0);
-
-            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-            if (user != null) {
-                String uid = user.getUid();
-
-                final TextView textforname = (TextView) header.findViewById(R.id.textView);
-                final ImageView imgview = (ImageView) header.findViewById(R.id.imageView);
-
-                TextView text2 = (TextView) header.findViewById(R.id.textView2);
-                text2.setText(user.getEmail());
-
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users/" + uid);
-                mDatabase.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        User user = snapshot.getValue(User.class);
-                        textforname.setText(user.DisplayName);
-                        Picasso.with(getApplicationContext()).load(user.ProfilePictureURL).fit().into(imgview);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // TODO: Error handling
-                    }
-                });
-            }
-        }
-    }
-
     private void setUiElements() {
         // Set default picture for ImageButton
         Uri defaultPicture = Uri.parse("https://firebasestorage.googleapis.com/v0/b/ready2meet-e0286.appspot.com/o/EventPhotos%2FDefault.jpg?alt=media&token=c6a16086-728b-43a5-b169-fae8b07a5070");
-        Picasso.with(getApplicationContext()).load(defaultPicture).fit().centerCrop()
-                .into((ImageButton) findViewById(R.id.eventImage));
+        Picasso.with(getApplicationContext()).load(defaultPicture).fit().centerCrop().into((ImageButton) findViewById(R.id.eventImage));
 
         // Set spinner for radius selection
         Spinner areaUnitSpinner = (Spinner) findViewById(R.id.spinner_area_unit);
@@ -179,9 +113,7 @@ public class AddEventActivity extends AppCompatActivity
                 participants.put(user.getUid(), true);
                 String owner = user.getUid();
 
-                Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories,
-                        capacity, pictureUri, place, startTime, endTime,
-                        participants, whoReported, notificationArea);
+                Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories, capacity, pictureUri, place, startTime, endTime, participants, whoReported, notificationArea);
 
                 eventData.setValue(newEvent);
             }
@@ -232,9 +164,9 @@ public class AddEventActivity extends AppCompatActivity
 
                 try {
                     startActivityForResult(builder.build(AddEventActivity.this), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
+                } catch(GooglePlayServicesRepairableException e) {
                     e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
+                } catch(GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
                 }
             }
@@ -262,62 +194,9 @@ public class AddEventActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Fragment fragment;
-        if (id == R.id.nav_add_event) {
-            // Do nothing
-        } else if (id == R.id.nav_allevents) {
-
-            // TODO: Select fragment
-            startActivity(new Intent(AddEventActivity.this, Main2Activity.class));
-
-        } else if (id == R.id.nav_messages) {
-
-        } else if (id == R.id.nav_manage) {
-
-            // TODO: Select fragment
-            startActivity(new Intent(AddEventActivity.this, Main2Activity.class));
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_event);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
+        if(requestCode == PLACE_PICKER_REQUEST) {
+            if(resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(this, data);
                 Button getLocationButton = (Button) findViewById(R.id.find_location_button);
                 getLocationButton.setText(place.getAddress());
@@ -335,8 +214,7 @@ public class AddEventActivity extends AppCompatActivity
                     Uri downloadUri = taskSnapshot.getDownloadUrl();
                     pictureUri = downloadUri.toString();
 
-                    Picasso.with(getApplicationContext()).load(downloadUri).fit().centerCrop()
-                            .into((ImageButton) findViewById(R.id.eventImage));
+                    Picasso.with(getApplicationContext()).load(downloadUri).fit().centerCrop().into((ImageButton) findViewById(R.id.eventImage));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -345,6 +223,34 @@ public class AddEventActivity extends AppCompatActivity
                 }
             });
         }
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        if(id == R.id.nav_add_event) {
+            // Do nothing
+        } else if(id == R.id.nav_allevents) {
+
+            // TODO: Select fragment
+            startActivity(new Intent(AddEventActivity.this, Main2Activity.class));
+
+        } else if(id == R.id.nav_messages) {
+
+        } else if(id == R.id.nav_manage) {
+
+            // TODO: Select fragment
+            startActivity(new Intent(AddEventActivity.this, Main2Activity.class));
+
+        } else if(id == R.id.nav_share) {
+
+        } else if(id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_event);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
