@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -74,6 +75,8 @@ public class AddEventActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar_add_event);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_event);
         setToolbar();
         setUiElements();
 

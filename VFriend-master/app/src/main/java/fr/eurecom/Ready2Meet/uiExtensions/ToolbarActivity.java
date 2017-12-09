@@ -28,12 +28,12 @@ import fr.eurecom.Ready2Meet.database.User;
 public abstract class ToolbarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     protected FirebaseAuth auth;
+    protected Toolbar toolbar;
+    protected DrawerLayout drawer;
 
     protected void setToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_add_event);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_event);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
