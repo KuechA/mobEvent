@@ -44,6 +44,7 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
     @Override
     public void onBindViewHolder(final EventViewHolder holder, int position) {
         final Event info = events.get(position);
+        holder.setEvent(info);
         holder.txtDescription.setText(info.description);
         holder.txtTitle.setText(info.title);
 

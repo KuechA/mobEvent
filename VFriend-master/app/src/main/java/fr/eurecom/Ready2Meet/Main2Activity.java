@@ -40,20 +40,25 @@ public class Main2Activity extends ToolbarActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 2 && resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            StorageReference storage = FirebaseStorage.getInstance().getReference().child("ProfilePictures").child(auth.getCurrentUser().getUid());
-            storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            StorageReference storage = FirebaseStorage.getInstance().getReference().child
+                    ("ProfilePictures").child(auth.getCurrentUser().getUid());
+            storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask
+                    .TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     String pictureUri = "";
                     Uri downloadUri = taskSnapshot.getDownloadUrl();
                     pictureUri = downloadUri.toString();
-                    FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid()).child("ProfilePictureURL").setValue(pictureUri.toString());
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(auth
+                            .getCurrentUser().getUid()).child("ProfilePictureURL").setValue
+                            (pictureUri.toString());
                     Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplication(), "Couldn't upload image to database", Toast.LENGTH_LONG);
+                    Toast.makeText(getApplication(), "Couldn't upload image to database", Toast
+                            .LENGTH_LONG);
                 }
             });
         }
@@ -84,21 +89,20 @@ public class Main2Activity extends ToolbarActivity {
             fragment = new AllEvents();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_new, fragment);
+            ft.addToBackStack(null);
             ft.commit();
-
         } else if(id == R.id.nav_messages) {
-
+            // TODO
         } else if(id == R.id.nav_manage) {
-
             fragment = new AccountOptions();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_new, fragment);
+            ft.addToBackStack(null);
             ft.commit();
-
         } else if(id == R.id.nav_share) {
-
+            // TODO
         } else if(id == R.id.nav_send) {
-
+            // TODO
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

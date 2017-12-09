@@ -1,5 +1,6 @@
 package fr.eurecom.Ready2Meet;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +10,8 @@ import android.widget.Toast;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 
+import fr.eurecom.Ready2Meet.database.Event;
+
 public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     TextView txtTitle, txtCategories, txtDescription, txtStarttime, txtEndtime, txtDate,
             txtPlace, txtCurrent, txtCapacity;
@@ -16,6 +19,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
     net.igenius.customcheckbox.CustomCheckBox participatingcheckbox;
     LinearLayout participants;
     View layout;
+    Event event;
 
     public EventViewHolder(View itemView) {
         super(itemView);
@@ -37,9 +41,21 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
         itemView.setOnClickListener(this);
     }
 
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     @Override
     public void onClick(View view) {
         Toast.makeText(view.getContext(), "position " + getAdapterPosition() + " title: " +
                 txtTitle.getText(), Toast.LENGTH_LONG).show();
+
+        EventDetailFragment fragment = new EventDetailFragment();
+        fragment.setEvent(event);
+        FragmentTransaction ft = ((Main2Activity) view.getContext()).getSupportFragmentManager()
+                .beginTransaction();
+        ft.replace(R.id.container_new, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }

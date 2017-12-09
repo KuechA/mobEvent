@@ -4,292 +4,297 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/eventpicture"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_gravity="top"
-            android:background="@color/colorPrimary"
-            android:contentDescription="EventPicture"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_event_picture" />
-
-        <LinearLayout
-            android:id="@+id/onerow"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:showDividers="middle">
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/eventpicture"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_gravity="top"
+                android:background="@color/colorPrimary"
+                android:contentDescription="EventPicture"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_event_picture" />
 
             <LinearLayout
+                android:id="@+id/onerow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:background="#ffffff"
-                android:orientation="vertical"
+                android:layout_gravity="top"
                 android:showDividers="middle">
 
-                <TextView
-                    android:id="@+id/txteventname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#ffffff"
-                    android:gravity="center"
-                    android:text="Some Random Event"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtcategories"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#ffffff"
-                    android:gravity="center"
-                    android:text="Sport, Party, Outdoor, Etc"
-                    android:textSize="15sp"
-                    android:textStyle="italic" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#ffffff">
+                    android:layout_marginBottom="2dp"
+                    android:background="#ffffff"
+                    android:orientation="vertical"
+                    android:showDividers="middle">
 
                     <TextView
-                        android:id="@+id/txteventdescription"
+                        android:id="@+id/txteventname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
                         android:background="#ffffff"
-                        android:lineSpacingExtra="1.5dp"
-                        android:padding="8dp"
-                        android:text="Lorem ipsum dolor sit amet, et noluisse complectitur has, ne duo cibo causae, nec ex corrumpit neglegentur. Feugait tincidunt eos ad, porro vituperata id est. Mel dicit voluptua invenire eu, no nisl imperdiet definitionem sit, ne labore ornatus lobortis vix.otidieque. Pri eu choro veniam, hinc modus dissentias his an"
-                        android:textIsSelectable="true"
-                        android:textSize="17sp" />
-                </LinearLayout>
+                        android:gravity="center"
+                        android:text="Some Random Event"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:baselineAligned="false"
-                    android:orientation="vertical"
-                    android:weightSum="100">
+                    <TextView
+                        android:id="@+id/txtcategories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:text="Sport, Party, Outdoor, Etc"
+                        android:textSize="15sp"
+                        android:textStyle="italic" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="50"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:gravity="center|start"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_date_range_black" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:orientation="vertical"
-                            android:weightSum="100">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="50"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/txtstarttime"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginBottom="2dp"
-                                    android:background="#ffffff"
-                                    android:gravity="center|start"
-                                    android:maxLines="1"
-                                    android:text="18.00"
-                                    android:textSize="20sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:background="#ffffff"
-                                    android:gravity="center|start"
-                                    android:text=" - "
-                                    android:textSize="20sp" />
-
-                                <TextView
-                                    android:id="@+id/txtendtime"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginBottom="2dp"
-                                    android:background="#ffffff"
-                                    android:gravity="center|start"
-                                    android:maxLines="1"
-                                    android:text="21.00"
-                                    android:textSize="20sp" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/txtdate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="50"
-                                android:background="#ffffff"
-                                android:gravity="center|start"
-                                android:maxLines="1"
-                                android:text="18.01.2017"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="10dp"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:minWidth="4dp"></LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff">
 
                         <TextView
-                            android:id="@+id/txtlocation"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:id="@+id/txteventdescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
                             android:background="#ffffff"
-                            android:gravity="center|end"
-                            android:text="Some Location"
-                            android:textAlignment="viewEnd"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:layout_width="4dp"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff" />
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="4dp"
-                            android:layout_marginRight="4dp"
-                            android:gravity="center|end"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_location_on_black" />
-
+                            android:lineSpacingExtra="1.5dp"
+                            android:padding="8dp"
+                            android:text="Lorem ipsum dolor sit amet, et noluisse complectitur has, ne duo cibo causae, nec ex corrumpit neglegentur. Feugait tincidunt eos ad, porro vituperata id est. Mel dicit voluptua invenire eu, no nisl imperdiet definitionem sit, ne labore ornatus lobortis vix.otidieque. Pri eu choro veniam, hinc modus dissentias his an"
+                            android:textIsSelectable="true"
+                            android:textSize="17sp" />
                     </LinearLayout>
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="50"
+                        android:layout_height="100dp"
                         android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:orientation="vertical"
+                        android:weightSum="100">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="50"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:gravity="center|start"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_date_range_black" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="#ffffff"
+                                android:orientation="vertical"
+                                android:weightSum="100">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="50"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/txtstarttime"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_marginBottom="2dp"
+                                        android:background="#ffffff"
+                                        android:gravity="center|start"
+                                        android:maxLines="1"
+                                        android:text="18.00"
+                                        android:textSize="20sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:background="#ffffff"
+                                        android:gravity="center|start"
+                                        android:text=" - "
+                                        android:textSize="20sp" />
+
+                                    <TextView
+                                        android:id="@+id/txtendtime"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_marginBottom="2dp"
+                                        android:background="#ffffff"
+                                        android:gravity="center|start"
+                                        android:maxLines="1"
+                                        android:text="21.00"
+                                        android:textSize="20sp" />
+
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/txtdate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="0dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="50"
+                                    android:background="#ffffff"
+                                    android:gravity="center|start"
+                                    android:maxLines="1"
+                                    android:text="18.01.2017"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#ffffff"
+                                android:minWidth="4dp"></LinearLayout>
+
+                            <TextView
+                                android:id="@+id/txtlocation"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="#ffffff"
+                                android:gravity="center|end"
+                                android:text="Some Location"
+                                android:textAlignment="viewEnd"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:layout_width="4dp"
+                                android:layout_height="match_parent"
+                                android:background="#ffffff" />
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginRight="4dp"
+                                android:gravity="center|end"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_location_on_black" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="50"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Participants: "
+                                android:layout_gravity="start|center"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/txtcurrent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="#ffffff"
+                                android:gravity="center|end"
+                                android:text="3"
+                                android:textAlignment="viewEnd"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="#ffffff"
+                                android:gravity="center|end"
+                                android:text=" / "
+                                android:textAlignment="viewEnd"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/txtcapacity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="#ffffff"
+                                android:gravity="center|end"
+                                android:text="10"
+                                android:textAlignment="viewEnd"
+                                android:textSize="18sp" />
+
+
+                            <HorizontalScrollView
+                                android:id="@+id/horizontalScrollView1"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="top|center">
+
+                                <LinearLayout
+                                    android:id="@+id/participants"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                </LinearLayout>
+                            </HorizontalScrollView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Participants: "
+                            android:text="Participate: "
                             android:layout_gravity="start|center"
                             android:textSize="20sp" />
 
-                        <TextView
-                            android:id="@+id/txtcurrent"
-                            android:layout_width="wrap_content"
+                        <net.igenius.customcheckbox.CustomCheckBox
+                            android:id="@+id/participatingcheckbox"
+                            android:layout_width="50dp"
                             android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:gravity="center|end"
-                            android:text="3"
-                            android:textAlignment="viewEnd"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:gravity="center|end"
-                            android:text=" / "
-                            android:textAlignment="viewEnd"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/txtcapacity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:gravity="center|end"
-                            android:text="10"
-                            android:textAlignment="viewEnd"
-                            android:textSize="18sp" />
-
-
-                        <HorizontalScrollView
-                            android:id="@+id/horizontalScrollView1"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="top|center">
-
-                            <LinearLayout
-                                android:id="@+id/participants"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal">
-
-                            </LinearLayout>
-                        </HorizontalScrollView>
+                            app:duration="1"
+                            app:color_tick="#ffffff"
+                            app:color_unchecked="#ffffff"
+                            app:color_checked="#00ff00" />
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Participate: "
-                        android:layout_gravity="start|center"
-                        android:textSize="20sp" />
-
-                    <net.igenius.customcheckbox.CustomCheckBox
-                        android:id="@+id/participatingcheckbox"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        app:duration="1"
-                        app:color_tick="#ffffff"
-                        app:color_unchecked="#ffffff"
-                        app:color_checked="#00ff00" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <Button
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Show Chat"
-                        android:visibility="gone" />
-                </LinearLayout>
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
 
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Show Chat"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>
