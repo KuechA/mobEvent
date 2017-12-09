@@ -45,6 +45,8 @@ import fr.eurecom.Ready2Meet.uiExtensions.ToolbarActivity;
 
 public class AddEventActivity extends ToolbarActivity {
 
+    private FirebaseUser user;
+
     private SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
     private Calendar startDate = null;
     private String pictureUri = null;
@@ -70,28 +72,13 @@ public class AddEventActivity extends ToolbarActivity {
         areaUnitSpinner.setAdapter(dataAdapter);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_event);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar_add_event);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_event);
-        setToolbar();
-        setUiElements();
-
-        final Map<String, Boolean> categories = new HashMap<>();
-
+    private void createEvent() {
         Button createEventButton = (Button) findViewById(R.id.createevent);
-
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        // Push empty object to list of events in the database to create a unique key
-        final DatabaseReference eventData = FirebaseDatabase.getInstance().getReference().child("Events").push();
-        eventId = eventData.getKey();
-
         createEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // Push empty object to list of events in the database to create a unique key
+                final DatabaseReference eventData = FirebaseDatabase.getInstance().getReference().child("Events").push();
+                eventId = eventData.getKey();
 
                 String eventTitle = ((EditText) findViewById(R.id.edittext_title)).getText().toString();
                 String eventDescription = ((EditText) findViewById(R.id.edittext_description)).getText().toString();
@@ -116,11 +103,42 @@ public class AddEventActivity extends ToolbarActivity {
                 participants.put(user.getUid(), true);
                 String owner = user.getUid();
 
-                Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories, capacity, pictureUri, place, startTime, endTime, participants, whoReported, notificationArea);
+                Event newEvent = new Event(eventTitle, eventDescription, owner, current, getCategories(), capacity, pictureUri, place, startTime, endTime, participants, whoReported, notificationArea);
 
                 eventData.setValue(newEvent);
             }
         });
+    }
+
+    private Map<String, Boolean> getCategories() {
+        final Map<String, Boolean> categories = new HashMap<>();
+
+        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) findViewById(R.id.category_selector);
+        categorySpinner.setItems(eventCategories);
+        categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
+            @Override
+            public void selectedStrings(List<String> strings) {
+                for(String category : strings) {
+                    categories.put(category, true);
+                }
+            }
+        });
+
+        return categories;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_event);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar_add_event);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_event);
+        setToolbar();
+        setUiElements();
+        createEvent();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         final Button showStartTimeButton = (Button) findViewById(R.id.show_starttime_button);
         showStartTimeButton.setOnClickListener(new View.OnClickListener() {
@@ -171,17 +189,6 @@ public class AddEventActivity extends ToolbarActivity {
                     e.printStackTrace();
                 } catch(GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
-                }
-            }
-        });
-
-        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) findViewById(R.id.category_selector);
-        categorySpinner.setItems(eventCategories);
-        categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
-            @Override
-            public void selectedStrings(List<String> strings) {
-                for(String category : strings) {
-                    categories.put(category, true);
                 }
             }
         });
