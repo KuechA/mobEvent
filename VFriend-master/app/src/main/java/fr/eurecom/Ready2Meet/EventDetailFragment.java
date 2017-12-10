@@ -12,6 +12,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,10 +34,12 @@ import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
 
-public class EventDetailFragment extends Fragment {
+public class EventDetailFragment extends Fragment implements OnMapReadyCallback {
 
     private Event event;
     private boolean participating;
+
+    private MapView mapView;
 
     public EventDetailFragment() {
     }
@@ -141,6 +150,23 @@ public class EventDetailFragment extends Fragment {
 
         // TODO: Make picture gallery (if registered to event), show map, fix pictures
 
+        mapView = (MapView) view.findViewById(R.id.mapview);
+        mapView.onCreate(savedInstanceState);
+        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+        MapsInitializer.initialize(this.getActivity());
+        mapView.getMapAsync(this);
+
         return view;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        //map.setMyLocationEnabled(true);
+        if(event.latitude != null && event.longitude != null) {
+            LatLng location = new LatLng(event.latitude, event.longitude);
+            googleMap.addMarker(new MarkerOptions().position(location));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        }
     }
 }

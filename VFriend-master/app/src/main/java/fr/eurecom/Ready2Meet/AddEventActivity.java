@@ -52,6 +52,9 @@ public class AddEventActivity extends ToolbarActivity {
     private String pictureUri = null;
     private String eventId = null;
 
+    private double longitude;
+    private double latitude;
+
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int PICK_GALLERY = 2;
 
@@ -119,7 +122,7 @@ public class AddEventActivity extends ToolbarActivity {
 
                 Event newEvent = new Event(eventTitle, eventDescription, owner, current,
                         getCategories(), capacity, pictureUri, place, startTime, endTime,
-                        participants, whoReported, notificationArea);
+                        participants, whoReported, notificationArea, latitude, longitude);
 
                 eventData.setValue(newEvent);
             }
@@ -228,6 +231,8 @@ public class AddEventActivity extends ToolbarActivity {
                 Place place = PlacePicker.getPlace(this, data);
                 Button getLocationButton = (Button) findViewById(R.id.find_location_button);
                 getLocationButton.setText(place.getAddress());
+                longitude = place.getLatLng().longitude;
+                latitude = place.getLatLng().latitude;
             }
         } else if(requestCode == PICK_GALLERY && resultCode == RESULT_OK) {
             Uri uri = data.getData();
