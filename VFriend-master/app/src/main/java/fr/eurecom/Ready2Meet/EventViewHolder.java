@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 
@@ -47,9 +46,6 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(view.getContext(), "position " + getAdapterPosition() + " title: " +
-                txtTitle.getText(), Toast.LENGTH_LONG).show();
-
         EventDetailFragment fragment = new EventDetailFragment();
         fragment.setEvent(event);
         FragmentTransaction ft = ((Main2Activity) view.getContext()).getSupportFragmentManager()
