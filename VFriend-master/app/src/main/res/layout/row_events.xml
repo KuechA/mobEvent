@@ -95,7 +95,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="120dp"
                     android:baselineAligned="false"
                     android:orientation="vertical"
                     android:weightSum="100">
@@ -217,49 +217,85 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="50"
+                        android:layout_weight="60"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
                         android:weightSum="1">
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="4dp"
-                            android:layout_marginRight="4dp"
-                            android:gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@android:drawable/ic_menu_camera" />
-
-                        <TextView
-                            android:id="@+id/txtcurrent"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:gravity="center|end"
-                            android:text="3"
-                            android:textAlignment="viewEnd"
-                            android:textSize="18sp" />
+                            android:orientation="vertical"
+                            android:weightSum="100">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:gravity="center|end"
-                            android:text=" / "
-                            android:textAlignment="viewEnd"
-                            android:textSize="18sp" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="40">
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="4dp"
+                                    android:layout_marginRight="4dp"
+                                    android:gravity="center"
+                                    android:scaleType="centerCrop"
+                                    android:src="@android:drawable/ic_menu_camera" />
 
-                        <TextView
-                            android:id="@+id/txtcapacity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:gravity="center|end"
-                            android:text="10"
-                            android:textAlignment="viewEnd"
-                            android:textSize="18sp" />
+                                <TextView
+                                    android:id="@+id/txtcurrent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="#ffffff"
+                                    android:gravity="center|end"
+                                    android:text="3"
+                                    android:textAlignment="viewEnd"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="#ffffff"
+                                    android:gravity="center|end"
+                                    android:text=" / "
+                                    android:textAlignment="viewEnd"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:id="@+id/txtcapacity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="#ffffff"
+                                    android:gravity="center|end"
+                                    android:text="10"
+                                    android:textAlignment="viewEnd"
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="50">
+
+                                <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                                    android:layout_marginLeft="4dp"
+                                    android:id="@+id/eventprogress"
+                                    android:layout_width="100dp"
+                                    android:layout_height="match_parent"
+                                    app:rcBackgroundColor="#91bbff"
+                                    app:rcBackgroundPadding="0dp"
+                                    app:rcMax="25"
+                                    app:rcProgress="5"
+                                    app:rcProgressColor="#0061ff"
+                                    app:rcRadius="2dp" />
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
 
 
                         <HorizontalScrollView
@@ -285,14 +321,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Participating: "
-                        android:layout_gravity="start|center"
-                        android:textSize="20sp" />
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:layout_weight="1"/>
 
                     <net.igenius.customcheckbox.CustomCheckBox
                         android:id="@+id/participatingcheckbox"
@@ -300,6 +335,7 @@
                         android:layout_height="match_parent"
                         app:duration="1"
                         app:color_tick="#ffffff"
+                        android:layout_marginRight="16dp"
                         app:color_unchecked="#ffffff"
                         app:color_checked="#00ff00" />
                 </LinearLayout>

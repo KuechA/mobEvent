@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+
 import net.igenius.customcheckbox.CustomCheckBox;
 
 import fr.eurecom.Ready2Meet.database.Event;
@@ -15,6 +17,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
     TextView txtTitle, txtCategories, txtDescription, txtStarttime, txtEndtime, txtDate,
             txtPlace, txtCurrent, txtCapacity;
     ImageView eventpicture;
+    com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar prgProgressbar;
     net.igenius.customcheckbox.CustomCheckBox participatingcheckbox;
     LinearLayout participants;
     View layout;
@@ -36,7 +39,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
         eventpicture = (ImageView) itemView.findViewById(R.id.eventpicture);
         participatingcheckbox = (CustomCheckBox) itemView.findViewById(R.id.participatingcheckbox);
         participants = (LinearLayout) itemView.findViewById(R.id.participants);
-
+        prgProgressbar = (RoundCornerProgressBar) itemView.findViewById(R.id.eventprogress);
         itemView.setOnClickListener(this);
     }
 

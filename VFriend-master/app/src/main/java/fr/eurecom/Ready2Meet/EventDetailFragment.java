@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -154,6 +155,9 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         ((TextView) view.findViewById(R.id.txtcurrent)).setText(String.valueOf(participants));
         ((TextView) view.findViewById(R.id.txtcapacity)).setText(event.capacity.toString());
+
+        ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setProgress(Float.parseFloat(String.valueOf(participants)));
+        ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setMax(Float.parseFloat(String.valueOf(event.capacity.toString())));
 
         ((TextView) view.findViewById(R.id.txtlocation)).setText(event.place);
 

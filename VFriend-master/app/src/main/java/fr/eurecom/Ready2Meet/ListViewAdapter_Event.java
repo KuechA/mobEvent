@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,6 +73,9 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         holder.txtPlace.setText(info.place);
         holder.txtCurrent.setText(Long.toString(info.current));
         holder.txtCapacity.setText(Long.toString(info.capacity));
+
+        holder.prgProgressbar.setProgress(Float.parseFloat(String.valueOf(Long.toString(info.current))));
+        holder.prgProgressbar.setMax(Float.parseFloat(String.valueOf(Long.toString(info.capacity))));
 
         Picasso.with(context).load(info.picture).into(holder.eventpicture);
 
