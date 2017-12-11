@@ -1,7 +1,9 @@
 package fr.eurecom.Ready2Meet;
 
+import android.app.Fragment;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,9 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +41,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private Event event;
     private boolean participating;
 
-    private MapView mapView;
+    private GoogleMap googleMap;
 
     public EventDetailFragment() {
     }
@@ -150,23 +152,35 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         // TODO: Make picture gallery (if registered to event), show map, fix pictures
 
-        mapView = (MapView) view.findViewById(R.id.mapview);
-        mapView.onCreate(savedInstanceState);
-        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
-        MapsInitializer.initialize(this.getActivity());
-        mapView.getMapAsync(this);
+        MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id
+                .map);
+        //MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         //map.setMyLocationEnabled(true);
         if(event.latitude != null && event.longitude != null) {
             LatLng location = new LatLng(event.latitude, event.longitude);
             googleMap.addMarker(new MarkerOptions().position(location));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom
+                    (10).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            if(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), android
+                    .Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager
+                    .PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity()
+                    .getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Try to get permissions
+                return;
+            }
+            googleMap.setMyLocationEnabled(true);
+
         }
     }
 }

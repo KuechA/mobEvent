@@ -210,15 +210,15 @@
                                 android:id="@+id/txtlocation"
                                 android:layout_height="match_parent"
                                 android:layout_width="wrap_content"
-                                android:layout_weight="1"
                                 android:background="#ffffff"
                                 android:gravity="center|start"
                                 android:text="Some Location"
                                 android:textSize="15sp" />
                         </LinearLayout>
 
-                        <com.google.android.gms.maps.MapView
-                            android:id="@+id/mapview"
+                        <fragment
+                            android:name="com.google.android.gms.maps.MapFragment"
+                            android:id="@+id/map"
                             android:layout_width="match_parent"
                             android:layout_height="200dp" />
 

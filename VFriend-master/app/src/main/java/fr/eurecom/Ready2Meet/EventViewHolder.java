@@ -1,6 +1,6 @@
 package fr.eurecom.Ready2Meet;
 
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -48,7 +48,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void onClick(View view) {
         EventDetailFragment fragment = new EventDetailFragment();
         fragment.setEvent(event);
-        FragmentTransaction ft = ((Main2Activity) view.getContext()).getSupportFragmentManager()
+        FragmentTransaction ft = ((Main2Activity) view.getContext()).getFragmentManager()
                 .beginTransaction();
         ft.replace(R.id.container_new, fragment);
         ft.addToBackStack(null);
