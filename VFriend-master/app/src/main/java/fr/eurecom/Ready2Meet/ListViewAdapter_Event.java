@@ -1,7 +1,9 @@
 package fr.eurecom.Ready2Meet;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,10 +97,15 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         for(String key : info.Participants.keySet()) {
             StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                     ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
-            ImageView ii = new ImageView(holder.participants.getContext());
+            de.hdodenhof.circleimageview.CircleImageView ii = new de.hdodenhof.circleimageview.CircleImageView(holder.participants.getContext());
+            ii.setBorderWidth(2);
+            ii.setBorderColor(Color.TRANSPARENT);
+
             ii.setPadding(0, 0, 4, 0);
-            ii.setLayoutParams(new LinearLayout.LayoutParams(holder.participants.getHeight(),
-                    holder.participants.getHeight()));
+            LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100,
+                    100);
+            test.gravity= Gravity.CENTER;
+            ii.setLayoutParams(test);
             holder.participants.addView(ii);
             Glide.with(holder.participants.getContext()).using(new FirebaseImageLoader()).load
                     (storageRef).into(ii);

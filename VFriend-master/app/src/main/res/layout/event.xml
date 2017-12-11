@@ -266,6 +266,7 @@
                                 android:textSize="18sp" />
 
                             <HorizontalScrollView
+                                android:layout_marginLeft="32dp"
                                 android:id="@+id/horizontalScrollView1"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"

@@ -2,8 +2,10 @@ package fr.eurecom.Ready2Meet;
 
 import android.app.Fragment;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,10 +137,15 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                     ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
-            ImageView ii = new ImageView(participantImages.getContext());
+            de.hdodenhof.circleimageview.CircleImageView ii = new de.hdodenhof.circleimageview.CircleImageView(participantImages.getContext());
+            ii.setBorderWidth(2);
+            ii.setBorderColor(Color.TRANSPARENT);
+
             ii.setPadding(0, 0, 4, 0);
-            ii.setLayoutParams(new LinearLayout.LayoutParams(participantImages.getHeight(),
-                    participantImages.getHeight()));
+            LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100,
+                    100);
+            test.gravity= Gravity.CENTER;
+            ii.setLayoutParams(test);
             Glide.with(participantImages.getContext()).using(new FirebaseImageLoader()).load
                     (storageRef).fitCenter().into(ii);
             participantImages.addView(ii);
