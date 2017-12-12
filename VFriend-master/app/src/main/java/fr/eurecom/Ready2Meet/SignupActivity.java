@@ -112,8 +112,9 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 " +
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "characters!", Toast.LENGTH_SHORT).show();
+                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
+                            "" + "" + "" + "" + "" + "" + "" + "characters!", Toast.LENGTH_SHORT)
+                            .show();
                     return;
                 }
 

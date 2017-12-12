@@ -168,13 +168,17 @@ public class AddEventActivity extends ToolbarActivity {
             public void onSuccess(Object o) {
                 Toast.makeText(getApplicationContext(), "Event successfully added", Toast
                         .LENGTH_LONG).show();
+
+                FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth
+                        .getInstance().getCurrentUser().getUid() + "/ParticipatingEvents/" +
+                        eventId).setValue(true);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getApplicationContext(), "An error occurred while adding " + "the " +
-                        "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "event.", Toast
-                        .LENGTH_LONG).show();
+                        "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + ""
+                        + "" + "" + "" + "event" + ".", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         });
