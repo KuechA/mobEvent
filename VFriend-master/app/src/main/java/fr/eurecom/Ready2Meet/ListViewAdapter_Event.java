@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
@@ -87,6 +88,9 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
             }
         }
 
+        final boolean isFull = (info.current >= info.capacity);
+        final Toast EventFull_Toast = Toast.makeText(context, "This event is full :(", Toast.LENGTH_LONG);
+
 
         holder.participatingcheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,12 +98,20 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
                 boolean participating = holder.participatingcheckbox.isChecked();
 
                 if(!participating) {
-
-                    FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
-                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
-                    info.current ++;
-                    FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
-                            "/current").setValue(info.current);
+if(!isFull) {
+    holder.participatingcheckbox.setChecked(true);
+    FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
+            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+    info.current++;
+    FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
+            "/current").setValue(info.current);
+}
+else
+{
+    holder.participatingcheckbox.setChecked(false);
+    EventFull_Toast.show();
+    holder.participatingcheckbox.setChecked(false);
+}
 
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
@@ -107,6 +119,7 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
                     info.current --;
                     FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
                             "/current").setValue(info.current);
+                    holder.participatingcheckbox.setChecked(false);
 
                 }
 

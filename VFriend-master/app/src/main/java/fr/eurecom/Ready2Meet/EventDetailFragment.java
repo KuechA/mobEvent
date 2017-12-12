@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
@@ -69,7 +70,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         return categories;
     }
 
-    private void setupParticipatingCheckbox(CustomCheckBox checkBox, final Button chatButton) {
+    private void setupParticipatingCheckbox(final CustomCheckBox checkBox, final Button chatButton) {
         participating = false;
         for(String key : event.Participants.keySet()) {
             if(key.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
@@ -83,33 +84,43 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             chatButton.setVisibility(View.VISIBLE);
         }
 
-        checkBox.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
+        final boolean isFull = (event.current >= event.capacity);
+        final Toast EventFull_Toast = Toast.makeText(getContext(), "This event is full :(", Toast.LENGTH_LONG);
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
-                Map<String, Object> updateRequest = new HashMap(1);
-                updateRequest.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), isChecked);
-                //FirebaseDatabase.getInstance().getReference().child("Events/" + event.id + "/Participants").updateChildren(updateRequest);
-                participating = isChecked;
-                if(participating) {
+            public void onClick(View v) {
+                boolean participating = checkBox.isChecked();
 
-                    FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
-                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
-                    event.current ++;
-                    FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
-                            "/current").setValue(event.current);
+                if(!participating) {
+                    if(!isFull) {
+                        FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                                "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+                        event.current++;
+                        FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                                "/current").setValue(event.current);
+                        chatButton.setVisibility(View.VISIBLE);
+                        checkBox.setChecked(true);
+                    }
+                    else
+                    {
+                        EventFull_Toast.show();
+                        checkBox.setChecked(false);
+                        chatButton.setVisibility(View.GONE);
+                        checkBox.setChecked(false);
+                    }
 
-
-                    chatButton.setVisibility(View.VISIBLE);
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
                             "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                   event.current --;
+                    event.current --;
                     FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
                             "/current").setValue(event.current);
-
-
                     chatButton.setVisibility(View.GONE);
+                    checkBox.setChecked(false);
                 }
+
             }
         });
     }
