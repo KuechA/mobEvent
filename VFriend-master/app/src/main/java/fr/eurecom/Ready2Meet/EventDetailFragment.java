@@ -88,12 +88,26 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
                 Map<String, Object> updateRequest = new HashMap(1);
                 updateRequest.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), isChecked);
-                FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
-                        "/Participants").updateChildren(updateRequest);
+                //FirebaseDatabase.getInstance().getReference().child("Events/" + event.id + "/Participants").updateChildren(updateRequest);
                 participating = isChecked;
                 if(participating) {
+
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+                    event.current ++;
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                            "/current").setValue(event.current);
+
+
                     chatButton.setVisibility(View.VISIBLE);
                 } else {
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                   event.current --;
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                            "/current").setValue(event.current);
+
+
                     chatButton.setVisibility(View.GONE);
                 }
             }
