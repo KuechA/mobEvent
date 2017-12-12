@@ -51,6 +51,7 @@ public class AddEventActivity extends ToolbarActivity {
     private Calendar startDate = null;
     private String pictureUri = null;
     private String eventId = null;
+    private Map<String, Boolean> categories;
 
     private double longitude;
     private double latitude;
@@ -77,9 +78,24 @@ public class AddEventActivity extends ToolbarActivity {
                 .simple_spinner_item, areaUnits);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         areaUnitSpinner.setAdapter(dataAdapter);
+
+        categories = new HashMap<>();
+
+        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) findViewById(R.id
+                .category_selector);
+        categorySpinner.setItems(eventCategories);
+        categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
+            @Override
+            public void selectedStrings(List<String> strings) {
+                for(String category : strings) {
+                    categories.put(category, true);
+                }
+            }
+        });
     }
 
     private void createEvent() {
+
         Button createEventButton = (Button) findViewById(R.id.createevent);
         createEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -121,30 +137,12 @@ public class AddEventActivity extends ToolbarActivity {
                 String owner = user.getUid();
 
                 Event newEvent = new Event(eventTitle, eventDescription, owner, current,
-                        getCategories(), capacity, pictureUri, place, startTime, endTime,
+                        categories, capacity, pictureUri, place, startTime, endTime,
                         participants, whoReported, notificationArea, latitude, longitude);
 
                 eventData.setValue(newEvent);
             }
         });
-    }
-
-    private Map<String, Boolean> getCategories() {
-        final Map<String, Boolean> categories = new HashMap<>();
-
-        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) findViewById(R.id
-                .category_selector);
-        categorySpinner.setItems(eventCategories);
-        categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
-            @Override
-            public void selectedStrings(List<String> strings) {
-                for(String category : strings) {
-                    categories.put(category, true);
-                }
-            }
-        });
-
-        return categories;
     }
 
     @Override

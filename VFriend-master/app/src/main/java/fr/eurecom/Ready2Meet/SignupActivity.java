@@ -20,7 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,9 +35,10 @@ public class SignupActivity extends AppCompatActivity {
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-    private String imageURL = "https://firebasestorage.googleapis.com/v0/b/ready2meet-e0286.appspot.com/o/ProfilePictures%2FDefaultProfilePicture.jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635";
+    private String imageURL = "https://firebasestorage.googleapis" + "" + "" + "" + "" + "" + ""
+            + ".com/v0/b/ready2meet-e0286.appspot.com/o/ProfilePictures%2FDefaultProfilePicture"
+            + ".jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635";
     private Uri imageUri = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class SignupActivity extends AppCompatActivity {
         ImageView imgview = (ImageView) findViewById(R.id.imageView);
         Picasso.with(getApplicationContext()).load(imageURL).fit().into(imgview);
 
-//Get Firebase auth instance
+        //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
         btnSignIn = (Button) findViewById(R.id.sign_in_button);
@@ -81,83 +81,92 @@ public class SignupActivity extends AppCompatActivity {
                 String password = inputPassword.getText().toString().trim();
                 final String displayname = name.getText().toString().trim();
 
-                if (TextUtils.isEmpty(displayname) && !displayname.contains("/")) {
-                    Toast.makeText(getApplicationContext(), "Enter name!", Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(displayname) && ! displayname.contains("/")) {
+                    Toast.makeText(getApplicationContext(), "Enter name!", Toast.LENGTH_SHORT)
+                            .show();
                     return;
                 }
 
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(email)) {
+                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast
+                            .LENGTH_SHORT).show();
                     return;
                 }
 
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(password)) {
+                    Toast.makeText(getApplicationContext(), "Enter password!", Toast
+                            .LENGTH_SHORT).show();
                     return;
                 }
 
-                if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                if(password.length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 " +
+                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
+                            "" + "" + "" + "" + "" + "" + "characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
                 //create user
-                auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
+                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener
+                        (SignupActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:" +
+                                task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
 
-                                FirebaseUser user = auth.getCurrentUser();
+                        FirebaseUser user = auth.getCurrentUser();
 
-                                String signupEUID = user.getUid();
+                        String signupEUID = user.getUid();
 
+                        StorageReference storage = FirebaseStorage.getInstance().getReference()
+                                .child("ProfilePictures").child(auth.getCurrentUser().getUid());
+                        if(imageUri != null) {
+                            storage.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+                                    imageURL = downloadUri.toString();
+                                    FirebaseDatabase.getInstance().getReference().child("Users")
+                                            .child(auth.getCurrentUser().getUid()).child
+                                            ("ProfilePictureURL").setValue(imageURL.toString());
 
-                                StorageReference storage = FirebaseStorage.getInstance().getReference().child("ProfilePictures").child(auth.getCurrentUser().getUid());
-if(imageUri != null) {
-    storage.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-        @Override
-        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-            Uri downloadUri = taskSnapshot.getDownloadUrl();
-            imageURL = downloadUri.toString();
-            FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid()).child("ProfilePictureURL").setValue(imageURL.toString());
+                                    ImageView imgview = (ImageView) findViewById(R.id.imageView);
+                                    Picasso.with(getApplicationContext()).load(imageURL).fit()
+                                            .into(imgview);
 
-            ImageView imgview = (ImageView) findViewById(R.id.imageView);
-            Picasso.with(getApplicationContext()).load(imageURL).fit().into(imgview);
-
-
-            Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG);
-        }
-    }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            Toast.makeText(getApplication(), "Couldn't upload image to database", Toast.LENGTH_LONG);
-        }
-    });
-}
-
-
-                                String profilePictureUrl = imageURL;
-                                User userObj = new User(displayname, "1", profilePictureUrl);
-
-                                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                                mDatabase.child("Events").child("1").child("Participants").child(signupEUID).setValue(true);
-                                mDatabase.child("Users").child(signupEUID).setValue(userObj);
-
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    startActivity(new Intent(SignupActivity.this, Main2Activity.class));
-                                    finish();
+                                    Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG);
                                 }
-                            }
-                        });
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplication(), "Couldn't upload image to "
+                                            + "database", Toast.LENGTH_LONG);
+                                }
+                            });
+                        }
+
+                        String profilePictureUrl = imageURL;
+                        User userObj = new User(displayname, "1", profilePictureUrl);
+
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                        mDatabase.child("Events").child("1").child("Participants").child
+                                (signupEUID).setValue(true);
+                        mDatabase.child("Users").child(signupEUID).setValue(userObj);
+
+                        if(! task.isSuccessful()) {
+                            Toast.makeText(SignupActivity.this, "Authentication failed." + task
+                                    .getException(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            startActivity(new Intent(SignupActivity.this, Main2Activity.class));
+                            finish();
+                        }
+                    }
+                });
 
             }
         });
@@ -173,21 +182,22 @@ if(imageUri != null) {
         });
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 2 && resultCode == RESULT_OK) {
+        if(requestCode == 2 && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             imageUri = uri;
 
             ImageView imgview = (ImageView) findViewById(R.id.imageView);
             Picasso.with(getApplicationContext()).load(imageUri).fit().into(imgview);
         }
-
 
     }
 }
