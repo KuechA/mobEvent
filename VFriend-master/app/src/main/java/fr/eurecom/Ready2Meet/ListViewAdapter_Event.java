@@ -87,17 +87,13 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
             }
         }
 
-        holder.participatingcheckbox.setOnCheckedChangeListener(new CustomCheckBox
-                .OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
-                Map<String, Object> updateRequest = new HashMap(1);
-                updateRequest.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), isChecked);
-                FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
-                        "/Participants").updateChildren(updateRequest);
 
-                boolean participating = isChecked;
-                if(participating) {
+        holder.participatingcheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean participating = holder.participatingcheckbox.isChecked();
+
+                if(!participating) {
 
                     FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
                             "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
@@ -114,12 +110,9 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
 
                 }
 
-
-
-
-
             }
         });
+
 
         for(String key : info.Participants.keySet()) {
             StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
