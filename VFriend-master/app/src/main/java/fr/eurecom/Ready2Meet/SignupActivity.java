@@ -29,6 +29,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.User;
 
@@ -109,11 +111,8 @@ public class SignupActivity extends AppCompatActivity {
                 if(password.length() < 6) {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 " +
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "characters!",
-                            Toast.LENGTH_SHORT).show();
+                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
+                            "characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -156,12 +155,15 @@ public class SignupActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Toast.makeText(getApplication(), "Couldn't upload image " +
-                                            "to " + "database", Toast.LENGTH_LONG);
+                                            "to database", Toast.LENGTH_LONG);
                                 }
                             });
                         }
 
-                        User userObj = new User(displayname, "1", imageUri.toString());
+                        Map<String, Boolean> events = new HashMap();
+                        events.put("-KzFSvaDycxNWoNuFS71", true);
+
+                        User userObj = new User(displayname, events, imageUri.toString());
 
                         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                         mDatabase.child("Events").child("1").child("Participants").child

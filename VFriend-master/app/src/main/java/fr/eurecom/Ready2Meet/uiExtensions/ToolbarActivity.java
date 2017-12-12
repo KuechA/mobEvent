@@ -25,7 +25,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import fr.eurecom.Ready2Meet.R;
 import fr.eurecom.Ready2Meet.database.User;
 
-public abstract class ToolbarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class ToolbarActivity extends AppCompatActivity implements NavigationView
+        .OnNavigationItemSelectedListener {
 
     protected FirebaseAuth auth;
     protected Toolbar toolbar;
@@ -34,7 +35,8 @@ public abstract class ToolbarActivity extends AppCompatActivity implements Navig
     protected void setToolbar() {
         setSupportActionBar(toolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string
+                .navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -52,18 +54,21 @@ public abstract class ToolbarActivity extends AppCompatActivity implements Navig
                 String uid = user.getUid();
 
                 final TextView textForName = (TextView) header.findViewById(R.id.textView);
-                final CircleImageView imgView = (CircleImageView) header.findViewById(R.id.imageView);
+                final CircleImageView imgView = (CircleImageView) header.findViewById(R.id
+                        .imageView);
 
                 TextView text2 = (TextView) header.findViewById(R.id.textView2);
                 text2.setText(user.getEmail());
 
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users/" + uid);
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference
+                        ("Users/" + uid);
                 mDatabase.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
                         textForName.setText(user.DisplayName);
-                        Picasso.with(getApplicationContext()).load(user.ProfilePictureURL).fit().into(imgView);
+                        Picasso.with(getApplicationContext()).load(user.ProfilePictureURL).fit()
+                                .into(imgView);
                     }
 
                     @Override
