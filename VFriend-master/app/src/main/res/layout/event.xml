@@ -22,7 +22,7 @@
                 android:background="@color/colorPrimary"
                 android:contentDescription="EventPicture"
                 android:scaleType="centerCrop"
-                android:src="@drawable/default_event_picture" />
+                android:src="@raw/default_event_picture" />
 
             <LinearLayout
                 android:id="@+id/onerow"
@@ -230,7 +230,6 @@
                             android:weightSum="1">
 
 
-
                             <LinearLayout
                                 android:layout_width="100dp"
                                 android:layout_height="match_parent"
@@ -324,10 +323,12 @@
                         android:layout_height="50dp"
                         android:orientation="horizontal"
                         android:weightSum="1">
-<LinearLayout
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+
                         <net.igenius.customcheckbox.CustomCheckBox
                             android:id="@+id/participatingcheckbox"
                             android:layout_width="50dp"

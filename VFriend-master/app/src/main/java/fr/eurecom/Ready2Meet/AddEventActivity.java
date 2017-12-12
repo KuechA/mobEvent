@@ -32,6 +32,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +52,7 @@ public class AddEventActivity extends ToolbarActivity {
     private SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
     private Calendar startDate = null;
     private String pictureUri = null;
+    private InputStream pictureInputStream = null;
     private String eventId = null;
     private Map<String, Boolean> categories;
 
@@ -62,12 +65,9 @@ public class AddEventActivity extends ToolbarActivity {
     private String[] eventCategories = {"Sport", "Party", "Outdoor", "Others"};
 
     private void setUiElements() {
-        // Set default picture for ImageButton
-        Uri defaultPicture = Uri.parse("https://firebasestorage.googleapis" + "" + "" + "" + "" +
-                ".com/v0/b/ready2meet-e0286.appspot.com/o/EventPhotos%2FDefault" + "" + "" + "" +
-                ".jpg?alt=media&token=c6a16086-728b-43a5-b169-fae8b07a5070");
-        Picasso.with(getApplicationContext()).load(defaultPicture).fit().centerCrop().into(
-                (ImageButton) findViewById(R.id.eventImage));
+        pictureInputStream = getResources().openRawResource(R.raw.default_event_picture);
+        Picasso.with(getApplicationContext()).load(R.raw.default_event_picture).fit().centerCrop
+                ().into((ImageButton) findViewById(R.id.eventImage));
 
         // Set spinner for radius selection
         Spinner areaUnitSpinner = (Spinner) findViewById(R.id.spinner_area_unit);
@@ -104,57 +104,78 @@ public class AddEventActivity extends ToolbarActivity {
                         .child("Events").push();
                 eventId = eventData.getKey();
 
-                String eventTitle = ((EditText) findViewById(R.id.edittext_title)).getText()
-                        .toString();
-                String eventDescription = ((EditText) findViewById(R.id.edittext_description))
-                        .getText().toString();
-                String place = ((Button) findViewById(R.id.find_location_button)).getText()
-                        .toString();
-                Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity))
-                        .getText().toString());
-                String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText()
-                        .toString();
-                String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText()
-                        .toString();
-
-                Long notificationArea = Long.parseLong(((EditText) findViewById(R.id
-                        .edittext_area)).getText().toString());
-                notificationArea = ((Spinner) findViewById(R.id.spinner_area_unit))
-                        .getSelectedItem().toString().equals("km") ? notificationArea * 1000 :
-                        notificationArea;
-
-                // Restrict area from 0 to 10 km
-                if(notificationArea < 0) {
-                    notificationArea = Long.valueOf(0);
-                } else if(notificationArea > 10000) {
-                    notificationArea = Long.valueOf(10000);
-                }
-
-                Long current = Long.valueOf(1);
-                Map<String, Boolean> whoReported = new HashMap<>();
-                Map<String, Boolean> participants = new HashMap<>();
-                participants.put(user.getUid(), true);
-                String owner = user.getUid();
-
-                Event newEvent = new Event(eventTitle, eventDescription, owner, current,
-                        categories, capacity, pictureUri, place, startTime, endTime,
-                        participants, whoReported, notificationArea, latitude, longitude);
-
-                eventData.setValue(newEvent).addOnSuccessListener(new OnSuccessListener() {
-
+                StorageReference storage = FirebaseStorage.getInstance().getReference().child
+                        ("EventPhotos").child(eventId + "/startPhoto");
+                storage.putStream(pictureInputStream).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onSuccess(Object o) {
-                        Toast.makeText(getApplicationContext(), "Event successfully added", Toast
-                                .LENGTH_LONG);
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUri = taskSnapshot.getDownloadUrl();
+                        pictureUri = downloadUri.toString();
+                        Picasso.with(getApplicationContext()).load(downloadUri).fit().centerCrop
+                                ().into((ImageButton) findViewById(R.id.eventImage));
+                        Toast.makeText(getApplication(), "Uploaded image", Toast.LENGTH_SHORT)
+                                .show();
+                        assembleAndSendEvent(eventData);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "An error occurred while adding " +
-                                "the event.", Toast.LENGTH_LONG);
-                        e.printStackTrace();
+                        Toast.makeText(getApplication(), "Couldn't upload image to database",
+                                Toast.LENGTH_LONG).show();
                     }
                 });
+
+            }
+
+        });
+    }
+
+    private void assembleAndSendEvent(DatabaseReference eventData) {
+        String eventTitle = ((EditText) findViewById(R.id.edittext_title)).getText().toString();
+        String eventDescription = ((EditText) findViewById(R.id.edittext_description)).getText()
+                .toString();
+        String place = ((Button) findViewById(R.id.find_location_button)).getText().toString();
+        Long capacity = Long.parseLong(((EditText) findViewById(R.id.edittext_capacity)).getText
+                ().toString());
+        String startTime = ((Button) findViewById(R.id.show_starttime_button)).getText().toString();
+        String endTime = ((Button) findViewById(R.id.show_endtime_button)).getText().toString();
+
+        Long notificationArea = Long.parseLong(((EditText) findViewById(R.id.edittext_area))
+                .getText().toString());
+        notificationArea = ((Spinner) findViewById(R.id.spinner_area_unit)).getSelectedItem()
+                .toString().equals("km") ? notificationArea * 1000 : notificationArea;
+
+        // Restrict area from 0 to 10 km
+        if(notificationArea < 0) {
+            notificationArea = Long.valueOf(0);
+        } else if(notificationArea > 10000) {
+            notificationArea = Long.valueOf(10000);
+        }
+
+        Long current = Long.valueOf(1);
+        Map<String, Boolean> whoReported = new HashMap<>();
+        Map<String, Boolean> participants = new HashMap<>();
+        participants.put(user.getUid(), true);
+        String owner = user.getUid();
+
+        Event newEvent = new Event(eventTitle, eventDescription, owner, current, categories,
+                capacity, pictureUri, place, startTime, endTime, participants, whoReported,
+                notificationArea, latitude, longitude);
+
+        eventData.setValue(newEvent).addOnSuccessListener(new OnSuccessListener() {
+
+            @Override
+            public void onSuccess(Object o) {
+                Toast.makeText(getApplicationContext(), "Event successfully added", Toast
+                        .LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "An error occurred while adding " + "the " +
+                        "" + "" + "" + "" + "" + "" + "" + "" + "" + "event.", Toast.LENGTH_LONG)
+                        .show();
+                e.printStackTrace();
             }
         });
     }
@@ -249,29 +270,16 @@ public class AddEventActivity extends ToolbarActivity {
         } else if(requestCode == PICK_GALLERY && resultCode == RESULT_OK) {
             Uri uri = data.getData();
 
-            StorageReference storage = FirebaseStorage.getInstance().getReference().child
-                    ("EventPhotos").child(eventId + "/startPhoto");
+            Picasso.with(getApplicationContext()).load(uri).fit().centerCrop().into((ImageButton)
+                    findViewById(R.id.eventImage));
 
-            storage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask
-                    .TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(AddEventActivity.this, "Successfully uploaded image to " +
-                            "database", Toast.LENGTH_LONG);
-
-                    Uri downloadUri = taskSnapshot.getDownloadUrl();
-                    pictureUri = downloadUri.toString();
-
-                    Picasso.with(getApplicationContext()).load(downloadUri).fit().centerCrop()
-                            .into((ImageButton) findViewById(R.id.eventImage));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(AddEventActivity.this, "Couldn't upload image to database",
-                            Toast.LENGTH_LONG);
-                }
-            });
+            try {
+                pictureInputStream = getContentResolver().openInputStream(uri);
+            } catch(FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Could not find selected file", Toast
+                        .LENGTH_LONG);
+            }
         }
     }
 
