@@ -112,7 +112,8 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 " +
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "characters!", Toast.LENGTH_SHORT).show();
+                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
+                            "characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -161,7 +162,7 @@ public class SignupActivity extends AppCompatActivity {
                         }
 
                         Map<String, Boolean> events = new HashMap();
-                        events.put("-KzFSvaDycxNWoNuFS71", true);
+                        events.put("-L0AEWfuhQx3DjXz7H6Q", true);
 
                         User userObj = new User(displayname, events, imageUri.toString());
 
