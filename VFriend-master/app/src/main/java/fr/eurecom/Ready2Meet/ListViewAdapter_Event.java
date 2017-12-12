@@ -95,6 +95,29 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
                 updateRequest.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), isChecked);
                 FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
                         "/Participants").updateChildren(updateRequest);
+
+                boolean participating = isChecked;
+                if(participating) {
+
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
+                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+                    info.current ++;
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
+                            "/current").setValue(info.current);
+
+                } else {
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
+                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                    info.current --;
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
+                            "/current").setValue(info.current);
+
+                }
+
+
+
+
+
             }
         });
 
