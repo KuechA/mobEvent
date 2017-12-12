@@ -140,7 +140,21 @@ public class AddEventActivity extends ToolbarActivity {
                         categories, capacity, pictureUri, place, startTime, endTime,
                         participants, whoReported, notificationArea, latitude, longitude);
 
-                eventData.setValue(newEvent);
+                eventData.setValue(newEvent).addOnSuccessListener(new OnSuccessListener() {
+
+                    @Override
+                    public void onSuccess(Object o) {
+                        Toast.makeText(getApplicationContext(), "Event successfully added", Toast
+                                .LENGTH_LONG);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "An error occurred while adding " +
+                                "the event.", Toast.LENGTH_LONG);
+                        e.printStackTrace();
+                    }
+                });
             }
         });
     }
