@@ -27,6 +27,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import fr.eurecom.Ready2Meet.database.User;
 
 public class SignupActivity extends AppCompatActivity {
@@ -35,10 +38,12 @@ public class SignupActivity extends AppCompatActivity {
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-    private String imageURL = "https://firebasestorage.googleapis" + "" + "" + "" + "" + "" + ""
-            + ".com/v0/b/ready2meet-e0286.appspot.com/o/ProfilePictures%2FDefaultProfilePicture"
-            + ".jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635";
-    private Uri imageUri = null;
+    private Uri imageUri = Uri.parse("https://firebasestorage.googleapis" + "" + "" + "" + "" +
+            "" + ".com/v0/b/ready2meet-e0286.appspot" + "" + "" + "" + "" + "" + "" + "" + "" +
+            ".com/o/ProfilePictures%2FDefaultProfilePicture" + "" + "" + "" + "" + "" + "" + "" +
+            ".jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635");
+
+    private InputStream inputStream = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +51,9 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         ImageView imgview = (ImageView) findViewById(R.id.imageView);
-        Picasso.with(getApplicationContext()).load(imageURL).fit().into(imgview);
+        inputStream = getResources().openRawResource(R.raw.default_profile_picture);
+        Picasso.with(getApplicationContext()).load(R.raw.default_profile_picture).fit().into
+                (imgview);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -102,7 +109,7 @@ public class SignupActivity extends AppCompatActivity {
                 if(password.length() < 6) {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 " +
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "characters!", Toast.LENGTH_SHORT).show();
+                            "characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -125,18 +132,18 @@ public class SignupActivity extends AppCompatActivity {
 
                         StorageReference storage = FirebaseStorage.getInstance().getReference()
                                 .child("ProfilePictures").child(auth.getCurrentUser().getUid());
-                        if(imageUri != null) {
-                            storage.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        if(inputStream != null) {
+                            storage.putStream(inputStream).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     Uri downloadUri = taskSnapshot.getDownloadUrl();
-                                    imageURL = downloadUri.toString();
+                                    imageUri = downloadUri;
                                     FirebaseDatabase.getInstance().getReference().child("Users")
                                             .child(auth.getCurrentUser().getUid()).child
-                                            ("ProfilePictureURL").setValue(imageURL.toString());
+                                            ("ProfilePictureURL").setValue(imageUri.toString());
 
                                     ImageView imgview = (ImageView) findViewById(R.id.imageView);
-                                    Picasso.with(getApplicationContext()).load(imageURL).fit()
+                                    Picasso.with(getApplicationContext()).load(imageUri).fit()
                                             .into(imgview);
 
                                     Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG);
@@ -144,14 +151,13 @@ public class SignupActivity extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplication(), "Couldn't upload image to "
-                                            + "database", Toast.LENGTH_LONG);
+                                    Toast.makeText(getApplication(), "Couldn't upload image " +
+                                            "to " + "database", Toast.LENGTH_LONG);
                                 }
                             });
                         }
 
-                        String profilePictureUrl = imageURL;
-                        User userObj = new User(displayname, "1", profilePictureUrl);
+                        User userObj = new User(displayname, "1", imageUri.toString());
 
                         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                         mDatabase.child("Events").child("1").child("Participants").child
@@ -196,7 +202,14 @@ public class SignupActivity extends AppCompatActivity {
             imageUri = uri;
 
             ImageView imgview = (ImageView) findViewById(R.id.imageView);
-            Picasso.with(getApplicationContext()).load(imageUri).fit().into(imgview);
+            Picasso.with(getApplicationContext()).load(uri).fit().into(imgview);
+            try {
+                inputStream = getContentResolver().openInputStream(uri);
+            } catch(FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Could not find selected file", Toast
+                        .LENGTH_LONG);
+            }
         }
 
     }
