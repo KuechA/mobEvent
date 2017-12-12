@@ -29,13 +29,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
@@ -70,7 +70,8 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         return categories;
     }
 
-    private void setupParticipatingCheckbox(final CustomCheckBox checkBox, final Button chatButton) {
+    private void setupParticipatingCheckbox(final CustomCheckBox checkBox, final Button
+            chatButton) {
         participating = false;
         for(String key : event.Participants.keySet()) {
             if(key.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
@@ -85,7 +86,8 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         }
 
         final boolean isFull = (event.current >= event.capacity);
-        final Toast EventFull_Toast = Toast.makeText(getContext(), "This event is full :(", Toast.LENGTH_LONG);
+        final Toast EventFull_Toast = Toast.makeText(getContext(), "This event is full :(", Toast
+                .LENGTH_LONG);
 
         checkBox.setOnClickListener(new View.OnClickListener() {
 
@@ -93,18 +95,17 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             public void onClick(View v) {
                 boolean participating = checkBox.isChecked();
 
-                if(!participating) {
-                    if(!isFull) {
-                        FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
-                                "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+                if(! participating) {
+                    if(! isFull) {
+                        FirebaseDatabase.getInstance().getReference().child("Events/" + event.id
+                                + "/Participants").child(FirebaseAuth.getInstance()
+                                .getCurrentUser().getUid()).setValue(true);
                         event.current++;
-                        FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
-                                "/current").setValue(event.current);
+                        FirebaseDatabase.getInstance().getReference().child("Events/" + event.id
+                                + "/current").setValue(event.current);
                         chatButton.setVisibility(View.VISIBLE);
                         checkBox.setChecked(true);
-                    }
-                    else
-                    {
+                    } else {
                         EventFull_Toast.show();
                         checkBox.setChecked(false);
                         chatButton.setVisibility(View.GONE);
@@ -113,8 +114,9 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
-                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                    event.current --;
+                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser()
+                            .getUid()).removeValue();
+                    event.current--;
                     FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
                             "/current").setValue(event.current);
                     chatButton.setVisibility(View.GONE);
@@ -163,14 +165,14 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                     ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
-            de.hdodenhof.circleimageview.CircleImageView ii = new de.hdodenhof.circleimageview.CircleImageView(participantImages.getContext());
+            de.hdodenhof.circleimageview.CircleImageView ii = new de.hdodenhof.circleimageview
+                    .CircleImageView(participantImages.getContext());
             ii.setBorderWidth(2);
             ii.setBorderColor(Color.TRANSPARENT);
 
             ii.setPadding(0, 0, 4, 0);
-            LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100,
-                    100);
-            test.gravity= Gravity.CENTER;
+            LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
+            test.gravity = Gravity.CENTER;
             ii.setLayoutParams(test);
             Glide.with(participantImages.getContext()).using(new FirebaseImageLoader()).load
                     (storageRef).fitCenter().into(ii);
@@ -181,17 +183,21 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         ((TextView) view.findViewById(R.id.txtcurrent)).setText(String.valueOf(participants));
         ((TextView) view.findViewById(R.id.txtcapacity)).setText(event.capacity.toString());
 
-        ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setProgress(Float.parseFloat(String.valueOf(participants)));
-        ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setMax(Float.parseFloat(String.valueOf(event.capacity.toString())));
+        ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setProgress(Float
+                .parseFloat(String.valueOf(participants)));
+        ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setMax(Float.parseFloat
+                (String.valueOf(event.capacity.toString())));
 
         ((TextView) view.findViewById(R.id.txtlocation)).setText(event.place);
 
-        // TODO: Make picture gallery (if registered to event), show map, fix pictures
+        // TODO: Make picture gallery (if registered to event)
 
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id
                 .map);
-        //MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        ImageView imageView = (ImageView) view.findViewById(R.id.eventpicture);
+        Picasso.with(getContext()).load(event.picture).fit().centerCrop().into(imageView);
 
         return view;
     }
