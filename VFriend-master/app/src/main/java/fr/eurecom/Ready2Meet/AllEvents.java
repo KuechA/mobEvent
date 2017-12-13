@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -69,8 +70,9 @@ public class AllEvents extends Fragment {
         View view = inflater.inflate(R.layout.fragment_all_events, container, false);
 
         final RecyclerView listView = (RecyclerView) view.findViewById(R.id.listofevents);
-        FirebaseDatabase.getInstance().getReference().child("Events")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference events = FirebaseDatabase.getInstance().getReference().child("Events");
+        events.keepSynced(true);
+        events.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 eventlist.clear();
@@ -83,7 +85,6 @@ public class AllEvents extends Fragment {
                 listView.setAdapter(adapter);
                 listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
                 adapter.notifyDataSetChanged();
-                //listView.invalidateViews();
             }
 
             @Override

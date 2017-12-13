@@ -78,10 +78,12 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         Picasso.with(context).load(info.picture).into(holder.eventpicture);
 
         holder.participatingcheckbox.setChecked(Boolean.FALSE);
-        for(String key : info.Participants.keySet()) {
-            if(key.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                holder.participatingcheckbox.setChecked(Boolean.TRUE);
-                break;
+        if(info.Participants != null) {
+            for(String key : info.Participants.keySet()) {
+                if(key.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    holder.participatingcheckbox.setChecked(Boolean.TRUE);
+                    break;
+                }
             }
         }
 
