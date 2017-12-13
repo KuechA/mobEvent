@@ -142,7 +142,7 @@
                                     android:gravity="center|start"
                                     android:maxLines="1"
                                     android:text="18.00"
-                                    android:textSize="20sp" />
+                                    android:textSize="18sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -150,7 +150,7 @@
                                     android:background="#ffffff"
                                     android:gravity="center|start"
                                     android:text=" - "
-                                    android:textSize="20sp" />
+                                    android:textSize="18sp" />
 
                                 <TextView
                                     android:id="@+id/txtendtime"
@@ -162,7 +162,7 @@
                                     android:gravity="center|start"
                                     android:maxLines="1"
                                     android:text="21.00"
-                                    android:textSize="20sp" />
+                                    android:textSize="18sp" />
 
                             </LinearLayout>
 
@@ -179,29 +179,31 @@
                                 android:textSize="16sp" />
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="10dp"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff"
-                            android:minWidth="4dp"></LinearLayout>
 
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="4dp"
+    android:layout_weight="1"
+    android:orientation="vertical">
                         <TextView
+
                             android:id="@+id/txtlocation"
-                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_width="match_parent"
                             android:background="#ffffff"
                             android:gravity="center|end"
                             android:text="Some Location"
                             android:textAlignment="viewEnd"
-                            android:textSize="15sp" />
+                            android:textSize="13sp"
+                            android:ellipsize="none"
+                            android:scrollHorizontally="false"
+                            />
 
-                        <LinearLayout
-                            android:layout_width="4dp"
-                            android:layout_height="match_parent"
-                            android:background="#ffffff" />
+</LinearLayout>
 
                         <ImageView
+                            android:layout_marginLeft="4dp"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center"

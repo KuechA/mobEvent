@@ -208,12 +208,16 @@
 
                             <TextView
                                 android:id="@+id/txtlocation"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
                                 android:background="#ffffff"
                                 android:gravity="center|start"
                                 android:text="Some Location"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                android:ellipsize="none"
+                                android:scrollHorizontally="false"
+
+                                />
                         </LinearLayout>
 
                         <fragment
