@@ -84,7 +84,8 @@ public class AllEvents extends Fragment {
                 ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), eventlist);
                 listView.setAdapter(adapter);
                 listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
+                adapter.notifyItemMoved(0, adapter.getItemCount() - 1);
             }
 
             @Override

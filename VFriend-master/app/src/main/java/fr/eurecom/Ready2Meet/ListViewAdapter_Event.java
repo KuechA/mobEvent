@@ -108,7 +108,7 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
 
                         FirebaseDatabase.getInstance().getReference().child("Users/" +
                                 FirebaseAuth.getInstance().getCurrentUser().getUid() +
-                                "/ParticipatingEvents" + info.id).setValue(true);
+                                "/ParticipatingEvents/" + info.id).setValue(true);
                     } else {
                         holder.participatingcheckbox.setChecked(false);
                         EventFull_Toast.show();
@@ -124,37 +124,40 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
                     holder.participatingcheckbox.setChecked(false);
 
                     FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth
-                            .getInstance().getCurrentUser().getUid() + "/ParticipatingEvents" +
+                            .getInstance().getCurrentUser().getUid() + "/ParticipatingEvents/" +
                             info.id).removeValue();
                 }
 
             }
         });
 
-        for(String key : info.Participants.keySet()) {
-            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
-                    ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
-            CircleImageView ii = new CircleImageView(holder.participants.getContext());
-            ii.setBorderWidth(2);
-            ii.setBorderColor(Color.TRANSPARENT);
+        if(info.Participants != null) {
+            for(String key : info.Participants.keySet()) {
+                StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
+                        ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
 
-            ii.setPadding(0, 0, 4, 0);
-            LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
-            test.gravity = Gravity.CENTER;
-            ii.setLayoutParams(test);
-            holder.participants.addView(ii);
-            Glide.with(holder.participants.getContext()).using(new FirebaseImageLoader()).load
-                    (storageRef).into(ii);
-        }
+                CircleImageView ii = new CircleImageView(holder.participants.getContext());
+                ii.setBorderWidth(2);
+                ii.setBorderColor(Color.TRANSPARENT);
 
-        //This deleted elements after the limit. but not working properly
-        holder.participants.post(new Runnable() {
-            public void run() {
-                while(info.Participants.size() < holder.participants.getChildCount()) {
-                    holder.participants.removeViewAt(holder.participants.getChildCount() - 1);
-                }
+                ii.setPadding(0, 0, 4, 0);
+                LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
+                test.gravity = Gravity.CENTER;
+                ii.setLayoutParams(test);
+                holder.participants.addView(ii);
+                Glide.with(holder.participants.getContext()).using(new FirebaseImageLoader())
+                        .load(storageRef).into(ii);
             }
-        });
+
+            //This deleted elements after the limit. but not working properly
+            holder.participants.post(new Runnable() {
+                public void run() {
+                    while(info.Participants.size() < holder.participants.getChildCount()) {
+                        holder.participants.removeViewAt(holder.participants.getChildCount() - 1);
+                    }
+                }
+            });
+        }
     }
 
     @Override
