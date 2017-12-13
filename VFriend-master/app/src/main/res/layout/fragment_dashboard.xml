@@ -16,68 +16,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="60">
+
             <ListView
                 android:id="@+id/start_page_list_of_events"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="8dp">
-            </ListView>
+                android:dividerHeight="8dp"></ListView>
         </ScrollView>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="40"
-        android:weightSum="100">
-
-        <TableRow
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="50"
+            android:orientation="vertical"
+            android:layout_weight="40"
             android:weightSum="100">
 
-            <Button
-                android:id="@+id/goto_all_events"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_weight="50"
-                android:text="All Events" />
+                android:weightSum="100">
 
-            <Button
-                android:id="@+id/goto_my_events"
-                android:layout_gravity="fill"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/goto_all_events"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="50"
+                    android:text="All Events" />
+
+                <Button
+                    android:id="@+id/goto_my_events"
+                    android:layout_gravity="fill"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="50"
+                    android:text="My Events" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_weight="50"
-                android:text="My Events" />
+                android:weightSum="100">
 
-        </TableRow>
+                <Button
+                    android:id="@+id/goto_add_event"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="50"
+                    android:text="Add Event" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="50"
-            android:weightSum="100">
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="50"
+                    android:text="Button" />
 
-            <Button
-                android:id="@+id/goto_add_event"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_weight="50"
-                android:text="Add Events" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_weight="50"
-                android:text="Button" />
-
-        </TableRow>
-    </TableLayout>
+            </TableRow>
+        </TableLayout>
     </LinearLayout>
 </FrameLayout>

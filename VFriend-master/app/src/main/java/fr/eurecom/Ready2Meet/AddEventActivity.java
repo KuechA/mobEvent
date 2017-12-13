@@ -178,7 +178,7 @@ public class AddEventActivity extends ToolbarActivity {
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getApplicationContext(), "An error occurred while adding " + "the " +
                         "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + ""
-                        + "" + "" + "" + "event" + ".", Toast.LENGTH_LONG).show();
+                        + "" + "" + "" + "" + "event" + ".", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         });

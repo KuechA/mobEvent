@@ -113,8 +113,8 @@ public class SignupActivity extends AppCompatActivity {
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
                             "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "characters!", Toast.LENGTH_SHORT)
-                            .show();
+                            "" + "" + "" + "" + "" + "" + "" + "" + "characters!", Toast
+                            .LENGTH_SHORT).show();
                     return;
                 }
 

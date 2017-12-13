@@ -1,10 +1,13 @@
 package fr.eurecom.Ready2Meet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,7 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
-    final List<Event> eventlist = new ArrayList();
+    private List<Event> eventlist = new ArrayList();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -28,6 +31,26 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        Button allEventsButton = (Button) view.findViewById(R.id.goto_all_events);
+        allEventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new AllEvents();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.container_new, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
+        Button addEventButton = (Button) view.findViewById(R.id.goto_add_event);
+        addEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AddEventActivity.class));
+            }
+        });
 
         // TODO: Retrieve list of events from firebase and add tem to the listView.
 /*
