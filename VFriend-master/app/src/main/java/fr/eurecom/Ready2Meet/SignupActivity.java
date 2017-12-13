@@ -20,8 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -162,15 +165,33 @@ public class SignupActivity extends AppCompatActivity {
                             });
                         }
 
+                        FirebaseDatabase.getInstance().getReference().child("Events").child("-L0AEWfuhQx3DjXz7H6Q").child("current").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                int value = (dataSnapshot.getValue(Integer.class));
+                                value+=1;
+                                FirebaseDatabase.getInstance().getReference().child("Events").child("-L0AEWfuhQx3DjXz7H6Q").child("current").setValue(value);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                         Map<String, Boolean> events = new HashMap();
                         events.put("-L0AEWfuhQx3DjXz7H6Q", true);
 
                         User userObj = new User(displayname, events, imageUri.toString());
 
                         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                        mDatabase.child("Events").child("1").child("Participants").child
+                        mDatabase.child("Events").child("-L0AEWfuhQx3DjXz7H6Q").child("Participants").child
                                 (signupEUID).setValue(true);
                         mDatabase.child("Users").child(signupEUID).setValue(userObj);
+
+
+
 
                         if(! task.isSuccessful()) {
                             Toast.makeText(SignupActivity.this, "Authentication failed." + task
