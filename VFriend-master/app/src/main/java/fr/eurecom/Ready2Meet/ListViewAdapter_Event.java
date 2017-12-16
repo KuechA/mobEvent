@@ -19,6 +19,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import fr.eurecom.Ready2Meet.database.Event;
@@ -40,6 +41,22 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         return vh;
     }
 
+    private String getCategories(Event event) {
+        if(event.categories == null) return null;
+
+        String categories = "";
+        for(Map.Entry<String, Boolean> c : event.categories.entrySet()) {
+            if(c.getValue()) {
+                if(categories == "") {
+                    categories += c.getKey();
+                } else {
+                    categories += ", " + c.getKey();
+                }
+            }
+        }
+        return categories;
+    }
+
     @Override
     public void onBindViewHolder(final EventViewHolder holder, int position) {
         final Event info = events.get(position);
@@ -47,8 +64,7 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         holder.txtDescription.setText(info.description);
         holder.txtTitle.setText(info.title);
 
-        //TODO: Loop the categories to generate one big string of list for it
-        holder.txtCategories.setText("Sport");
+        holder.txtCategories.setText(getCategories(info));
 
         //TODO: Parse dates of start end and date of day
         String parsedstarttime = info.startTime;
