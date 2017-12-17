@@ -4,9 +4,14 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -48,10 +53,16 @@ import java.util.Map;
 import fr.eurecom.Ready2Meet.database.Event;
 import fr.eurecom.Ready2Meet.uiExtensions.ImageArrayAdapter;
 
+import static android.Manifest.permission.READ_CALENDAR;
+import static android.Manifest.permission.WRITE_CALENDAR;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class EventDetailFragment extends Fragment implements OnMapReadyCallback {
 
     private Event event;
     private boolean participating;
+    private Date start = null;
+    private Date end = null;
 
     private GoogleMap googleMap;
 
@@ -141,6 +152,46 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermissions(int callbackId, String... permissionsId) {
+        boolean permissions = true;
+        for(String p : permissionsId) {
+            permissions = permissions && ContextCompat.checkSelfPermission(getContext(), p) ==
+                    PERMISSION_GRANTED;
+        }
+
+        if(! permissions) requestPermissions(permissionsId, callbackId);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[]
+            grantResults) {
+        switch(requestCode) {
+            case 42: {
+                // If request is cancelled, the result arrays are empty.
+                if(grantResults.length > 0 && grantResults[0] == PackageManager
+                        .PERMISSION_GRANTED) {
+                    checkCalendarStatus();
+                } else {
+                    // permission denied, boo!
+                }
+                return;
+            }
+        }
+    }
+
+    private void checkCalendarStatus() {
+        String[] proj = new String[] {CalendarContract.Instances._ID, CalendarContract.Instances
+                .BEGIN, CalendarContract.Instances.END, CalendarContract.Instances.EVENT_ID};
+        Cursor cursor = CalendarContract.Instances.query(getContext().getContentResolver(), proj,
+                start.getTime(), end.getTime());
+        if(cursor.getCount() > 0) {
+            Toast.makeText(getContext(), "Conflict in calendar", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getContext(), "No conflicts in calendar", Toast.LENGTH_LONG).show();
+        }
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         // Inflate the layout for this fragment
@@ -154,18 +205,26 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a");
         SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy");
         try {
-            Date start = format.parse(event.startTime);
+            start = format.parse(event.startTime);
             ((TextView) view.findViewById(R.id.txtstarttime)).setText(formatTime.format(start));
             ((TextView) view.findViewById(R.id.start_date)).setText(formatDate.format(start));
         } catch(ParseException e) {
             e.printStackTrace();
         }
         try {
-            Date end = format.parse(event.endTime);
+            end = format.parse(event.endTime);
             ((TextView) view.findViewById(R.id.txtendtime)).setText(formatTime.format(end));
             ((TextView) view.findViewById(R.id.end_date)).setText(formatDate.format(end));
         } catch(ParseException e) {
             e.printStackTrace();
+        }
+        if(start != null && end != null) {
+            final int callbackId = 42;
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkPermissions(callbackId, READ_CALENDAR, WRITE_CALENDAR);
+            } else {
+                checkCalendarStatus();
+            }
         }
 
         setupParticipatingCheckbox((CustomCheckBox) view.findViewById(R.id.participatingcheckbox)
@@ -249,10 +308,10 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                     (10).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             if(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), android
-                    .Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager
-                    .PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity()
-                    .getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
+                    .Manifest.permission.ACCESS_FINE_LOCATION) != PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(),
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                            PERMISSION_GRANTED) {
                 // TODO: Try to get permissions
                 return;
             }
