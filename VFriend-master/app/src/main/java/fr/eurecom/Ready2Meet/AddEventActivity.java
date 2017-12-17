@@ -49,7 +49,7 @@ public class AddEventActivity extends ToolbarActivity {
 
     private FirebaseUser user;
 
-    private SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd 'at' hh:mm a");
     private Calendar startDate = null;
     private String pictureUri = null;
     private InputStream pictureInputStream = null;
@@ -176,9 +176,8 @@ public class AddEventActivity extends ToolbarActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "An error occurred while adding " + "the " +
-                        "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + ""
-                        + "" + "" + "" + "" + "event" + ".", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "An error occurred while adding the " +
+                        "event.", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         });

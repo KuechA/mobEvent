@@ -136,7 +136,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         ((TextView) view.findViewById(R.id.txtcategories)).setText(getCategories());
         ((TextView) view.findViewById(R.id.txteventdescription)).setText(event.description);
 
-        SimpleDateFormat format = new SimpleDateFormat("EE, MMM dd, yyyy 'at' hh:mm a");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd 'at' hh:mm a");
         SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a");
         SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy");
         try {

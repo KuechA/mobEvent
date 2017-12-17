@@ -72,7 +72,7 @@ public class AllEvents extends Fragment {
         final RecyclerView listView = (RecyclerView) view.findViewById(R.id.listofevents);
         DatabaseReference events = FirebaseDatabase.getInstance().getReference().child("Events");
         events.keepSynced(true);
-        events.addValueEventListener(new ValueEventListener() {
+        events.orderByChild("startTime").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 eventlist.clear();
@@ -84,7 +84,6 @@ public class AllEvents extends Fragment {
                 ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), eventlist);
                 listView.setAdapter(adapter);
                 listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
-                //adapter.notifyDataSetChanged();
                 adapter.notifyItemMoved(0, adapter.getItemCount() - 1);
             }
 

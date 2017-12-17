@@ -18,6 +18,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,21 +69,22 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
 
         holder.txtCategories.setText(getCategories(info));
 
-        //TODO: Parse dates of start end and date of day
-        String parsedstarttime = info.startTime;
-        parsedstarttime = (parsedstarttime.substring(parsedstarttime.lastIndexOf(" at") + 3));
-        String parsedendtime = info.endTime;
-        parsedendtime = (parsedendtime.substring(parsedendtime.lastIndexOf(" at") + 3));
-
-        holder.txtEndtime.setText(parsedendtime);
-        holder.txtStarttime.setText(parsedstarttime);
-
-        String temp = info.startTime;
-
-        String parseddate = temp.substring(temp.lastIndexOf(" at") + 3);
-        parseddate = (temp.replaceAll((temp.substring(temp.lastIndexOf(" at") + 3)), ""))
-                .replaceAll(" at", "");
-        holder.txtDate.setText(parseddate);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd 'at' hh:mm a");
+        SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a");
+        SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy");
+        try {
+            Date start = format.parse(info.startTime);
+            holder.txtStarttime.setText(formatTime.format(start));
+            holder.txtDate.setText(formatDate.format(start));
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            Date end = format.parse(info.endTime);
+            holder.txtEndtime.setText(formatTime.format(end));
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
 
         holder.txtPlace.setText(info.place);
         holder.txtCurrent.setText(Long.toString(info.current));
