@@ -262,8 +262,8 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     }
 
     private void removeParticipants(View view) {
-        Spinner spinner = (Spinner) view.findViewById(R.id.participants_spinner);
-        List<String> participants = new ArrayList();
+        final Spinner spinner = (Spinner) view.findViewById(R.id.participants_spinner);
+        final List<String> participants = new ArrayList();
         for(Map.Entry<String, Boolean> p : event.Participants.entrySet()) {
             if(! p.getKey().equals(event.owner) && p.getValue()) {
                 participants.add(p.getKey());
@@ -273,6 +273,18 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         SpinnerAdapter adapter = new ImageArrayAdapter(getContext(), R.layout
                 .participant_spinner_row, participants);
         spinner.setAdapter(adapter);
+
+        view.findViewById(R.id.remove_participant_button).setOnClickListener(new View
+                .OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String toRemove = participants.get(spinner.getSelectedItemPosition());
+                FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                        "/Participants/" + toRemove).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Users/" + toRemove +
+                        "/ParticipatingEvents/" + event.id).removeValue();
+            }
+        });
     }
 
     private void cancelEvent(View view) {
