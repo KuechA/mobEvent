@@ -69,7 +69,7 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
 
         holder.txtCategories.setText(getCategories(info));
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd 'at' hh:mm a");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a");
         SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a");
         SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy");
         try {

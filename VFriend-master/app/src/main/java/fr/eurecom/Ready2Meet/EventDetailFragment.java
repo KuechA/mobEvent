@@ -127,6 +127,10 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         });
     }
 
+    private void showOwnerOptions() {
+        // TODO
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         // Inflate the layout for this fragment
@@ -136,7 +140,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         ((TextView) view.findViewById(R.id.txtcategories)).setText(getCategories());
         ((TextView) view.findViewById(R.id.txteventdescription)).setText(event.description);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd 'at' hh:mm a");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a");
         SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a");
         SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy");
         try {

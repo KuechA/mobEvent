@@ -49,7 +49,7 @@ public class AddEventActivity extends ToolbarActivity {
 
     private FirebaseUser user;
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd 'at' hh:mm a");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a");
     private Calendar startDate = null;
     private String pictureUri = null;
     private InputStream pictureInputStream = null;

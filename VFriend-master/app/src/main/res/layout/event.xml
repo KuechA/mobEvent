@@ -359,6 +359,21 @@
 
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16pt"
+                    android:textAlignment="center"
+                    android:text="Owner options" />
+
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
