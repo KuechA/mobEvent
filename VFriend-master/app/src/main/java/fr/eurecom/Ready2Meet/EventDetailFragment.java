@@ -161,7 +161,11 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                     PERMISSION_GRANTED;
         }
 
-        if(! permissions) requestPermissions(permissionsId, callbackId);
+        if(! permissions) {
+            requestPermissions(permissionsId, callbackId);
+        } else {
+            checkCalendarStatus();
+        }
     }
 
     @Override
