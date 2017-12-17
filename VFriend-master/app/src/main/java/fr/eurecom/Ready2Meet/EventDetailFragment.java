@@ -168,18 +168,43 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         LinearLayout participantImages = (LinearLayout) view.findViewById(R.id.participants);
         int participants = 0;
+
+        //add owner first!
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
+                ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + event.owner);
+        de.hdodenhof.circleimageview.CircleImageView ii = new de.hdodenhof.circleimageview
+                .CircleImageView(participantImages.getContext());
+
+        ii.setBorderWidth(5);
+        ii.setBorderColor(Color.RED);
+        ii.setPadding(0, 0, 4, 0);
+        LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
+        test.gravity = Gravity.CENTER;
+        ii.setLayoutParams(test);
+        Glide.with(participantImages.getContext()).using(new FirebaseImageLoader()).load
+                (storageRef).fitCenter().into(ii);
+        participantImages.addView(ii);
+        participants++;
+
+
+
+
+
         for(String key : event.Participants.keySet()) {
             if(! event.Participants.get(key)) continue;
 
-            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
+            storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                     ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
-            de.hdodenhof.circleimageview.CircleImageView ii = new de.hdodenhof.circleimageview
+            ii = new de.hdodenhof.circleimageview
                     .CircleImageView(participantImages.getContext());
-            ii.setBorderWidth(2);
+            ii.setBorderWidth(5);
             ii.setBorderColor(Color.TRANSPARENT);
+            if(key.equals(event.owner))
+            {continue;}
+
 
             ii.setPadding(0, 0, 4, 0);
-            LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
+            test = new LinearLayout.LayoutParams(100, 100);
             test.gravity = Gravity.CENTER;
             ii.setLayoutParams(test);
             Glide.with(participantImages.getContext()).using(new FirebaseImageLoader()).load

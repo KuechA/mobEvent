@@ -152,16 +152,35 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         });
 
         if(info.Participants != null) {
+
+            //add owner first!
+            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
+                    ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + info.owner);
+            CircleImageView ii = new CircleImageView(holder.participants.getContext());
+            ii.setBorderWidth(5);
+            ii.setBorderColor(Color.RED);
+            ii.setPadding(0, 0, 4, 0);
+            LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
+            test.gravity = Gravity.CENTER;
+            ii.setLayoutParams(test);
+            holder.participants.addView(ii);
+            Glide.with(holder.participants.getContext()).using(new FirebaseImageLoader())
+                    .load(storageRef).into(ii);
+
+
             for(String key : info.Participants.keySet()) {
-                StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
+                        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                         ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
 
-                CircleImageView ii = new CircleImageView(holder.participants.getContext());
-                ii.setBorderWidth(2);
-                ii.setBorderColor(Color.TRANSPARENT);
+                         ii = new CircleImageView(holder.participants.getContext());
+                         ii.setBorderWidth(5);
+                         ii.setBorderColor(Color.TRANSPARENT);
+                if(key.equals(info.owner))
+                {continue;}
+
 
                 ii.setPadding(0, 0, 4, 0);
-                LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
+                test = new LinearLayout.LayoutParams(100, 100);
                 test.gravity = Gravity.CENTER;
                 ii.setLayoutParams(test);
                 holder.participants.addView(ii);
