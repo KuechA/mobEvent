@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,10 +40,13 @@ import net.igenius.customcheckbox.CustomCheckBox;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
+import fr.eurecom.Ready2Meet.uiExtensions.ImageArrayAdapter;
 
 public class EventDetailFragment extends Fragment implements OnMapReadyCallback {
 
@@ -186,22 +191,15 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         participantImages.addView(ii);
         participants++;
 
-
-
-
-
         for(String key : event.Participants.keySet()) {
             if(! event.Participants.get(key)) continue;
 
             storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                     ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
-            ii = new de.hdodenhof.circleimageview
-                    .CircleImageView(participantImages.getContext());
+            ii = new de.hdodenhof.circleimageview.CircleImageView(participantImages.getContext());
             ii.setBorderWidth(5);
             ii.setBorderColor(Color.TRANSPARENT);
-            if(key.equals(event.owner))
-            {continue;}
-
+            if(key.equals(event.owner)) {continue;}
 
             ii.setPadding(0, 0, 4, 0);
             test = new LinearLayout.LayoutParams(100, 100);
@@ -234,6 +232,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         showOwnerOptions(view);
         cancelEvent(view);
+        removeParticipants(view);
 
         return view;
     }
@@ -260,6 +259,20 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             googleMap.setMyLocationEnabled(true);
 
         }
+    }
+
+    private void removeParticipants(View view) {
+        Spinner spinner = (Spinner) view.findViewById(R.id.participants_spinner);
+        List<String> participants = new ArrayList();
+        for(Map.Entry<String, Boolean> p : event.Participants.entrySet()) {
+            if(! p.getKey().equals(event.owner) && p.getValue()) {
+                participants.add(p.getKey());
+            }
+
+        }
+        SpinnerAdapter adapter = new ImageArrayAdapter(getContext(), R.layout
+                .participant_spinner_row, participants);
+        spinner.setAdapter(adapter);
     }
 
     private void cancelEvent(View view) {
@@ -297,7 +310,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                                     participant.getKey() + "/ParticipatingEvents/" + event.id)
                                     .removeValue();
                         }
-                        
+
                         // Remove event from DB
                         FirebaseDatabase.getInstance().getReference().child("Events/" + event.id)
                                 .removeValue();
