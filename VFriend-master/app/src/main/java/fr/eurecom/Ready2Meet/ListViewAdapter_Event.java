@@ -157,8 +157,12 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
                         ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
 
                 CircleImageView ii = new CircleImageView(holder.participants.getContext());
-                ii.setBorderWidth(2);
-                ii.setBorderColor(Color.TRANSPARENT);
+                ii.setBorderWidth(5);
+
+                if(key.equals(info.owner))
+                {ii.setBorderColor(Color.RED);}
+                else
+                { ii.setBorderColor(Color.TRANSPARENT);}
 
                 ii.setPadding(0, 0, 4, 0);
                 LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);

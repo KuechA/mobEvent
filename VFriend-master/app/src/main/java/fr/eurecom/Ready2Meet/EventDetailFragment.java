@@ -170,8 +170,12 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                     ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
             de.hdodenhof.circleimageview.CircleImageView ii = new de.hdodenhof.circleimageview
                     .CircleImageView(participantImages.getContext());
-            ii.setBorderWidth(2);
-            ii.setBorderColor(Color.TRANSPARENT);
+            ii.setBorderWidth(5);
+
+            if(key.equals(event.owner))
+            {ii.setBorderColor(Color.RED);}
+            else
+            { ii.setBorderColor(Color.TRANSPARENT);}
 
             ii.setPadding(0, 0, 4, 0);
             LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
