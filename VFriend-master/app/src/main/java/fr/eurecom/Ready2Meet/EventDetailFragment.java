@@ -1,10 +1,13 @@
 package fr.eurecom.Ready2Meet;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,8 +130,10 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         });
     }
 
-    private void showOwnerOptions() {
-        // TODO
+    private void showOwnerOptions(View view) {
+        if(! event.owner.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            view.findViewById(R.id.owner_options).setVisibility(LinearLayout.GONE);
+        }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -202,6 +207,9 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         ImageView imageView = (ImageView) view.findViewById(R.id.eventpicture);
         Picasso.with(getContext()).load(event.picture).fit().centerCrop().into(imageView);
 
+        showOwnerOptions(view);
+        cancelEvent(view);
+
         return view;
     }
 
@@ -227,5 +235,52 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             googleMap.setMyLocationEnabled(true);
 
         }
+    }
+
+    private void cancelEvent(View view) {
+        view.findViewById(R.id.cancel_event_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                LinearLayout layout = new LinearLayout(getContext());
+                TextView alertText = new TextView(getContext());
+
+                alertText.setText("Are you sure that you want to cancel this event?\n\nThis " +
+                        "action " + "cannot be reversed.");
+                alertText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                layout.addView(alertText);
+                layout.setPadding(50, 40, 50, 10);
+
+                builder.setView(layout);
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.setPositiveButton("Yes, cancel event", new DialogInterface
+                        .OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Remove event from all participants list of events
+                        for(Map.Entry<String, Boolean> participant : event.Participants.entrySet
+                                ()) {
+                            FirebaseDatabase.getInstance().getReference().child("Users/" +
+                                    participant.getKey() + "/ParticipatingEvents/" + event.id)
+                                    .removeValue();
+                        }
+                        
+                        // Remove event from DB
+                        FirebaseDatabase.getInstance().getReference().child("Events/" + event.id)
+                                .removeValue();
+                    }
+                });
+
+                builder.create().show();
+            }
+        });
     }
 }
