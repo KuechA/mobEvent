@@ -48,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
@@ -201,9 +202,9 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         ((TextView) view.findViewById(R.id.txtcategories)).setText(getCategories());
         ((TextView) view.findViewById(R.id.txteventdescription)).setText(event.description);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a");
-        SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a");
-        SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a", Locale.US);
+        SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a", Locale.US);
+        SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
         try {
             start = format.parse(event.startTime);
             ((TextView) view.findViewById(R.id.txtstarttime)).setText(formatTime.format(start));

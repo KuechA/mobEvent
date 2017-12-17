@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
@@ -49,7 +50,7 @@ public class AddEventActivity extends ToolbarActivity {
 
     private FirebaseUser user;
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a", Locale.US);
     private Calendar startDate = null;
     private String pictureUri = null;
     private InputStream pictureInputStream = null;

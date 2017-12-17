@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,9 +70,9 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
 
         holder.txtCategories.setText(getCategories(info));
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a");
-        SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a");
-        SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a", Locale.US);
+        SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a", Locale.US);
+        SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
         try {
             Date start = format.parse(info.startTime);
             holder.txtStarttime.setText(formatTime.format(start));
@@ -164,20 +165,17 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
             test.gravity = Gravity.CENTER;
             ii.setLayoutParams(test);
             holder.participants.addView(ii);
-            Glide.with(holder.participants.getContext()).using(new FirebaseImageLoader())
-                    .load(storageRef).into(ii);
-
+            Glide.with(holder.participants.getContext()).using(new FirebaseImageLoader()).load
+                    (storageRef).into(ii);
 
             for(String key : info.Participants.keySet()) {
-                        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
+                storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                         ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
 
-                         ii = new CircleImageView(holder.participants.getContext());
-                         ii.setBorderWidth(5);
-                         ii.setBorderColor(Color.TRANSPARENT);
-                if(key.equals(info.owner))
-                {continue;}
-
+                ii = new CircleImageView(holder.participants.getContext());
+                ii.setBorderWidth(5);
+                ii.setBorderColor(Color.TRANSPARENT);
+                if(key.equals(info.owner)) {continue;}
 
                 ii.setPadding(0, 0, 4, 0);
                 test = new LinearLayout.LayoutParams(100, 100);
