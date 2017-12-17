@@ -125,7 +125,6 @@ public class AddEventActivity extends ToolbarActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-
             }
 
         });
@@ -173,6 +172,7 @@ public class AddEventActivity extends ToolbarActivity {
                 FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth
                         .getInstance().getCurrentUser().getUid() + "/ParticipatingEvents/" +
                         eventId).setValue(true);
+                AddEventActivity.this.finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -180,6 +180,7 @@ public class AddEventActivity extends ToolbarActivity {
                 Toast.makeText(getApplicationContext(), "An error occurred while adding the " +
                         "event.", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
+                AddEventActivity.this.finish();
             }
         });
     }
