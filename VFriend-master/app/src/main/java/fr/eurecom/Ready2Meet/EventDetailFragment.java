@@ -64,6 +64,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private boolean participating;
     private Date start = null;
     private Date end = null;
+    private View view;
 
     private GoogleMap googleMap;
 
@@ -191,16 +192,16 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         Cursor cursor = CalendarContract.Instances.query(getContext().getContentResolver(), proj,
                 start.getTime(), end.getTime());
         if(cursor.getCount() > 0) {
-            Toast.makeText(getContext(), "Conflict in calendar", Toast.LENGTH_LONG).show();
+            ((TextView) view.findViewById(R.id.txt_collision)).setText("Conflict in calendar");
         } else {
-            Toast.makeText(getContext(), "No conflicts in calendar", Toast.LENGTH_LONG).show();
+            ((TextView) view.findViewById(R.id.txt_collision)).setText("No conflicts in calendar");
         }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.event, container, false);
+        view = inflater.inflate(R.layout.event, container, false);
 
         ((TextView) view.findViewById(R.id.txteventname)).setText(event.title);
         ((TextView) view.findViewById(R.id.txtcategories)).setText(getCategories());
