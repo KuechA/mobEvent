@@ -148,16 +148,15 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
+            public void onInfoWindowClick(Marker marker) {
                 EventDetailFragment fragment = new EventDetailFragment();
                 fragment.setEventId(marker.getTag().toString());
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.container_new, fragment);
                 ft.addToBackStack(null);
                 ft.commit();
-                return false;
             }
         });
 
