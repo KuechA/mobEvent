@@ -36,7 +36,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -341,11 +344,29 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         view.findViewById(R.id.remove_participant_button).setOnClickListener(new View
                 .OnClickListener() {
+            private Long current;
+
             @Override
             public void onClick(View v) {
                 String toRemove = participants.get(spinner.getSelectedItemPosition());
                 FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
                         "/Participants/" + toRemove).removeValue();
+                // Decrease value of current by one
+                FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                        "/current").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        current = (Long) dataSnapshot.getValue();
+                        current--;
+                        FirebaseDatabase.getInstance().getReference().child("Events/" + event.id
+                                + "/current").setValue(current);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        current = new Long(- 1);
+                    }
+                });
                 FirebaseDatabase.getInstance().getReference().child("Users/" + toRemove +
                         "/ParticipatingEvents/" + event.id).removeValue();
             }
