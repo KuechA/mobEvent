@@ -5,6 +5,10 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +21,7 @@ import android.widget.Button;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +42,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap googleMap;
+
+    private double maxPeople = 1;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -83,6 +90,9 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     Event eventread = snapshot.getValue(Event.class);
                     eventlist.add(eventread);
                     mapFragment.getMapAsync(DashboardFragment.this);
+                    if(eventread.current > maxPeople) {
+                        maxPeople = eventread.current;
+                    }
                 }
             }
 
@@ -115,6 +125,22 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 LatLng location = new LatLng(event.latitude, event.longitude);
                 MarkerOptions marker = new MarkerOptions().position(location);
                 marker.title(event.title);
+
+                Bitmap icon;
+                Drawable drawableicon = getResources().getDrawable(R.drawable.ic_location_red);
+                if(drawableicon instanceof BitmapDrawable) {
+                    icon = ((BitmapDrawable) drawableicon).getBitmap();
+                } else {
+                    icon = Bitmap.createBitmap(drawableicon.getIntrinsicWidth(), drawableicon
+                            .getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(icon);
+                    drawableicon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    drawableicon.draw(canvas);
+                }
+                marker.icon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(icon,
+                        (int) Math.ceil(icon.getWidth() * event.current / maxPeople), (int) Math
+                                .ceil(icon.getHeight() * event.current / maxPeople), false)));
+
                 googleMap.addMarker(marker);
             }
         }
