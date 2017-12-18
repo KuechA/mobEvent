@@ -14,22 +14,22 @@
         <ScrollView
             android:id="@+id/start_page_events"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="60">
+            android:layout_height="0dp"
+            android:layout_weight="70">
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/start_page_list_of_events"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="8dp"></ListView>
+                android:dividerHeight="8dp" />
         </ScrollView>
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="40"
+            android:layout_weight="30"
             android:weightSum="100">
 
             <TableRow
