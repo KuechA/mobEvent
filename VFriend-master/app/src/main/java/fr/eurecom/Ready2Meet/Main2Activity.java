@@ -1,11 +1,11 @@
 package fr.eurecom.Ready2Meet;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
@@ -87,7 +87,7 @@ public class Main2Activity extends ToolbarActivity {
 
         } else if(id == R.id.nav_allevents) {
             fragment = new AllEvents();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.container_new, fragment);
             ft.addToBackStack(null);
             ft.commit();
@@ -95,7 +95,7 @@ public class Main2Activity extends ToolbarActivity {
             // TODO
         } else if(id == R.id.nav_manage) {
             fragment = new AccountOptions();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.container_new, fragment);
             ft.addToBackStack(null);
             ft.commit();

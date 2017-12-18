@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -72,6 +73,23 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private GoogleMap googleMap;
 
     public EventDetailFragment() {
+    }
+
+    public void setEventId(String eventId) {
+        DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference().child
+                ("Events/" + eventId);
+        eventRef.keepSynced(true);
+        eventRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                event = dataSnapshot.getValue(Event.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void setEvent(Event event) {

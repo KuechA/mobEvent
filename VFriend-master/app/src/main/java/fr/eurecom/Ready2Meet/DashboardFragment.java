@@ -1,16 +1,24 @@
 package fr.eurecom.Ready2Meet;
 
+import android.Manifest;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,10 +29,14 @@ import java.util.List;
 
 import fr.eurecom.Ready2Meet.database.Event;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements OnMapReadyCallback {
+
+    private GoogleMap googleMap;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -59,10 +71,9 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        // TODO: Retrieve list of events from firebase and add tem to the listView.
+        final MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById
+                (R.id.map);
 
-        final RecyclerView listView = (RecyclerView) view.findViewById(R.id
-                .start_page_list_of_events);
         FirebaseDatabase.getInstance().getReference().child("Events")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -71,12 +82,8 @@ public class DashboardFragment extends Fragment {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Event eventread = snapshot.getValue(Event.class);
                     eventlist.add(eventread);
+                    mapFragment.getMapAsync(DashboardFragment.this);
                 }
-                ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), eventlist);
-                listView.setAdapter(adapter);
-                listView.setLayoutManager(new LinearLayoutManager(DashboardFragment.this
-                        .getContext()));
-                adapter.notifyItemMoved(0, adapter.getItemCount() - 1);
             }
 
             @Override
@@ -87,4 +94,55 @@ public class DashboardFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ActivityCompat.checkSelfPermission
+                (getActivity().getApplicationContext(), android.Manifest.permission
+                        .ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(getActivity().getApplicationContext(), android.Manifest
+                        .permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+            Log.w("DashboardFragment", "No permission to get location");
+            // TODO: Try to get permissions
+            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+            return;
+        } else {
+            googleMap.setMyLocationEnabled(true);
+        }
+        for(Event event : eventlist) {
+            if(event.latitude != null && event.longitude != null) {
+                LatLng location = new LatLng(event.latitude, event.longitude);
+                MarkerOptions marker = new MarkerOptions().position(location);
+                marker.title(event.title);
+                googleMap.addMarker(marker);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[]
+            grantResults) {
+        switch(requestCode) {
+            case 123: {
+                // If request is cancelled, the result arrays are empty.
+                if(grantResults.length > 0 && grantResults[0] == PackageManager
+                        .PERMISSION_GRANTED) {
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ActivityCompat
+                            .checkSelfPermission(getContext(), Manifest.permission
+                                    .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(getContext(), Manifest
+                            .permission.ACCESS_COARSE_LOCATION) != PackageManager
+                            .PERMISSION_GRANTED) {
+                        // This block can never occur.
+                        return;
+                    }
+                    googleMap.setMyLocationEnabled(true);
+                } else {
+                    // permission denied, boo!
+                }
+                return;
+            }
+        }
+    }
 }
