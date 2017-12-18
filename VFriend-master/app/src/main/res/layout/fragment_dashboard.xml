@@ -16,13 +16,13 @@
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="70" />
+            android:layout_weight="80" />
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="30"
+            android:layout_weight="20"
             android:weightSum="100">
 
             <TableRow

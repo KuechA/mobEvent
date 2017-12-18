@@ -23,6 +23,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,7 +55,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-        // Inflate the layout for this fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
@@ -88,6 +88,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 eventlist.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Event eventread = snapshot.getValue(Event.class);
+                    eventread.id = snapshot.getKey();
                     eventlist.add(eventread);
                     mapFragment.getMapAsync(DashboardFragment.this);
                     if(eventread.current > maxPeople) {
@@ -120,12 +121,15 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         } else {
             googleMap.setMyLocationEnabled(true);
         }
+
         for(Event event : eventlist) {
             if(event.latitude != null && event.longitude != null) {
                 LatLng location = new LatLng(event.latitude, event.longitude);
                 MarkerOptions marker = new MarkerOptions().position(location);
                 marker.title(event.title);
 
+                // Get icon and scale its size depending on the number of current people in the
+                // event
                 Bitmap icon;
                 Drawable drawableicon = getResources().getDrawable(R.drawable.ic_location_red);
                 if(drawableicon instanceof BitmapDrawable) {
@@ -140,10 +144,23 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 marker.icon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(icon,
                         (int) Math.ceil(icon.getWidth() * event.current / maxPeople), (int) Math
                                 .ceil(icon.getHeight() * event.current / maxPeople), false)));
-
-                googleMap.addMarker(marker);
+                googleMap.addMarker(marker).setTag(event.id);
             }
         }
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                EventDetailFragment fragment = new EventDetailFragment();
+                fragment.setEventId(marker.getTag().toString());
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.container_new, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                return false;
+            }
+        });
+
     }
 
     @Override

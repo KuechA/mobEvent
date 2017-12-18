@@ -12,6 +12,7 @@ import android.provider.CalendarContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -76,6 +77,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     }
 
     public void setEventId(String eventId) {
+        Log.d("EventDetailFragment", "EventID: " + eventId);
         DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference().child
                 ("Events/" + eventId);
         eventRef.keepSynced(true);
@@ -83,6 +85,13 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 event = dataSnapshot.getValue(Event.class);
+                if(event != null && view != null) {
+                    createEventDetails();
+                } else if(event == null) {
+                    Log.w("EventDetailFragment", "Event is null");
+                } else {
+                    Log.w("EventDetailFragment", "View is null");
+                }
             }
 
             @Override
@@ -223,7 +232,13 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.event, container, false);
+        if(event != null) {
+            createEventDetails();
+        }
+        return view;
+    }
 
+    private void createEventDetails() {
         ((TextView) view.findViewById(R.id.txteventname)).setText(event.title);
         ((TextView) view.findViewById(R.id.txtcategories)).setText(getCategories());
         ((TextView) view.findViewById(R.id.txteventdescription)).setText(event.description);
@@ -319,8 +334,6 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         showOwnerOptions(view);
         cancelEvent(view);
         removeParticipants(view);
-
-        return view;
     }
 
     @Override
