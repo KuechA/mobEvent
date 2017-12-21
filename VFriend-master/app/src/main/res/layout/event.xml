@@ -224,13 +224,11 @@
                                 android:text="Some Location"
                                 android:textSize="15sp"
                                 android:ellipsize="none"
-                                android:scrollHorizontally="false"
-
-                                />
+                                android:scrollHorizontally="false" />
                         </LinearLayout>
 
                         <fragment
-                            android:name="com.google.android.gms.maps.MapFragment"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
                             android:id="@+id/map"
                             android:layout_width="match_parent"
                             android:layout_height="200dp" />

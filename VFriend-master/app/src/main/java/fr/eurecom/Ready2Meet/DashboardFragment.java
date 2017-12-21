@@ -1,8 +1,6 @@
 package fr.eurecom.Ready2Meet;
 
 import android.Manifest;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -78,8 +78,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        final MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById
-                (R.id.map);
+        final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
 
         FirebaseDatabase.getInstance().getReference().child("Events")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -142,8 +142,9 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     drawableicon.draw(canvas);
                 }
                 marker.icon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(icon,
-                        (int) Math.ceil(icon.getWidth() * event.current / maxPeople), (int) Math
-                                .ceil(icon.getHeight() * event.current / maxPeople), false)));
+                        (int) Math.ceil(icon.getWidth() * 1.5 * event.current / maxPeople), (int)
+                                Math.ceil(icon.getHeight() * 1.5 * event.current / maxPeople),
+                        false)));
                 googleMap.addMarker(marker).setTag(event.id);
             }
         }
