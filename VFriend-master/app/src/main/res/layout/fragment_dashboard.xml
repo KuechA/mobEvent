@@ -4,73 +4,10 @@
     android:layout_height="match_parent"
     tools:context="fr.eurecom.Ready2Meet.DashboardFragment">
 
-
-    <LinearLayout
+    <fragment
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="100">
+        android:layout_height="match_parent" />
 
-        <fragment
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="80" />
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="20"
-            android:weightSum="100">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="50"
-                android:weightSum="100">
-
-                <Button
-                    android:id="@+id/goto_all_events"
-                    android:layout_height="match_parent"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="50"
-                    android:text="All Events" />
-
-                <Button
-                    android:id="@+id/goto_my_events"
-                    android:layout_gravity="fill"
-                    android:layout_height="match_parent"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="50"
-                    android:text="My Events" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="50"
-                android:weightSum="100">
-
-                <Button
-                    android:id="@+id/goto_add_event"
-                    android:layout_height="match_parent"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="50"
-                    android:text="Add Event" />
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_height="match_parent"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="50"
-                    android:text="Button" />
-
-            </TableRow>
-        </TableLayout>
-    </LinearLayout>
 </FrameLayout>

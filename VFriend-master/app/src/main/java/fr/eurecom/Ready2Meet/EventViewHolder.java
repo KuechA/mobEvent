@@ -53,7 +53,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
         fragment.setEvent(event);
         FragmentTransaction ft = ((Main2Activity) view.getContext()).getSupportFragmentManager()
                 .beginTransaction();
-        ft.replace(R.id.container_new, fragment);
+        //ft.replace(R.id.container_new, fragment);
         ft.addToBackStack(null);
         ft.commit();
     }

@@ -1,7 +1,6 @@
 package fr.eurecom.Ready2Meet;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -57,26 +55,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
-        Button allEventsButton = (Button) view.findViewById(R.id.goto_all_events);
-        allEventsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new AllEvents();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.container_new, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-
-        Button addEventButton = (Button) view.findViewById(R.id.goto_add_event);
-        addEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), AddEventActivity.class));
-            }
-        });
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -152,10 +130,11 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
+                // TODO: Rewrite this method to deal with the new fragment swipe stuff!
                 EventDetailFragment fragment = new EventDetailFragment();
                 fragment.setEventId(marker.getTag().toString());
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.container_new, fragment);
+                //ft.replace(R.id.container_new, fragment);
                 ft.addToBackStack(null);
                 ft.commit();
             }

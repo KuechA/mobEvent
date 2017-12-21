@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -20,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import fr.eurecom.Ready2Meet.uiExtensions.MainPagerAdapter;
 import fr.eurecom.Ready2Meet.uiExtensions.ToolbarActivity;
 
 public class Main2Activity extends ToolbarActivity {
@@ -35,6 +39,17 @@ public class Main2Activity extends ToolbarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         setToolbar();
+
+        // For swipe between fragments
+        PagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(pagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setText("Overview");
+        tabLayout.getTabAt(1).setText("All Events");
+        tabLayout.addTab(tabLayout.newTab().setText("My Events"));
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -78,6 +93,7 @@ public class Main2Activity extends ToolbarActivity {
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        // TODO: Rewrite this method to deal with the new fragment swipe stuff!
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment;
@@ -88,7 +104,7 @@ public class Main2Activity extends ToolbarActivity {
         } else if(id == R.id.nav_allevents) {
             fragment = new AllEvents();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_new, fragment);
+            //ft.replace(R.id.container_new, fragment);
             ft.addToBackStack(null);
             ft.commit();
         } else if(id == R.id.nav_messages) {
@@ -96,7 +112,7 @@ public class Main2Activity extends ToolbarActivity {
         } else if(id == R.id.nav_manage) {
             fragment = new AccountOptions();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container_new, fragment);
+            //ft.replace(R.id.container_new, fragment);
             ft.addToBackStack(null);
             ft.commit();
         } else if(id == R.id.nav_share) {
