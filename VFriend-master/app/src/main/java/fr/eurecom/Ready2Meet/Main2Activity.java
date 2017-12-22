@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,6 +29,8 @@ import fr.eurecom.Ready2Meet.uiExtensions.ToolbarActivity;
 
 public class Main2Activity extends ToolbarActivity {
     private FirebaseAuth auth;
+
+    public final static String TAG_EVENT_DETAIL_FRAGMENT = "EventDetail";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,11 @@ public class Main2Activity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager()
+                .getBackStackEntryCount() - 1).getName().equals(TAG_EVENT_DETAIL_FRAGMENT)) {
+            findViewById(R.id.tabs).setVisibility(View.VISIBLE);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -102,18 +110,20 @@ public class Main2Activity extends ToolbarActivity {
             startActivity(new Intent(Main2Activity.this, AddEventActivity.class));
 
         } else if(id == R.id.nav_allevents) {
+            findViewById(R.id.tabs).setVisibility(View.GONE);
             fragment = new AllEvents();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            //ft.replace(R.id.container_new, fragment);
-            ft.addToBackStack(null);
+            ft.replace(R.id.frame, fragment);
+            ft.addToBackStack(TAG_EVENT_DETAIL_FRAGMENT);
             ft.commit();
         } else if(id == R.id.nav_messages) {
             // TODO
         } else if(id == R.id.nav_manage) {
+            findViewById(R.id.tabs).setVisibility(View.GONE);
             fragment = new AccountOptions();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            //ft.replace(R.id.container_new, fragment);
-            ft.addToBackStack(null);
+            ft.replace(R.id.frame, fragment);
+            ft.addToBackStack(TAG_EVENT_DETAIL_FRAGMENT);
             ft.commit();
         } else if(id == R.id.nav_share) {
             // TODO

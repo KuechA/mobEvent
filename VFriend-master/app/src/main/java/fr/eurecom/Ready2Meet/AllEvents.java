@@ -77,7 +77,7 @@ public class AllEvents extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 eventlist.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if(snapshot.getKey() == "-L0AEWfuhQx3DjXz7H6Q") {
+                    if(snapshot.getKey().equals("-L0AEWfuhQx3DjXz7H6Q")) {
                         continue;
                     }
                     Event eventread = snapshot.getValue(Event.class);

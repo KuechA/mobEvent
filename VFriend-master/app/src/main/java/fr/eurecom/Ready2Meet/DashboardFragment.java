@@ -130,12 +130,12 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                // TODO: Rewrite this method to deal with the new fragment swipe stuff!
+                getActivity().findViewById(R.id.tabs).setVisibility(View.GONE);
                 EventDetailFragment fragment = new EventDetailFragment();
                 fragment.setEventId(marker.getTag().toString());
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //ft.replace(R.id.container_new, fragment);
-                ft.addToBackStack(null);
+                ft.replace(R.id.frame, fragment);
+                ft.addToBackStack(Main2Activity.TAG_EVENT_DETAIL_FRAGMENT);
                 ft.commit();
             }
         });
