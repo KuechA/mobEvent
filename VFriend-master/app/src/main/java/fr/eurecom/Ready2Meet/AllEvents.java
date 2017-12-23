@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eurecom.Ready2Meet.database.Event;
+import fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner;
 
 public class AllEvents extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -29,7 +31,24 @@ public class AllEvents extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    final List<Event> eventlist = new ArrayList<>();
+    private List<Event> eventlist = new ArrayList<>();
+    private ListViewAdapter_Event adapter;
+
+    private void setCategoriesFilter(View view) {
+        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) view.findViewById(R.id
+                .category_selector);
+        categorySpinner.setItems(AddEventActivity.eventCategories);
+        categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
+            @Override
+            public void selectedStrings(List<String> strings) {
+                if(adapter != null) {
+                    adapter.getFilter().filter(strings.get(0));
+                } else {
+                    Log.d("AllEvents", "No filtering as adapter is null");
+                }
+            }
+        });
+    }
 
     public AllEvents() {
         // Required empty public constructor
@@ -84,19 +103,20 @@ public class AllEvents extends Fragment {
                     eventread.id = snapshot.getKey();
                     eventlist.add(eventread);
                 }
-                ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), eventlist);
+                adapter = new ListViewAdapter_Event(getContext(), eventlist);
 
                 listView.setAdapter(adapter);
                 listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
                 adapter.notifyItemMoved(0, adapter.getItemCount() - 1);
                 adapter.notifyDataSetChanged();
-                adapter.getFilter().filter("Outdoor");
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
+        setCategoriesFilter(view);
 
         return view;
     }

@@ -63,7 +63,7 @@ public class AddEventActivity extends ToolbarActivity {
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int PICK_GALLERY = 2;
 
-    private String[] eventCategories = {"Sport", "Party", "Outdoor", "Others"};
+    public static final String[] eventCategories = {"Sport", "Party", "Outdoor", "Others"};
 
     private void setUiElements() {
         pictureInputStream = getResources().openRawResource(R.raw.default_event_picture);

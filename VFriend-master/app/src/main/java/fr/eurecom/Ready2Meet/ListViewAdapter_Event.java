@@ -35,10 +35,12 @@ import fr.eurecom.Ready2Meet.database.Event;
 public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder> implements
         Filterable {
     public List<Event> events;
+    private List<Event> oldEvents;
     private Context context;
 
     public ListViewAdapter_Event(Context context, List<Event> eventlist) {
         this.events = eventlist;
+        oldEvents = this.events;
         this.context = context;
     }
 
@@ -220,7 +222,7 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
                 FilterResults results = new FilterResults();
                 List<Event> FilteredArrayNames = new ArrayList();
 
-                for(Event event : events) {
+                for(Event event : oldEvents) {
                     if(event.categories.containsKey(constraint) && event.categories.get
                             (constraint.toString())) {
                         FilteredArrayNames.add(event);
