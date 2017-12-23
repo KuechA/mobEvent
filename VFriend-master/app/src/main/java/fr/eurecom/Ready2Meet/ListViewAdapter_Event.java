@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -35,12 +36,12 @@ import fr.eurecom.Ready2Meet.database.Event;
 public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder> implements
         Filterable {
     public List<Event> events;
-    private List<Event> oldEvents;
+    private List<Event> allEvents;
     private Context context;
 
     public ListViewAdapter_Event(Context context, List<Event> eventlist) {
         this.events = eventlist;
-        oldEvents = this.events;
+        this.allEvents = eventlist;
         this.context = context;
     }
 
@@ -216,31 +217,48 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
 
     @Override
     public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults results = new FilterResults();
-                List<Event> FilteredArrayNames = new ArrayList();
+        return new EventFilter(this);
+    }
 
-                for(Event event : oldEvents) {
-                    if(event.categories.containsKey(constraint) && event.categories.get
-                            (constraint.toString())) {
-                        FilteredArrayNames.add(event);
-                    }
+    public class EventFilter extends Filter {
+        private ListViewAdapter_Event adapter;
+
+        public EventFilter(ListViewAdapter_Event adapter) {
+            this.adapter = adapter;
+        }
+
+        public void removeOldFilter() {
+            events = new ArrayList();
+        }
+
+        @Override
+        protected Filter.FilterResults performFiltering(CharSequence constraint) {
+            Filter.FilterResults results = new Filter.FilterResults();
+            List<Event> FilteredArrayNames = new ArrayList();
+
+            for(Event event : adapter.allEvents) {
+                if(event.categories.containsKey(constraint) && event.categories.get(constraint
+                        .toString())) {
+                    FilteredArrayNames.add(event);
                 }
-
-                results.count = FilteredArrayNames.size();
-                results.values = FilteredArrayNames;
-                Log.e("VALUES", results.values.toString());
-
-                return results;
             }
 
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                events = (List<Event>) results.values;
-                notifyDataSetChanged();
-            }
-        };
+            results.count = FilteredArrayNames.size();
+            results.values = FilteredArrayNames;
+            Log.e("VALUES", results.values.toString());
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, Filter.FilterResults results) {
+            adapter.events.addAll((List<Event>) results.values);
+            notifyDataSetChanged();
+        }
+
+        public void uniqueResults() {
+            adapter.events = new ArrayList(new HashSet(adapter.events));
+            notifyDataSetChanged();
+        }
     }
 }

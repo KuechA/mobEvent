@@ -41,11 +41,20 @@ public class AllEvents extends Fragment {
         categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
             @Override
             public void selectedStrings(List<String> strings) {
-                if(adapter != null) {
-                    adapter.getFilter().filter(strings.get(0));
-                } else {
-                    Log.d("AllEvents", "No filtering as adapter is null");
+                if(strings.size() == 0) return;
+
+                ListViewAdapter_Event.EventFilter filter = (ListViewAdapter_Event.EventFilter)
+                        adapter.getFilter();
+                filter.removeOldFilter();
+
+                for(String s : strings) {
+                    if(adapter != null) {
+                        adapter.getFilter().filter(s);
+                    } else {
+                        Log.d("AllEvents", "No filtering as adapter is null");
+                    }
                 }
+                if(strings.size() > 1) filter.uniqueResults();
             }
         });
     }
