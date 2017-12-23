@@ -85,9 +85,12 @@ public class AllEvents extends Fragment {
                     eventlist.add(eventread);
                 }
                 ListViewAdapter_Event adapter = new ListViewAdapter_Event(getContext(), eventlist);
+
                 listView.setAdapter(adapter);
                 listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
                 adapter.notifyItemMoved(0, adapter.getItemCount() - 1);
+                adapter.notifyDataSetChanged();
+                adapter.getFilter().filter("Outdoor");
             }
 
             @Override

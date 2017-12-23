@@ -96,7 +96,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 .checkSelfPermission(getActivity().getApplicationContext(), android.Manifest
                         .permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
             Log.w("DashboardFragment", "No permission to get location");
-            // TODO: Try to get permissions
             requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
             return;
         } else {

@@ -3,10 +3,13 @@ package fr.eurecom.Ready2Meet;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,7 +32,8 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import fr.eurecom.Ready2Meet.database.Event;
 
-public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder> {
+public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder> implements
+        Filterable {
     public List<Event> events;
     private Context context;
 
@@ -207,4 +212,33 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         return events != null ? events.size() : 0;
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                List<Event> FilteredArrayNames = new ArrayList();
+
+                for(Event event : events) {
+                    if(event.categories.containsKey(constraint) && event.categories.get
+                            (constraint.toString())) {
+                        FilteredArrayNames.add(event);
+                    }
+                }
+
+                results.count = FilteredArrayNames.size();
+                results.values = FilteredArrayNames;
+                Log.e("VALUES", results.values.toString());
+
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                events = (List<Event>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 }
