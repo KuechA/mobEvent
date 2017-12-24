@@ -230,6 +230,11 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
             events = new ArrayList();
         }
 
+        public void showWithoutFiltering() {
+            events = allEvents;
+            notifyDataSetChanged();
+        }
+
         @Override
         protected Filter.FilterResults performFiltering(CharSequence constraint) {
             Filter.FilterResults results = new Filter.FilterResults();

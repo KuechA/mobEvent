@@ -16,14 +16,14 @@ import java.util.List;
 
 @SuppressLint("AppCompatCustomView")
 /**
- * Source: @URL{https://github.com/GunaseelanArumaikkannu/MultiSpinner/blob/master/libmultispinner/src/main/java/com/guna/libmultispinner/MultiSelectionSpinner.java}
- */
-public class MultiSelectSpinner extends Spinner implements
-        OnMultiChoiceClickListener {
+ * Source: @URL{https://github.com/GunaseelanArumaikkannu/MultiSpinner/blob/master
+ * /libmultispinner/src/main/java/com/guna/libmultispinner/MultiSelectionSpinner.java}
+ */ public class MultiSelectSpinner extends Spinner implements OnMultiChoiceClickListener {
 
     public interface OnMultipleItemsSelectedListener {
         void selectedStrings(List<String> strings);
     }
+
     private OnMultipleItemsSelectedListener listener;
 
     String[] _items = null;
@@ -36,8 +36,7 @@ public class MultiSelectSpinner extends Spinner implements
     public MultiSelectSpinner(Context context) {
         super(context);
 
-        simple_adapter = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item);
+        simple_adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item);
         super.setAdapter(simple_adapter);
     }
 
@@ -48,7 +47,7 @@ public class MultiSelectSpinner extends Spinner implements
         super.setAdapter(simple_adapter);
     }
 
-    public void setListener(OnMultipleItemsSelectedListener listener){
+    public void setListener(OnMultipleItemsSelectedListener listener) {
         this.listener = listener;
     }
 
@@ -58,8 +57,7 @@ public class MultiSelectSpinner extends Spinner implements
             simple_adapter.clear();
             simple_adapter.add(buildSelectedItemString());
         } else {
-            throw new IllegalArgumentException(
-                    "Argument 'which' is out of bounds.");
+            throw new IllegalArgumentException("Argument 'which' is out of bounds.");
         }
     }
 
@@ -91,8 +89,7 @@ public class MultiSelectSpinner extends Spinner implements
 
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
-        throw new RuntimeException(
-                "setAdapter is not supported by MultiSelectSpinner.");
+        throw new RuntimeException("setAdapter is not supported by MultiSelectSpinner.");
     }
 
     public void setItems(String[] items) {
@@ -104,6 +101,19 @@ public class MultiSelectSpinner extends Spinner implements
         Arrays.fill(mSelection, false);
         mSelection[0] = true;
         mSelectionAtStart[0] = true;
+    }
+
+    public void removeAllSelections() {
+        for(int i = 0; i < mSelection.length; i++) {
+            mSelection[i] = false;
+        }
+        for(int i = 0; i < mSelectionAtStart.length; i++) {
+            mSelectionAtStart[i] = false;
+        }
+        System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
+        listener.selectedStrings(getSelectedStrings());
+        simple_adapter.clear();
+        simple_adapter.add(buildSelectedItemString());
     }
 
     public void setSelection(int index) {
@@ -123,7 +133,7 @@ public class MultiSelectSpinner extends Spinner implements
 
     public List<String> getSelectedStrings() {
         List<String> selection = new LinkedList<>();
-        for(int i = 0; i < _items.length; ++i) {
+        for(int i = 0; i < _items.length; ++ i) {
             if(mSelection[i]) {
                 selection.add(_items[i]);
             }
@@ -135,7 +145,7 @@ public class MultiSelectSpinner extends Spinner implements
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
 
-        for(int i = 0; i < _items.length; ++i) {
+        for(int i = 0; i < _items.length; ++ i) {
             if(mSelection[i]) {
                 if(foundOne) {
                     sb.append(", ");
@@ -152,7 +162,7 @@ public class MultiSelectSpinner extends Spinner implements
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
 
-        for(int i = 0; i < _items.length; ++i) {
+        for(int i = 0; i < _items.length; ++ i) {
             if(mSelection[i]) {
                 if(foundOne) {
                     sb.append(", ");

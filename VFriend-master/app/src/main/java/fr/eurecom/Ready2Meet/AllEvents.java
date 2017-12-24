@@ -49,14 +49,26 @@ public class AllEvents extends Fragment {
             }
         });
 
+        ImageButton clearButton = (ImageButton) view.findViewById(R.id.clear_categories_button);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                categorySpinner.removeAllSelections();
+            }
+        });
+
         categorySpinner.setItems(AddEventActivity.eventCategories);
         categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
             @Override
             public void selectedStrings(List<String> strings) {
-                if(strings.size() == 0) return;
 
                 ListViewAdapter_Event.EventFilter filter = (ListViewAdapter_Event.EventFilter)
                         adapter.getFilter();
+                if(strings.size() == 0) {
+                    filter.showWithoutFiltering();
+                    return;
+                }
+
                 filter.removeOldFilter();
 
                 for(String s : strings) {
