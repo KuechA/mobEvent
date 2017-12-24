@@ -1,11 +1,9 @@
-package fr.eurecom.Ready2Meet;
+package fr.eurecom.Ready2Meet.uiExtensions;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,6 +13,11 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import fr.eurecom.Ready2Meet.R;
+
+/**
+ * Dialog which allows selecting a date and time at the same moment.
+ */
 public class DateTimePickerDialog extends Dialog {
     private TimePicker timePicker;
     private DatePicker datePicker;
@@ -24,26 +27,6 @@ public class DateTimePickerDialog extends Dialog {
 
     public DateTimePickerDialog(@NonNull Context context) {
         super(context);
-        this.setContentView(R.layout.dialog_date_time_picker);
-        this.setTitle("Select date and time");
-        timePicker = (TimePicker) findViewById(R.id.time_picker);
-        timePicker.setVisibility(View.GONE);
-        datePicker = (DatePicker) findViewById(R.id.date_picker);
-        datePicker.setVisibility(View.VISIBLE);
-    }
-
-    public DateTimePickerDialog(@NonNull Context context, @StyleRes int themeResId) {
-        super(context, themeResId);
-        this.setContentView(R.layout.dialog_date_time_picker);
-        this.setTitle("Select date and time");
-        timePicker = (TimePicker) findViewById(R.id.time_picker);
-        timePicker.setVisibility(View.GONE);
-        datePicker = (DatePicker) findViewById(R.id.date_picker);
-        datePicker.setVisibility(View.VISIBLE);
-    }
-
-    protected DateTimePickerDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
         this.setContentView(R.layout.dialog_date_time_picker);
         this.setTitle("Select date and time");
         timePicker = (TimePicker) findViewById(R.id.time_picker);
@@ -84,12 +67,13 @@ public class DateTimePickerDialog extends Dialog {
         final Button setTimeButton = (Button) findViewById(R.id.ok_date_time_dialog);
         setTimeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                result = new GregorianCalendar(datePicker.getYear(),
-                        datePicker.getMonth(), datePicker.getDayOfMonth(),
-                        timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                result = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
+                        datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker
+                        .getCurrentMinute());
 
                 if(minDate != null && result.compareTo(minDate) < 0) {
-                    Toast.makeText(getContext(), "The selected date is too small", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "The selected date is too small", Toast
+                            .LENGTH_LONG).show();
                     result = null;
                     return;
                 }
@@ -103,6 +87,11 @@ public class DateTimePickerDialog extends Dialog {
         return result;
     }
 
+    /**
+     * Set the minimal date which can be selected in the calendar.
+     *
+     * @param date - The minimum date
+     */
     public void setMinDate(Calendar date) {
         if(date != null) {
             datePicker.setMinDate(date.getTimeInMillis());

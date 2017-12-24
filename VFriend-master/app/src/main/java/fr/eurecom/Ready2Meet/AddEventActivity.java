@@ -43,6 +43,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import fr.eurecom.Ready2Meet.database.Event;
+import fr.eurecom.Ready2Meet.uiExtensions.DateTimePickerDialog;
 import fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner;
 import fr.eurecom.Ready2Meet.uiExtensions.ToolbarActivity;
 
