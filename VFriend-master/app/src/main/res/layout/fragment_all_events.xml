@@ -13,25 +13,6 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="100">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:text="Show categories:" />
-
-            <fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner
-                android:id="@+id/category_selector"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="75" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/colorPrimary"
             android:orientation="vertical"
@@ -42,15 +23,17 @@
                 android:layout_height="match_parent"
                 android:weightSum="100">
 
-                <ImageView
+                <ImageButton
                     android:layout_height="40dp"
                     android:layout_width="40dp"
                     android:layout_marginLeft="4dp"
                     android:padding="4dp"
-                    android:id="@+id/imgEventHistory"
-                    android:src="@android:drawable/btn_plus" />
+                    android:background="#00000000"
+                    android:id="@+id/filter_button"
+                    android:src="@drawable/ic_filter_list_black" />
 
-                <TextView
+                <fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner
+                    android:id="@+id/category_selector"
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"
@@ -59,8 +42,7 @@
                     android:gravity="center|start"
                     android:layout_weight="100"
                     android:textSize="20sp"
-                    android:textColor="#ffff"
-                    android:id="@+id/txtEventHistory" />
+                    android:textColor="#ffff" />
 
                 <ToggleButton
                     android:layout_width="25dp"

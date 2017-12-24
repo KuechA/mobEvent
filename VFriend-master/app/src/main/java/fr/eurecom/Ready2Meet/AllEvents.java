@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,11 +35,20 @@ public class AllEvents extends Fragment {
      * Set up the spinner for filtering events according to the categories and add the listener
      * to perform filtering of one or multiple event categories.
      *
-     * @param view
+     * @param view - The view of the page
      */
     private void setCategoriesFilter(View view) {
-        MultiSelectSpinner categorySpinner = (MultiSelectSpinner) view.findViewById(R.id
+        final MultiSelectSpinner categorySpinner = (MultiSelectSpinner) view.findViewById(R.id
                 .category_selector);
+
+        ImageButton filterButton = (ImageButton) view.findViewById(R.id.filter_button);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                categorySpinner.performClick();
+            }
+        });
+
         categorySpinner.setItems(AddEventActivity.eventCategories);
         categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
             @Override

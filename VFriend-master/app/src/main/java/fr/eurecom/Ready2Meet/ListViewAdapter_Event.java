@@ -3,7 +3,6 @@ package fr.eurecom.Ready2Meet;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -245,7 +244,6 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
 
             results.count = FilteredArrayNames.size();
             results.values = FilteredArrayNames;
-            Log.e("VALUES", results.values.toString());
 
             return results;
         }
