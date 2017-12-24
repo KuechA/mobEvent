@@ -36,7 +36,7 @@ import fr.eurecom.Ready2Meet.database.Event;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment for the landing page. Displays events in a map view.
  */
 public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
@@ -59,6 +59,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
 
+        // Get all events (except default event) and store them in the list.
         FirebaseDatabase.getInstance().getReference().child("Events")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -71,11 +72,11 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     Event eventread = snapshot.getValue(Event.class);
                     eventread.id = snapshot.getKey();
                     eventlist.add(eventread);
-                    mapFragment.getMapAsync(DashboardFragment.this);
                     if(eventread.current > maxPeople) {
                         maxPeople = eventread.current;
                     }
                 }
+                mapFragment.getMapAsync(DashboardFragment.this);
             }
 
             @Override
@@ -86,10 +87,23 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    /**
+     * Iterate over the list of all events and display the events in the map.
+     * <p>
+     * The icon to show the position of an event is scaled depending on the number of
+     * participants of events in relation to the biggest event. Hence, more popular events have a
+     * larger icon.
+     * <p>
+     * By clicking on an event title, the complete description of the event is displayed.
+     *
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        // Get required permissions to show own position in the map
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ActivityCompat.checkSelfPermission
                 (getActivity().getApplicationContext(), android.Manifest.permission
                         .ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && ActivityCompat
@@ -102,6 +116,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             googleMap.setMyLocationEnabled(true);
         }
 
+        // Iterate over list of events to set the positions in the map
         for(Event event : eventlist) {
             if(event.latitude != null && event.longitude != null) {
                 LatLng location = new LatLng(event.latitude, event.longitude);
@@ -125,10 +140,14 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                         (int) Math.ceil(icon.getWidth() * 1.5 * event.current / maxPeople), (int)
                                 Math.ceil(icon.getHeight() * 1.5 * event.current / maxPeople),
                         false)));
+
+                // Set tag to get the id of the event from the marker in the map. This allows us
+                // to show the event details later.
                 googleMap.addMarker(marker).setTag(event.id);
             }
         }
 
+        // Click on the info to display the full event descriptions
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {

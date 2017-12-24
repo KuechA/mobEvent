@@ -21,19 +21,21 @@ import java.util.List;
 import fr.eurecom.Ready2Meet.database.Event;
 import fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner;
 
+/**
+ * Show all the events in a {@link RecyclerView}. Allows filtering depending on the different
+ * categories which are possible for the events.
+ */
 public class AllEvents extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private List<Event> eventlist = new ArrayList<>();
     private ListViewAdapter_Event adapter;
 
+    /**
+     * Set up the spinner for filtering events according to the categories and add the listener
+     * to perform filtering of one or multiple event categories.
+     *
+     * @param view
+     */
     private void setCategoriesFilter(View view) {
         MultiSelectSpinner categorySpinner = (MultiSelectSpinner) view.findViewById(R.id
                 .category_selector);
@@ -64,33 +66,14 @@ public class AllEvents extends Fragment {
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Retrieve all events from the Firebase database and show them in the RecyclerView.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
      *
-     * @return A new instance of fragment AllEvents.
+     * @return
      */
-    // TODO: Rename and change types and number of parameters
-    public static AllEvents newInstance(String param1, String param2) {
-        AllEvents fragment = new AllEvents();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {

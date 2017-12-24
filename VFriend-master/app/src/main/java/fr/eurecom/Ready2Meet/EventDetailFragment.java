@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -56,6 +57,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import fr.eurecom.Ready2Meet.database.Event;
 import fr.eurecom.Ready2Meet.uiExtensions.ImageArrayAdapter;
 
@@ -63,10 +65,14 @@ import static android.Manifest.permission.READ_CALENDAR;
 import static android.Manifest.permission.WRITE_CALENDAR;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
+/**
+ * Show all event details. Either pass an event directly or by its ID. In case the ID is used to
+ * identify the event, the event data are fetched from the Firebase database and thus should be
+ * automatically updated when they change.
+ */
 public class EventDetailFragment extends Fragment implements OnMapReadyCallback {
 
     private Event event;
-    private boolean participating;
     private Date start = null;
     private Date end = null;
     private View view;
@@ -76,6 +82,14 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     public EventDetailFragment() {
     }
 
+    /**
+     * Retrieve the event to display using the ID of an event and fetching the data from the
+     * Firebase depending on the eventId.
+     * <p>
+     * This allows to react changing values in the fragment.
+     *
+     * @param eventId - The ID of the event
+     */
     public void setEventId(String eventId) {
         Log.d("EventDetailFragment", "EventID: " + eventId);
         DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference().child
@@ -101,35 +115,51 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         });
     }
 
+    /**
+     * Directly sets the event whose information should be displayed.
+     * <p>
+     * Deprecated as it does not refresh the event details if something changes in the database. Use
+     * {@link #setEventId(String)} instead.
+     *
+     * @param event - The event which should be set
+     */
+    @Deprecated
     public void setEvent(Event event) {
         this.event = event;
     }
 
+    /**
+     * Build the string to represent the categories of an event.
+     *
+     * @return The string representation of the event categories.
+     */
     private String getCategories() {
         if(event.categories == null) return null;
 
-        String categories = "";
+        StringBuilder categories = new StringBuilder("");
         for(Map.Entry<String, Boolean> c : event.categories.entrySet()) {
             if(c.getValue()) {
-                if(categories == "") {
-                    categories += c.getKey();
+                if(categories.toString().equals("")) {
+                    categories.append(c.getKey());
                 } else {
-                    categories += ", " + c.getKey();
+                    categories.append(", ").append(c.getKey());
                 }
             }
         }
-        return categories;
+        return categories.toString();
     }
 
+    /**
+     * Setup the listeners for the checkbox which is used to join and leave an event.
+     *
+     * @param checkBox - The checkbox which is used for joining/leaving
+     * @param chatButton - The button for the chat which can be shown or hidden
+     */
     private void setupParticipatingCheckbox(final CustomCheckBox checkBox, final Button
             chatButton) {
-        participating = false;
-        for(String key : event.Participants.keySet()) {
-            if(key.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                participating = true;
-                break;
-            }
-        }
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        boolean participating = event.Participants.containsKey(uid) && event.Participants.get(uid);
         checkBox.setChecked(participating);
 
         if(participating) {
@@ -147,13 +177,15 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                 boolean participating = checkBox.isChecked();
 
                 if(! participating) {
+                    // Join the event: Add participant to event and add the event to the user
                     if(! isFull) {
                         FirebaseDatabase.getInstance().getReference().child("Events/" + event.id
-                                + "/Participants").child(FirebaseAuth.getInstance()
-                                .getCurrentUser().getUid()).setValue(true);
+                                + "/Participants").child(uid).setValue(true);
                         event.current++;
                         FirebaseDatabase.getInstance().getReference().child("Events/" + event.id
                                 + "/current").setValue(event.current);
+                        FirebaseDatabase.getInstance().getReference().child("Users/" + uid +
+                                "/ParticipatingEvents").child(event.id).setValue(true);
                         chatButton.setVisibility(View.VISIBLE);
                         checkBox.setChecked(true);
                     } else {
@@ -162,23 +194,27 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                         chatButton.setVisibility(View.GONE);
                         checkBox.setChecked(false);
                     }
-
                 } else {
+                    // Leave the event: Remove participant to event and remove the event to the user
                     FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
-                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser()
-                            .getUid()).removeValue();
+                            "/Participants").child(uid).removeValue();
                     event.current--;
                     FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
                             "/current").setValue(event.current);
+                    FirebaseDatabase.getInstance().getReference().child("Users/" + uid +
+                            "/ParticipatingEvents/" + event.id).removeValue();
                     chatButton.setVisibility(View.GONE);
                     checkBox.setChecked(false);
                 }
-
             }
         });
     }
 
-    private void showOwnerOptions(View view) {
+    /**
+     * Shows the options which are reserved for the owner of an event if the user of the app is
+     * the owner of the event.
+     */
+    private void showOwnerOptions() {
         if(! event.owner.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             view.findViewById(R.id.owner_options).setVisibility(LinearLayout.GONE);
         }
@@ -200,22 +236,25 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[]
-            grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
         switch(requestCode) {
-            case 42: {
+            case 42:
                 // If request is cancelled, the result arrays are empty.
                 if(grantResults.length > 0 && grantResults[0] == PackageManager
                         .PERMISSION_GRANTED) {
                     checkCalendarStatus();
-                } else {
-                    // permission denied, boo!
                 }
-                return;
-            }
+                break;
+            default:
+                break;
         }
     }
 
+    /**
+     * Checks if the calendar is free during the event. In case something can be found in the
+     * calendar which overlaps with the event, the user is notified about it.
+     */
     private void checkCalendarStatus() {
         String[] proj = new String[] {CalendarContract.Instances._ID, CalendarContract.Instances
                 .BEGIN, CalendarContract.Instances.END, CalendarContract.Instances.EVENT_ID};
@@ -238,11 +277,15 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         return view;
     }
 
+    /**
+     * Show all the details of an event.
+     */
     private void createEventDetails() {
         ((TextView) view.findViewById(R.id.txteventname)).setText(event.title);
         ((TextView) view.findViewById(R.id.txtcategories)).setText(getCategories());
         ((TextView) view.findViewById(R.id.txteventdescription)).setText(event.description);
 
+        // Parse and display start and end date
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm a", Locale.US);
         SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a", Locale.US);
         SimpleDateFormat formatDate = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
@@ -260,7 +303,9 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         } catch(ParseException e) {
             e.printStackTrace();
         }
+
         if(start != null && end != null) {
+            // Try to check calendar collisions
             final int callbackId = 42;
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkPermissions(callbackId, READ_CALENDAR, WRITE_CALENDAR);
@@ -272,14 +317,13 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         setupParticipatingCheckbox((CustomCheckBox) view.findViewById(R.id.participatingcheckbox)
                 , (Button) view.findViewById(R.id.chat_button));
 
+        // Show the images of all participants. The owner is shown with a red circle.
         LinearLayout participantImages = (LinearLayout) view.findViewById(R.id.participants);
-        int participants = 0;
 
         //add owner first!
         StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                 ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + event.owner);
-        de.hdodenhof.circleimageview.CircleImageView ii = new de.hdodenhof.circleimageview
-                .CircleImageView(participantImages.getContext());
+        CircleImageView ii = new CircleImageView(participantImages.getContext());
 
         ii.setBorderWidth(5);
         ii.setBorderColor(Color.RED);
@@ -290,8 +334,8 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         Glide.with(participantImages.getContext()).using(new FirebaseImageLoader()).load
                 (storageRef).fitCenter().into(ii);
         participantImages.addView(ii);
-        participants++;
 
+        // Iterate over all participants and add their image
         for(String key : event.Participants.keySet()) {
             if(! event.Participants.get(key)) continue;
 
@@ -309,14 +353,14 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             Glide.with(participantImages.getContext()).using(new FirebaseImageLoader()).load
                     (storageRef).fitCenter().into(ii);
             participantImages.addView(ii);
-            participants++;
         }
 
-        ((TextView) view.findViewById(R.id.txtcurrent)).setText(String.valueOf(participants));
+        ((TextView) view.findViewById(R.id.txtcurrent)).setText(event.current.toString());
         ((TextView) view.findViewById(R.id.txtcapacity)).setText(event.capacity.toString());
 
+        // Show progress bar
         ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setProgress(Float
-                .parseFloat(String.valueOf(participants)));
+                .parseFloat(String.valueOf(event.current)));
         ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setMax(Float.parseFloat
                 (String.valueOf(event.capacity.toString())));
 
@@ -331,16 +375,15 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         ImageView imageView = (ImageView) view.findViewById(R.id.eventpicture);
         Picasso.with(getContext()).load(event.picture).fit().centerCrop().into(imageView);
 
-        showOwnerOptions(view);
-        cancelEvent(view);
-        removeParticipants(view);
+        showOwnerOptions();
+        cancelEvent();
+        removeParticipants();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-        //map.setMyLocationEnabled(true);
         if(event.latitude != null && event.longitude != null) {
             LatLng location = new LatLng(event.latitude, event.longitude);
             googleMap.addMarker(new MarkerOptions().position(location));
@@ -360,9 +403,13 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         }
     }
 
-    private void removeParticipants(View view) {
+    /**
+     * Set up spinner to delete participants from the event (in the database) if the user owns
+     * the event.
+     */
+    private void removeParticipants() {
         final Spinner spinner = (Spinner) view.findViewById(R.id.participants_spinner);
-        final List<String> participants = new ArrayList();
+        final List<String> participants = new ArrayList<>();
         for(Map.Entry<String, Boolean> p : event.Participants.entrySet()) {
             if(! p.getKey().equals(event.owner) && p.getValue()) {
                 participants.add(p.getKey());
@@ -395,7 +442,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        current = new Long(- 1);
+                        current = (long) - 1;
                     }
                 });
                 FirebaseDatabase.getInstance().getReference().child("Users/" + toRemove +
@@ -404,7 +451,11 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         });
     }
 
-    private void cancelEvent(View view) {
+    /**
+     * Set the listener of the cancel event button. Removes the whole event from the Firebase and
+     * also removes the event from all the users' participating events list.
+     */
+    private void cancelEvent() {
         view.findViewById(R.id.cancel_event_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -413,7 +464,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                 TextView alertText = new TextView(getContext());
 
                 alertText.setText("Are you sure that you want to cancel this event?\n\nThis " +
-                        "action " + "cannot be reversed.");
+                        "action cannot be reversed.");
                 alertText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
                 layout.setOrientation(LinearLayout.VERTICAL);
                 layout.addView(alertText);
