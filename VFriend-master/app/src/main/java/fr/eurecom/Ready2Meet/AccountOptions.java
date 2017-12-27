@@ -393,14 +393,14 @@ public class AccountOptions extends Fragment {
                     pictureUri = downloadUri.toString();
                     FirebaseDatabase.getInstance().getReference().child("Users").child(auth
                             .getCurrentUser().getUid()).child("ProfilePictureURL").setValue
-                            (pictureUri.toString());
-                    Toast.makeText(getActivity(), "Done", Toast.LENGTH_LONG);
+                            (pictureUri);
+                    Toast.makeText(getActivity(), "Done", Toast.LENGTH_LONG).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getActivity(), "Couldn't upload image to database", Toast
-                            .LENGTH_LONG);
+                            .LENGTH_LONG).show();
                 }
             });
         }

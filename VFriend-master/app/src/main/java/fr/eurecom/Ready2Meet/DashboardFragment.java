@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -48,7 +49,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
-    private List<Event> eventlist = new ArrayList();
+    private List<Event> eventlist = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -96,7 +97,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
      * <p>
      * By clicking on an event title, the complete description of the event is displayed.
      *
-     * @param googleMap
+     * @param googleMap - The map to display
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -153,7 +154,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             public void onInfoWindowClick(Marker marker) {
                 getActivity().findViewById(R.id.tabs).setVisibility(View.GONE);
                 EventDetailFragment fragment = new EventDetailFragment();
-                fragment.setEventId(marker.getTag().toString());
+                fragment.setEvent(marker.getTag().toString());
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frame, fragment);
                 ft.addToBackStack(Main2Activity.TAG_EVENT_DETAIL_FRAGMENT);
@@ -164,8 +165,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[]
-            grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
         switch(requestCode) {
             case 123: {
                 // If request is cancelled, the result arrays are empty.
@@ -181,10 +182,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                         return;
                     }
                     googleMap.setMyLocationEnabled(true);
-                } else {
-                    // permission denied, boo!
                 }
-                return;
             }
         }
     }

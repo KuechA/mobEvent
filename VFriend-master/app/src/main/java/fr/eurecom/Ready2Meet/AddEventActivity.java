@@ -148,12 +148,12 @@ public class AddEventActivity extends ToolbarActivity {
 
         // Restrict area from 0 to 10 km
         if(notificationArea < 0) {
-            notificationArea = Long.valueOf(0);
+            notificationArea = 0L;
         } else if(notificationArea > 10000) {
-            notificationArea = Long.valueOf(10000);
+            notificationArea = 10000L;
         }
 
-        Long current = Long.valueOf(1);
+        Long current = 1L;
         Map<String, Boolean> whoReported = new HashMap<>();
         Map<String, Boolean> participants = new HashMap<>();
         participants.put(user.getUid(), true);
@@ -163,10 +163,9 @@ public class AddEventActivity extends ToolbarActivity {
                 capacity, pictureUri, place, startTime, endTime, participants, whoReported,
                 notificationArea, latitude, longitude);
 
-        eventData.setValue(newEvent).addOnSuccessListener(new OnSuccessListener() {
-
+        eventData.setValue(newEvent).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(Object o) {
+            public void onSuccess(Void o) {
                 Toast.makeText(getApplicationContext(), "Event successfully added", Toast
                         .LENGTH_LONG).show();
 
@@ -284,7 +283,7 @@ public class AddEventActivity extends ToolbarActivity {
             } catch(FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Could not find selected file", Toast
-                        .LENGTH_LONG);
+                        .LENGTH_LONG).show();
             }
         }
     }

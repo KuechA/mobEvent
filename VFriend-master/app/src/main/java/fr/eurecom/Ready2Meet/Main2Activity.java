@@ -64,19 +64,16 @@ public class Main2Activity extends ToolbarActivity {
                     .TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String pictureUri = "";
-                    Uri downloadUri = taskSnapshot.getDownloadUrl();
-                    pictureUri = downloadUri.toString();
                     FirebaseDatabase.getInstance().getReference().child("Users").child(auth
                             .getCurrentUser().getUid()).child("ProfilePictureURL").setValue
-                            (pictureUri.toString());
-                    Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG);
+                            (taskSnapshot.getDownloadUrl().toString());
+                    Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getApplication(), "Couldn't upload image to database", Toast
-                            .LENGTH_LONG);
+                            .LENGTH_LONG).show();
                 }
             });
         }
@@ -100,7 +97,7 @@ public class Main2Activity extends ToolbarActivity {
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // TODO: Rewrite this method to deal with the new fragment swipe stuff!
         // Handle navigation view item clicks here.
         int id = item.getItemId();

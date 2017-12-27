@@ -22,7 +22,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
     net.igenius.customcheckbox.CustomCheckBox participatingcheckbox;
     LinearLayout participants;
     View layout;
-    Event event;
+    private Event event;
 
     public EventViewHolder(View itemView) {
         super(itemView);
@@ -52,7 +52,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void onClick(View view) {
         ((Activity) view.getContext()).findViewById(R.id.tabs).setVisibility(View.GONE);
         EventDetailFragment fragment = new EventDetailFragment();
-        fragment.setEvent(event);
+        fragment.setEvent(event.id);
         FragmentTransaction ft = ((Main2Activity) view.getContext()).getSupportFragmentManager()
                 .beginTransaction();
         ft.replace(R.id.frame_all_events, fragment);

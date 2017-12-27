@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VFriend-master.iml" filepath="$PROJECT_DIR$/VFriend-master.iml" />
-      <module fileurl="file://C:\Users\prizma1\Documents\GitHub\mobEvent\VFriend-master\VFriend-master.iml" filepath="C:\Users\prizma1\Documents\GitHub\mobEvent\VFriend-master\VFriend-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\prizma1\Documents\GitHub\mobEvent\VFriend-master\app\app.iml" filepath="C:\Users\prizma1\Documents\GitHub\mobEvent\VFriend-master\app\app.iml" />
     </modules>
   </component>
 </project>

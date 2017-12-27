@@ -77,7 +77,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private Date end = null;
     private View view;
 
-    private GoogleMap googleMap;
+    //private GoogleMap googleMap;
 
     public EventDetailFragment() {
     }
@@ -90,7 +90,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
      *
      * @param eventId - The ID of the event
      */
-    public void setEventId(String eventId) {
+    public void setEvent(String eventId) {
         Log.d("EventDetailFragment", "EventID: " + eventId);
         DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference().child
                 ("Events/" + eventId);
@@ -119,7 +119,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
      * Directly sets the event whose information should be displayed.
      * <p>
      * Deprecated as it does not refresh the event details if something changes in the database. Use
-     * {@link #setEventId(String)} instead.
+     * {@link #setEvent(String)} instead.
      *
      * @param event - The event which should be set
      */
@@ -338,13 +338,13 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         // Iterate over all participants and add their image
         for(String key : event.Participants.keySet()) {
             if(! event.Participants.get(key)) continue;
+            if(key.equals(event.owner)) {continue;}
 
             storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                     ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
             ii = new de.hdodenhof.circleimageview.CircleImageView(participantImages.getContext());
             ii.setBorderWidth(5);
             ii.setBorderColor(Color.TRANSPARENT);
-            if(key.equals(event.owner)) {continue;}
 
             ii.setPadding(0, 0, 4, 0);
             test = new LinearLayout.LayoutParams(100, 100);
@@ -355,8 +355,8 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             participantImages.addView(ii);
         }
 
-        ((TextView) view.findViewById(R.id.txtcurrent)).setText(event.current.toString());
-        ((TextView) view.findViewById(R.id.txtcapacity)).setText(event.capacity.toString());
+        ((TextView) view.findViewById(R.id.txtcurrent)).setText(String.valueOf(event.current));
+        ((TextView) view.findViewById(R.id.txtcapacity)).setText(String.valueOf(event.capacity));
 
         // Show progress bar
         ((RoundCornerProgressBar) view.findViewById(R.id.eventprogress)).setProgress(Float
@@ -382,7 +382,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
+        //this.googleMap = googleMap;
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         if(event.latitude != null && event.longitude != null) {
             LatLng location = new LatLng(event.latitude, event.longitude);

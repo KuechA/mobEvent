@@ -40,13 +40,11 @@ import fr.eurecom.Ready2Meet.database.User;
 public class SignupActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword, name;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-    private Uri imageUri = Uri.parse("https://firebasestorage.googleapis" + "" + "" + "" + "" +
-            "" + ".com/v0/b/ready2meet-e0286.appspot" + "" + "" + "" + "" + "" + "" + "" + "" +
-            "" + ".com/o/ProfilePictures%2FDefaultProfilePicture" + "" + "" + "" + "" + "" + "" +
-            "" + ".jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635");
+    private Uri imageUri = Uri.parse("https://firebasestorage.googleapis" +
+            ".com/v0/b/ready2meet-e0286.appspot.com/o/ProfilePictures%2FDefaultProfilePicture" +
+            ".jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635");
 
     private InputStream inputStream = null;
 
@@ -63,13 +61,13 @@ public class SignupActivity extends AppCompatActivity {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-        btnSignIn = (Button) findViewById(R.id.sign_in_button);
-        btnSignUp = (Button) findViewById(R.id.sign_up_button);
+        Button btnSignIn = (Button) findViewById(R.id.sign_in_button);
+        Button btnSignUp = (Button) findViewById(R.id.sign_up_button);
         inputEmail = (EditText) findViewById(R.id.email);
         name = (EditText) findViewById(R.id.displayname);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
+        Button btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
 
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,11 +111,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 if(password.length() < 6) {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 " +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                            "" + "" + "" + "" + "" + "" + "" + "" + "characters!", Toast
-                            .LENGTH_SHORT).show();
+                            "characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -136,41 +130,45 @@ public class SignupActivity extends AppCompatActivity {
 
                         FirebaseUser user = auth.getCurrentUser();
 
-                        String signupEUID = user.getUid();
+                        final String signupEUID = user.getUid();
 
                         StorageReference storage = FirebaseStorage.getInstance().getReference()
-                                .child("ProfilePictures").child(auth.getCurrentUser().getUid());
+                                .child("ProfilePictures").child(signupEUID);
                         if(inputStream != null) {
                             storage.putStream(inputStream).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    Uri downloadUri = taskSnapshot.getDownloadUrl();
-                                    imageUri = downloadUri;
+                                    imageUri = taskSnapshot.getDownloadUrl();
                                     FirebaseDatabase.getInstance().getReference().child("Users")
-                                            .child(auth.getCurrentUser().getUid()).child
-                                            ("ProfilePictureURL").setValue(imageUri.toString());
+                                            .child(signupEUID).child("ProfilePictureURL")
+                                            .setValue(imageUri.toString());
 
                                     ImageView imgview = (ImageView) findViewById(R.id.imageView);
                                     Picasso.with(getApplicationContext()).load(imageUri).fit()
                                             .into(imgview);
 
-                                    Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG);
+                                    Toast.makeText(getApplication(), "Done", Toast.LENGTH_LONG)
+                                            .show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Toast.makeText(getApplication(), "Couldn't upload image " +
-                                            "to database", Toast.LENGTH_LONG);
+                                            "to database", Toast.LENGTH_LONG).show();
                                 }
                             });
                         }
 
-                        FirebaseDatabase.getInstance().getReference().child("Events").child("-L0AEWfuhQx3DjXz7H6Q").child("current").addListenerForSingleValueEvent(new ValueEventListener() {
+                        FirebaseDatabase.getInstance().getReference().child("Events").child
+                                ("-L0AEWfuhQx3DjXz7H6Q").child("current")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 int value = (dataSnapshot.getValue(Integer.class));
-                                value+=1;
-                                FirebaseDatabase.getInstance().getReference().child("Events").child("-L0AEWfuhQx3DjXz7H6Q").child("current").setValue(value);
+                                value += 1;
+                                FirebaseDatabase.getInstance().getReference().child("Events")
+                                        .child("-L0AEWfuhQx3DjXz7H6Q").child("current").setValue
+                                        (value);
                             }
 
                             @Override
@@ -179,19 +177,15 @@ public class SignupActivity extends AppCompatActivity {
                             }
                         });
 
-
-                        Map<String, Boolean> events = new HashMap();
+                        Map<String, Boolean> events = new HashMap<>();
                         events.put("-L0AEWfuhQx3DjXz7H6Q", true);
 
                         User userObj = new User(displayname, events, imageUri.toString());
 
                         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                        mDatabase.child("Events").child("-L0AEWfuhQx3DjXz7H6Q").child("Participants").child
-                                (signupEUID).setValue(true);
+                        mDatabase.child("Events").child("-L0AEWfuhQx3DjXz7H6Q").child
+                                ("Participants").child(signupEUID).setValue(true);
                         mDatabase.child("Users").child(signupEUID).setValue(userObj);
-
-
-
 
                         if(! task.isSuccessful()) {
                             Toast.makeText(SignupActivity.this, "Authentication failed." + task
@@ -225,19 +219,17 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if(requestCode == 2 && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-            imageUri = uri;
+            imageUri = data.getData();
 
             ImageView imgview = (ImageView) findViewById(R.id.imageView);
-            Picasso.with(getApplicationContext()).load(uri).fit().into(imgview);
+            Picasso.with(getApplicationContext()).load(imageUri).fit().into(imgview);
             try {
-                inputStream = getContentResolver().openInputStream(uri);
+                inputStream = getContentResolver().openInputStream(imageUri);
             } catch(FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Could not find selected file", Toast
-                        .LENGTH_LONG);
+                        .LENGTH_LONG).show();
             }
         }
 

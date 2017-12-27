@@ -55,17 +55,17 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
     private String getCategories(Event event) {
         if(event.categories == null) return null;
 
-        String categories = "";
+        StringBuilder categories = new StringBuilder("");
         for(Map.Entry<String, Boolean> c : event.categories.entrySet()) {
             if(c.getValue()) {
-                if(categories == "") {
-                    categories += c.getKey();
+                if(categories.toString().equals("")) {
+                    categories.append(c.getKey());
                 } else {
-                    categories += ", " + c.getKey();
+                    categories.append(", ").append(c.getKey());
                 }
             }
         }
-        return categories;
+        return categories.toString();
     }
 
     @Override
@@ -95,8 +95,8 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         }
 
         holder.txtPlace.setText(info.place);
-        holder.txtCurrent.setText(Long.toString(info.current));
-        holder.txtCapacity.setText(Long.toString(info.capacity));
+        holder.txtCurrent.setText(String.valueOf(info.current));
+        holder.txtCapacity.setText(String.valueOf(info.capacity));
 
         holder.prgProgressbar.setProgress(Float.parseFloat(String.valueOf(Long.toString(info
                 .current))));
@@ -123,19 +123,17 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
             @Override
             public void onClick(View v) {
                 boolean participating = holder.participatingcheckbox.isChecked();
-
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 if(! participating) {
                     if(! isFull) {
                         holder.participatingcheckbox.setChecked(true);
                         FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
-                                "/Participants").child(FirebaseAuth.getInstance().getCurrentUser
-                                ().getUid()).setValue(true);
+                                "/Participants").child(uid).setValue(true);
                         info.current++;
                         FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
                                 "/current").setValue(info.current);
 
-                        FirebaseDatabase.getInstance().getReference().child("Users/" +
-                                FirebaseAuth.getInstance().getCurrentUser().getUid() +
+                        FirebaseDatabase.getInstance().getReference().child("Users/" + uid +
                                 "/ParticipatingEvents/" + info.id).setValue(true);
                     } else {
                         holder.participatingcheckbox.setChecked(false);
@@ -144,16 +142,14 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
                     }
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
-                            "/Participants").child(FirebaseAuth.getInstance().getCurrentUser()
-                            .getUid()).removeValue();
+                            "/Participants").child(uid).removeValue();
                     info.current--;
                     FirebaseDatabase.getInstance().getReference().child("Events/" + info.id +
                             "/current").setValue(info.current);
                     holder.participatingcheckbox.setChecked(false);
 
-                    FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth
-                            .getInstance().getCurrentUser().getUid() + "/ParticipatingEvents/" +
-                            info.id).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child("Users/" + uid +
+                            "/ParticipatingEvents/" + info.id).removeValue();
                 }
 
             }
@@ -176,13 +172,13 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
                     (storageRef).into(ii);
 
             for(String key : info.Participants.keySet()) {
+                if(key.equals(info.owner)) {continue;}
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                         ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + key);
 
                 ii = new CircleImageView(holder.participants.getContext());
                 ii.setBorderWidth(5);
                 ii.setBorderColor(Color.TRANSPARENT);
-                if(key.equals(info.owner)) {continue;}
 
                 ii.setPadding(0, 0, 4, 0);
                 test = new LinearLayout.LayoutParams(100, 100);
@@ -222,15 +218,15 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
     public class EventFilter extends Filter {
         private ListViewAdapter_Event adapter;
 
-        public EventFilter(ListViewAdapter_Event adapter) {
+        EventFilter(ListViewAdapter_Event adapter) {
             this.adapter = adapter;
         }
 
-        public void removeOldFilter() {
-            events = new ArrayList();
+        void removeOldFilter() {
+            events = new ArrayList<>();
         }
 
-        public void showWithoutFiltering() {
+        void showWithoutFiltering() {
             events = allEvents;
             notifyDataSetChanged();
         }
@@ -238,11 +234,11 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
         @Override
         protected Filter.FilterResults performFiltering(CharSequence constraint) {
             Filter.FilterResults results = new Filter.FilterResults();
-            List<Event> FilteredArrayNames = new ArrayList();
+            List<Event> FilteredArrayNames = new ArrayList<>();
 
             for(Event event : adapter.allEvents) {
-                if(event.categories.containsKey(constraint) && event.categories.get(constraint
-                        .toString())) {
+                if(event.categories.containsKey(constraint.toString()) && event.categories.get
+                        (constraint.toString())) {
                     FilteredArrayNames.add(event);
                 }
             }
@@ -259,8 +255,8 @@ public class ListViewAdapter_Event extends RecyclerView.Adapter<EventViewHolder>
             notifyDataSetChanged();
         }
 
-        public void uniqueResults() {
-            adapter.events = new ArrayList(new HashSet(adapter.events));
+        void uniqueResults() {
+            adapter.events = new ArrayList<>(new HashSet<>(adapter.events));
             notifyDataSetChanged();
         }
     }
