@@ -1,10 +1,13 @@
 package fr.eurecom.Ready2Meet;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -20,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -37,6 +41,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,6 +50,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import net.igenius.customcheckbox.CustomCheckBox;
@@ -77,7 +83,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
     private Date end = null;
     private View view;
 
-    //private GoogleMap googleMap;
+    private static final int PICK_GALLERY = 1;
 
     public EventDetailFragment() {
     }
@@ -90,7 +96,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
      *
      * @param eventId - The ID of the event
      */
-    public void setEvent(String eventId) {
+    public void setEvent(final String eventId) {
         Log.d("EventDetailFragment", "EventID: " + eventId);
         DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference().child
                 ("Events/" + eventId);
@@ -99,6 +105,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 event = dataSnapshot.getValue(Event.class);
+                event.id = eventId;
                 if(event != null && view != null) {
                     createEventDetails();
                 } else if(event == null) {
@@ -208,6 +215,66 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                 }
             }
         });
+    }
+
+    private void showImageGallery() {
+        LinearLayout eventImages = (LinearLayout) view.findViewById(R.id.event_photos);
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(event
+                .picture);
+        ImageView ii = new ImageView(eventImages.getContext());
+
+        ii.setPadding(0, 0, 4, 0);
+        LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
+        test.gravity = Gravity.CENTER;
+        ii.setLayoutParams(test);
+        Glide.with(eventImages.getContext()).using(new FirebaseImageLoader()).load(storageRef)
+                .fitCenter().into(ii);
+        eventImages.addView(ii);
+
+        ImageButton takePicture = (ImageButton) view.findViewById(R.id.button_take_picture);
+        takePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_GALLERY);
+            }
+        });
+
+        if(event.images == null) return;
+
+        for(Map.Entry<String, String> entry : event.images.entrySet()) {
+            storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(entry.getValue());
+            ii = new ImageView(eventImages.getContext());
+
+            ii.setPadding(0, 0, 4, 0);
+            test = new LinearLayout.LayoutParams(100, 100);
+            test.gravity = Gravity.CENTER;
+            ii.setLayoutParams(test);
+            Glide.with(eventImages.getContext()).using(new FirebaseImageLoader()).load
+                    (storageRef).fitCenter().into(ii);
+            eventImages.addView(ii);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PICK_GALLERY && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            String lastPath = uri.getLastPathSegment();
+            FirebaseStorage.getInstance().getReference().child("EventPhotos").child(event.id)
+                    .child(lastPath).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+                    FirebaseDatabase.getInstance().getReference().child("Events/" + event.id +
+                            "/images").push().setValue(downloadUri.toString());
+                }
+            });
+
+        }
     }
 
     /**
@@ -374,6 +441,8 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
 
         ImageView imageView = (ImageView) view.findViewById(R.id.eventpicture);
         Picasso.with(getContext()).load(event.picture).fit().centerCrop().into(imageView);
+
+        showImageGallery();
 
         showOwnerOptions();
         cancelEvent();

@@ -42,9 +42,10 @@ public class SignupActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword, name;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-    private Uri imageUri = Uri.parse("https://firebasestorage.googleapis" +
-            ".com/v0/b/ready2meet-e0286.appspot.com/o/ProfilePictures%2FDefaultProfilePicture" +
-            ".jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635");
+    private Uri imageUri = Uri.parse("https://firebasestorage.googleapis" + "" + "" + "" + "" +
+            "" + ".com/v0/b/ready2meet-e0286.appspot" + "" + "" + "" + "" + "" + "" + "" + "" +
+            "" + ".com/o/ProfilePictures%2FDefaultProfilePicture" + "" + "" + "" + "" + "" + "" +
+            "" + ".jpg?alt=media&token=56bc3fe3-c68d-4d6e-80aa-135c762c0635");
 
     private InputStream inputStream = null;
 
@@ -111,7 +112,9 @@ public class SignupActivity extends AppCompatActivity {
 
                 if(password.length() < 6) {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 " +
-                            "characters!", Toast.LENGTH_SHORT).show();
+                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
+                            "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
+                            "" + "" + "characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

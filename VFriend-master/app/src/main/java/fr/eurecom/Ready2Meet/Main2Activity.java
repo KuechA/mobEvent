@@ -78,6 +78,7 @@ public class Main2Activity extends ToolbarActivity {
             });
         }
 
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
