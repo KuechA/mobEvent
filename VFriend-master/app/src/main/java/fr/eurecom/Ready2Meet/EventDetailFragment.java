@@ -170,6 +170,15 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         boolean participating = event.Participants.containsKey(uid) && event.Participants.get(uid);
         checkBox.setChecked(participating);
 
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                intent.putExtra("EventId", event.id);
+                startActivity(intent);
+            }
+        });
+
         if(participating) {
             chatButton.setVisibility(View.VISIBLE);
         }

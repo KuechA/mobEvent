@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import fr.eurecom.Ready2Meet.database.Message;
@@ -20,6 +25,19 @@ public class ChatActivity extends AppCompatActivity {
     private String eventId;
     private List<Message> messageList = new ArrayList<>();
     private RecyclerViewAdapter_Message adapter;
+
+    private void sendMessages() {
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ImageButton sendButton = (ImageButton) findViewById(R.id.send_message_button);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = ((EditText) findViewById(R.id.message_field)).getText().toString();
+                FirebaseDatabase.getInstance().getReference().child("Messages").child(eventId)
+                        .push().setValue(new Message(message, uid, new Date().toString()));
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +65,14 @@ public class ChatActivity extends AppCompatActivity {
                         .getApplicationContext()));
                 adapter.notifyItemMoved(0, adapter.getItemCount() - 1);
                 adapter.notifyDataSetChanged();
+                listView.scrollToPosition(adapter.getItemCount() - 1);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
+        sendMessages();
     }
 }
