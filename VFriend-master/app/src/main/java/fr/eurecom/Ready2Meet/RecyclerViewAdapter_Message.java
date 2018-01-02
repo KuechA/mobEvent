@@ -40,6 +40,7 @@ public class RecyclerViewAdapter_Message extends RecyclerView.Adapter<MessageVie
     public void onBindViewHolder(MessageViewHolder holder, int position) {
         final Message message = messageList.get(position);
         holder.message.setText(message.message);
+        holder.time.setText(message.time);
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
                 ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + message.senderId);
