@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10px"
     android:layout_marginTop="10px">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/sender"
-        android:layout_width="100px"
-        android:layout_height="100px" />
-
     <LinearLayout
-        android:id="@+id/message_bubble"
+        android:id="@+id/message_bubble_sent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/received_bubble">
+        android:layout_gravity="right"
+        android:background="@drawable/sent_bubble"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/message"
@@ -28,8 +24,8 @@
             android:id="@+id/message_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="12:00"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:hint="12:00" />
 
     </LinearLayout>
 </LinearLayout>

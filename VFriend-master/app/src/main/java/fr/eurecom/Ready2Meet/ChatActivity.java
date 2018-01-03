@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,8 @@ public class ChatActivity extends AppCompatActivity {
     private String eventId;
     private List<Message> messageList = new ArrayList<>();
     private RecyclerViewAdapter_Message adapter;
+    public static final SimpleDateFormat MESSAGE_DATE = new SimpleDateFormat("yyyy-MM-dd' " +
+            "'HH:mm:ss.SSSSSS' 'ZZZZZ");
 
     private void sendMessages() {
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -34,7 +37,9 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String message = ((EditText) findViewById(R.id.message_field)).getText().toString();
                 FirebaseDatabase.getInstance().getReference().child("Messages").child(eventId)
-                        .push().setValue(new Message(message, uid, new Date().toString()));
+                        .push().setValue(new Message(message, uid, MESSAGE_DATE.format(new Date()
+                )));
+                ((EditText) findViewById(R.id.message_field)).setText("");
             }
         });
     }
@@ -50,7 +55,7 @@ public class ChatActivity extends AppCompatActivity {
         DatabaseReference messages = FirebaseDatabase.getInstance().getReference().child
                 ("Messages").child(eventId);
         messages.keepSynced(true);
-        messages.addValueEventListener(new ValueEventListener() {
+        messages.orderByChild("time").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 messageList.clear();
