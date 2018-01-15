@@ -19,7 +19,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -53,6 +57,25 @@ public class Main2Activity extends ToolbarActivity {
         tabLayout.getTabAt(0).setText("Overview");
         tabLayout.getTabAt(1).setText("All Events");
         tabLayout.addTab(tabLayout.newTab().setText("My Events"));
+
+        final String token = FirebaseInstanceId.getInstance().getToken();
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child
+                ("ParticipatingEvents").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String eventId = snapshot.getKey();
+                    FirebaseDatabase.getInstance().getReference().child("MessageNotifications")
+                            .child(eventId).child("notificationTokens").push().setValue(token);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: Error handling
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

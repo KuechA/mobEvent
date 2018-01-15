@@ -65,6 +65,9 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 messageList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if(snapshot.getKey().equals("notificationTokens")) {
+                        continue;
+                    }
                     Message message = snapshot.getValue(Message.class);
                     messageList.add(message);
                 }

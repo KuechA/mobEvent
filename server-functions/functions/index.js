@@ -16,21 +16,21 @@ exports.sendMessageNotification = functions.database.ref('/Messages/{eventId}/{m
   var message;
   admin.database().ref(`/Messages/${eventId}/${messageId}/message`).on("value",
     function(snapshot) {
-      console.log("Message: ", snapshot.val());
       message = snapshot.val();
+      console.log('We have a new message for event: ', eventId, ', message: ', message);
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
   });
   
-  console.log('We have a new message for event: ', eventId, ', message: ', message);
 
   // Get the list of device notification tokens.
-  const getDeviceTokensPromise = admin.database().ref(`/Messages/${eventId}/notificationTokens`).once('value');
+  const getDeviceTokensPromise = admin.database().ref(`/MessageNotifications/${eventId}/notificationTokens`).once('value');
 
   return Promise.all([getDeviceTokensPromise]).then(results => {
     const tokensSnapshot = results[0];
-    const message = results[0];
 
+    console.log('Message: ', message);
+    console.log('Snapshot: ', tokensSnapshot.val());
     // Check if there are any device tokens.
     if (!tokensSnapshot.hasChildren()) {
       return console.log('There are no notification tokens to send to.');
@@ -41,12 +41,15 @@ exports.sendMessageNotification = functions.database.ref('/Messages/{eventId}/{m
     const payload = {
       notification: {
         title: 'Ready2Meet',
-        body: message.message
+        body: message
       }
     };
 
-    // Listing all tokens.
-    const tokens = Object.keys(tokensSnapshot.val());
+	var tokens = [];
+	var snapshot = tokensSnapshot.val();
+	for(var k in snapshot) {
+		tokens.push(snapshot[k]);
+	}
 
     // Send notifications to all tokens.
     return admin.messaging().sendToDevice(tokens, payload).then(response => {
@@ -56,11 +59,6 @@ exports.sendMessageNotification = functions.database.ref('/Messages/{eventId}/{m
         const error = result.error;
         if (error) {
           console.error('Failure sending notification to', tokens[index], error);
-          // Cleanup the tokens who are not registered anymore.
-          if (error.code === 'messaging/invalid-registration-token' ||
-              error.code === 'messaging/registration-token-not-registered') {
-            tokensToRemove.push(tokensSnapshot.ref.child(tokens[index]).remove());
-          }
         }
       });
       return Promise.all(tokensToRemove);
