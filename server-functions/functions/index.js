@@ -29,14 +29,13 @@ exports.sendMessageNotification = functions.database.ref('/Messages/{eventId}/{m
   return Promise.all([getDeviceTokensPromise]).then(results => {
     const tokensSnapshot = results[0];
 
-    console.log('Message: ', message);
-    console.log('Snapshot: ', tokensSnapshot.val());
     // Check if there are any device tokens.
     if (!tokensSnapshot.hasChildren()) {
       return console.log('There are no notification tokens to send to.');
     }
     console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
 
+	// TODO: replace title with event title
     // Notification details.
     const payload = {
       notification: {
