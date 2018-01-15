@@ -50,6 +50,11 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         eventId = getIntent().hasExtra("EventId") ? getIntent().getStringExtra("EventId") : null;
+        String eventTitle = getIntent().hasExtra("EventTitle") ? getIntent().getStringExtra
+                ("EventTitle") : "Chatroom";
+
+        getSupportActionBar().show();
+        getSupportActionBar().setTitle(eventTitle);
 
         final RecyclerView listView = (RecyclerView) findViewById(R.id.list_chat);
         DatabaseReference messages = FirebaseDatabase.getInstance().getReference().child

@@ -175,6 +175,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ChatActivity.class);
                 intent.putExtra("EventId", event.id);
+                intent.putExtra("EventTitle", event.title);
                 startActivity(intent);
             }
         });
