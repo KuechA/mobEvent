@@ -171,6 +171,14 @@ showstringspaces=false}
 \begin{frame}{UI Design and Click Stream}
 \begin{figure}
     \centering
+    \subfloat[Chat]{\includegraphics[height=0.85\textheight]{graphics/Chat.png}}\qquad
+    \subfloat[Chat Notification]{\includegraphics[height=0.85\textheight]{graphics/ChatNotification.png}}
+\end{figure}
+\end{frame}
+
+\begin{frame}{UI Design and Click Stream}
+\begin{figure}
+    \centering
     \subfloat[Add Event]{\includegraphics[height=0.85\textheight]{graphics/AddEvent.jpg}}\qquad
     \subfloat[Add Event Location]{\includegraphics[height=0.85\textheight]{graphics/AddEvent_Location.png}}
 \end{figure}
@@ -201,7 +209,13 @@ showstringspaces=false}
 + DisplayName : String\\
 + ParticipatingEvents: Map\textless String, Boolean\textgreater\\
 + ProfilePictureURL : String
-}{}
+}{} (User);
+
+\umlclass[right of=User, node distance=10cm]{fr.eurecom.Ready2Meet.database::Message}{
++ message : String\\
++ senderId : String\\
++ time : String
+}{};
 \end{tikzpicture}\bigskip
 
 \begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
@@ -231,18 +245,20 @@ showstringspaces=false}
 \begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
 \umlsimpleclass{AppCompatActivity}
 \umlsimpleclass[type=interface, x=8]{OnNavigationItemSelectedListener}
-\umlsimpleclass[type=abstract, x=9, y=-3]{ToolbarActivity}
+\umlsimpleclass[type=abstract, x=11.3, y=-3]{ToolbarActivity}
 \umlsimpleclass[x=-2, y=-3]{ResetPasswordActivity}
 \umlsimpleclass[x=2, y=-3]{SignupActivity}
-\umlsimpleclass[x=5.5, y=-3]{LoginActivity}
-\umlsimpleclass[x=9, y=-6]{MainActivity}
-\umlsimpleclass[x=5, y=-6]{AddEventActivity}
+\umlsimpleclass[x=5.3, y=-3]{LoginActivity}
+\umlsimpleclass[x=8.3, y=-3]{ChatActivity}
+\umlsimpleclass[x=11.3, y=-6]{MainActivity}
+\umlsimpleclass[x=8, y=-6]{AddEventActivity}
 
 \umlimpl{ToolbarActivity}{OnNavigationItemSelectedListener}
 \umlVHVinherit{ToolbarActivity}{AppCompatActivity}
 \umlVHVinherit{MainActivity}{ToolbarActivity}
 \umlVHVinherit{AddEventActivity}{ToolbarActivity}
 \umlVHVinherit{LoginActivity}{AppCompatActivity}
+\umlVHVinherit{ChatActivity}{AppCompatActivity}
 \umlVHVinherit{SignupActivity}{AppCompatActivity}
 \umlVHVinherit{ResetPasswordActivity}{AppCompatActivity}
 \end{tikzpicture}
@@ -262,6 +278,18 @@ showstringspaces=false}
 \umlVHVinherit{AllEvents}{Fragment}
 \umlVHVinherit{DashboardFragment}{Fragment}
 \umlVHVinherit{AccountOptions}{Fragment}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{SW Architecture -- Services}
+\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
+\umlsimpleclass[x=5]{FirebaseMessagingService}
+\umlsimpleclass[x = 5, y=-3]{ChatNotificationService}
+\umlsimpleclass[x = 11]{FirebaseInstanceIdService}
+\umlsimpleclass[x = 11, y=-3]{MyFirebaseInstanceIdService}
+
+\umlVHVinherit{MyFirebaseInstanceIdService}{FirebaseInstanceIdService}
+\umlVHVinherit{ChatNotificationService}{FirebaseMessagingService}
 \end{tikzpicture}
 \end{frame}
 
@@ -292,16 +320,15 @@ Project status:
 \begin{itemize}
 \item Core functionality already available
 \item Creating and joining events
+\item Photo gallery
+\item Chat for each event (incl. notifications)
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Status and Planning}
 Work plan:
 \begin{itemize}
-\item Add chat functionality
-\item Add photo gallery
-\item Add proximity notifications
-\item UI and performance improvements\bigskip
+\item Add proximity notifications\bigskip
 \end{itemize}
 Task attribution:
 \begin{itemize}
