@@ -15,6 +15,7 @@
 \usepackage{varwidth}
 \usepackage{amsmath,amssymb}
 \usepackage{amsthm}
+\usepackage{tikz-uml}
 \usepackage[colorlinks, pdfpagelabels, pdfstartview = FitH, bookmarksopen = true, bookmarksnumbered = true,
 linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black, pagebackref = true, pdftex, pdfauthor={Berkay Köksal, Alexander Küchler, Saad Lamdouar}, pdftitle={Ready2Meet: Event Organizer}] {hyperref}
 
@@ -108,8 +109,121 @@ Both techniques aim at attracting as many users as possible. Even if we have som
 In this section, we shortly present a couple of competitors. Please note that the list is not complete and only presents a rough overview of the market.
 
 Fever generates an event list taking into account the user's interests. However, it is only available in a few big cities and does not offer many events. Also, the focus is on commercial events while we aim at providing a platform to offer any kind of events, in especial, ``private'' and free ones.
-WeTorch is a free app that provides a selection of events which are close to the user's location. It only exists in spanish and the focus lies on cultural events as well as arts.
-Event Manager and Event Manager by Billeto give overviews of the event for event managers and help event organizers to grow their event reach and manage it.
-While offering a platform is not the main focus, Facebook provides the functionality to invite friends to events or make them publicly available. In especial due to the large user community, it is an important competitor on the market.
+
+WeTorch is a free app that provides a selection of events which are close to the user's location. It only exists in spanish and the focus lies on cultural events as well as arts.
+
+Event Manager and Event Manager by Billeto give overviews of the event for event managers and help event organizers to grow their event reach and manage it.
+
+While offering a platform is not the main focus, Facebook provides the functionality to invite friends to events or make them publicly available. In especial due to the large user community, it is an important competitor on the market.
+
+\section{Implementation}
+In this section, we discuss technical details of our implementation.
+
+\subsection{Database}
+To store our data (events, messages, users) and make them available to all users, we heavily make use of the features of Firebase\footnote{\url{https://firebase.google.com/}} database. Firebase provides a real-time database and is therefore ideally suitable to make changes on data available to multiple users in real time. Apart from that, it can easily be integrated into Android apps (as well as iOS and web applications).
+
+We need to store 3 different types of data structures namely user accounts, chat messages and events. For each of the structures, one java class defines the data fields which are stored. Class diagrams of the classes are shown in \autoref{fig:dbClasses}.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[every node/.style={scale=0.8}]
+\umlclass{fr.eurecom.Ready2Meet.database::User}{
++ DisplayName : String\\
++ ParticipatingEvents: Map\textless String, Boolean\textgreater\\
++ ProfilePictureURL : String
+}{} (User);
+
+\umlclass[below of=User, node distance=3.5cm]{fr.eurecom.Ready2Meet.database::Message}{
++ message : String\\
++ senderId : String\\
++ time : String
+}{} (Message);
+
+\umlclass[below of=Message, node distance=10cm]{fr.eurecom.Ready2Meet.database::Event}{
++ id : String\\
++ title : String\\
++ description : String\\
++ owner : String\\
++ current : Long\\
++ categories : Map\textless String, Boolean\textgreater\\
++ capacity : Long\\
++ picture : String\\
++ place : String\\
++ startTime : String\\
++ endTime : String\\
++ Participants : Map\textless String, Boolean\textgreater\\
+%+ WhoReported Map\textless String, Boolean\textgreater\\
++ notificationArea : Long\\
++ latitude : Double\\
++ longitude : Double
+}{};
+\end{tikzpicture}
+\caption{UML class diagrams of the database classes}
+\label{fig:dbClasses}
+\end{figure}
+
+\subsection{Application Components}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[every node/.style={scale=0.8}]
+\umlsimpleclass{AppCompatActivity}
+\umlsimpleclass[type=interface, x=8]{OnNavigationItemSelectedListener}
+\umlsimpleclass[type=abstract, x=11.3, y=-2]{ToolbarActivity}
+\umlsimpleclass[x=-2, y=-2]{ResetPasswordActivity}
+\umlsimpleclass[x=2, y=-2]{SignupActivity}
+\umlsimpleclass[x=5.3, y=-2]{LoginActivity}
+\umlsimpleclass[x=8.3, y=-2]{ChatActivity}
+\umlsimpleclass[x=11.3, y=-4]{MainActivity}
+\umlsimpleclass[x=8, y=-4]{AddEventActivity}
+
+\umlimpl{ToolbarActivity}{OnNavigationItemSelectedListener}
+\umlVHVinherit{ToolbarActivity}{AppCompatActivity}
+\umlVHVinherit{MainActivity}{ToolbarActivity}
+\umlVHVinherit{AddEventActivity}{ToolbarActivity}
+\umlVHVinherit{LoginActivity}{AppCompatActivity}
+\umlVHVinherit{ChatActivity}{AppCompatActivity}
+\umlVHVinherit{SignupActivity}{AppCompatActivity}
+\umlVHVinherit{ResetPasswordActivity}{AppCompatActivity}
+\end{tikzpicture}
+\caption{UML class hierarchy Activities}
+\label{fig:activities}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[every node/.style={scale=0.8}]
+\umlsimpleclass[type=interface, x=-5]{OnMapReadyCallback}
+\umlsimpleclass[x=2]{Fragment}
+\umlsimpleclass[x = -4, y=-2]{EventDetailFragment}
+\umlsimpleclass[y=-2]{AllEvents}
+\umlsimpleclass[x = 4, y=-2]{DashboardFragment}
+\umlsimpleclass[x = 8, y=-2]{AccountOptions}
+
+\umlimpl{EventDetailFragment}{OnMapReadyCallback}
+\umlVHVinherit{EventDetailFragment}{Fragment}
+\umlVHVinherit{AllEvents}{Fragment}
+\umlVHVinherit{DashboardFragment}{Fragment}
+\umlVHVinherit{AccountOptions}{Fragment}
+\end{tikzpicture}
+\caption{UML class hierarchy Fragments}
+\label{fig:fragments}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[every node/.style={scale=0.8}]
+\umlsimpleclass[x=5]{FirebaseMessagingService}
+\umlsimpleclass[x = 5, y=-1.5]{ChatNotificationService}
+\umlsimpleclass[x = 11]{FirebaseInstanceIdService}
+\umlsimpleclass[x = 11, y=-1.5]{MyFirebaseInstanceIdService}
+
+\umlVHVinherit{MyFirebaseInstanceIdService}{FirebaseInstanceIdService}
+\umlVHVinherit{ChatNotificationService}{FirebaseMessagingService}
+\end{tikzpicture}
+\caption{UML class hierarchy Services}
+\label{fig:services}
+\end{figure}
+
 
 \end{document}
