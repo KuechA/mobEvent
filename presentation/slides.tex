@@ -293,6 +293,53 @@ showstringspaces=false}
 \end{tikzpicture}
 \end{frame}
 
+\begin{frame}{SW Architecture -- Fragments}
+\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
+\umlsimpleclass[type=interface, x=-5]{OnMapReadyCallback}
+\umlsimpleclass[x=2]{Fragment}
+\umlsimpleclass[x = -4, y=-3]{EventDetailFragment}
+\umlsimpleclass[y=-3]{AllEvents}
+\umlsimpleclass[x = 4, y=-3]{DashboardFragment}
+\umlsimpleclass[x = 8, y=-3]{AccountOptions}
+
+\umlimpl{EventDetailFragment}{OnMapReadyCallback}
+\umlVHVinherit{EventDetailFragment}{Fragment}
+\umlVHVinherit{AllEvents}{Fragment}
+\umlVHVinherit{DashboardFragment}{Fragment}
+\umlVHVinherit{AccountOptions}{Fragment}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Interaction with Backend}
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\node[inner sep=0pt] (ANDROID) at (0,1.5) {\includegraphics[width=.07\textwidth]{graphics/android.jpg}};
+\node[inner sep=0pt] (FIREBASE) at (6,1.5) {\includegraphics[width=.1\textwidth]{graphics/firebase.png}};
+
+\draw[thick] (0,1) -- (0,-5);
+\draw[thick] (6,1) -- (6,-5);
+
+\node at (-1, 0.7) {Add Event};
+\draw[thick,->] (0, 0.5) -- (6, 0.5) node[midway, above] {Add Event};
+
+\node at (-1, -0.7) {Join Event};
+\draw[thick,->] (0, -1) -- (6, -1) node[midway, above] {Add User to Event Participants};
+
+\node at (-1.3, -2.2) {Send Message};
+\draw[thick,->] (0, -2.5) -- (6, -2.5) node[midway, above] {Add Message};
+
+\node[inner sep=0pt] at (8, -1.6) {\includegraphics[width=.1\textwidth]{graphics/firebase.png}};
+\node(FIREBASE) at (8, -2.3) {Functions};
+\draw[thick] (8, -2.5) -- (8,-5);
+\draw[thick,->] (8, -3.0) -- (6, -3.0) node[midway, above] {Get Users};
+\draw[thick,->] (8, -3.8) -- (6, -3.8) node[midway, above] {Get New Message};
+\draw[thick,->] (8, -4.3) -- (0, -4.3) node[midway, above] {Send Notification};
+
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Technical Details}
 Permissions:
 \begin{itemize}
