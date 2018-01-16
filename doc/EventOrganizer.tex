@@ -16,6 +16,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{amsthm}
 \usepackage{tikz-uml}
+\usepackage[underline=false]{pgf-umlsd}
 \usepackage[colorlinks, pdfpagelabels, pdfstartview = FitH, bookmarksopen = true, bookmarksnumbered = true,
 linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black, pagebackref = true, pdftex, pdfauthor={Berkay Köksal, Alexander Küchler, Saad Lamdouar}, pdftitle={Ready2Meet: Event Organizer}] {hyperref}
 
@@ -27,6 +28,18 @@ linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black,
 
 \renewcommand{\arraystretch}{1.25}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% Stuff for UML Sequence
+\renewcommand{\mess}[4][0]{
+  \stepcounter{seqlevel}
+  \path
+  (#2)+(0,-\theseqlevel*\unitfactor-0.7*\unitfactor) node (mess from) {};
+  \addtocounter{seqlevel}{#1}
+  \path
+  (#4)+(0,-\theseqlevel*\unitfactor-0.7*\unitfactor) node (mess to) {};
+  \draw[->,>=angle 60] (mess from) -- (mess to) node[midway, above]
+  {#3};    
+}
 
 \usepackage{enumitem}
 \setlist{itemsep=0.1em}
@@ -233,5 +246,53 @@ Two services are continuously running to give the user feedback on changes in th
 \label{fig:services}
 \end{figure}
 
+\subsection{Frontend/Backend Interaction}
+
+\begin{figure}[htb]
+\centering
+\begin{sequencediagram}
+\newinst{DEV}{\shortstack{Android\\device}}
+\newinst[2]{DB}{\shortstack{Firebase\\DB}}
+\newinst[1]{AUTH}{\shortstack{Firebase\\Authentication}}
+\newinst[1]{STORAGE}{\shortstack{Firebase\\Storage}}
+\newinst[1]{FUNC}{\shortstack{Firebase\\Functions}}
+
+\begin{sdblock}{Log-in}{User registers and logs in}
+  \mess{DEV}{User authentication, password}{AUTH}
+  \mess{AUTH}{User ID}{DEV}
+  \mess{DEV}{Add User ID $\rightarrow$ user data}{DB}
+  \mess{DEV}{User picture}{STORAGE}
+\end{sdblock}
+
+\begin{sdblock}{Add Event}{User adds event}
+  \mess{DEV}{Add event}{DB}
+  \mess{DEV}{Add chat for event}{DB}
+  \mess{DB}{Event ID}{DEV}
+  \mess{DEV}{Event ID $\rightarrow$ Event data}{DB}
+  \mess{DEV}{Event picture}{STORAGE}
+\end{sdblock}
+
+\begin{sdblock}{Join Event}{User joins event}
+  \mess{DB}{Event Participants}{DEV}
+  \mess{DEV}{Updated Event Participants}{DB}
+\end{sdblock}
+
+\begin{sdblock}{Add Picture}{User adds photo to event}
+  \mess{DEV}{Event picture}{STORAGE}
+\end{sdblock}
+
+\begin{sdblock}{Chat}{User writes chat message}
+  \mess{FUNC}{Listener to writing chat messages}{DB}
+  \mess{DEV}{Add message to chat}{DB}
+  \mess{DB}{New message}{FUNC}
+  \mess{FUNC}{Get users in the chatroom}{DB}
+  \mess{DB}{Users in the chatroom}{FUNC}
+  \mess{FUNC}{Notification: New message}{DEV}
+\end{sdblock}
+
+\end{sequencediagram}
+\caption{Component Interaction}
+\label{fig:interaction}
+\end{figure}
 
 \end{document}
