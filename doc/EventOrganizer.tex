@@ -163,6 +163,9 @@ We need to store 3 different types of data structures namely user accounts, chat
 \end{figure}
 
 \subsection{Application Components}
+To provide the functionality, we implemented several different components which we discuss in this section.
+
+The first crucial components of any Android app are the Activities shown in \autoref{fig:activities}. First, the three activities \texttt{ResetPasswordActivity}, \texttt{SignupActivity}, \texttt{LoginActivity} are responsible for managing user accounts and the corresponding login credentials. The class \texttt{ChatActivity} shows the chatroom for a selected event and requires the ID of the event in an extra in order to retrieve the chat messages. \texttt{AddEventActivity} is used to add one new event to the event database. The \texttt{MainActivity} shows the start screen of the app and displays all events on a map as well as in a list.
 
 \begin{figure}[htb]
 \centering
@@ -190,6 +193,8 @@ We need to store 3 different types of data structures namely user accounts, chat
 \label{fig:activities}
 \end{figure}
 
+To make our app more interactive, we have a couple of fragments. When the user starts the app, the \texttt{DashboardFragment} is shown which provides an overview over all events in a map. Each event has an own marker on the map. Different sizes of the markers are used to resemble the number of users of the corresponding events and thus allow the user to easily find more popular events. Next, the fragment \texttt{AllEvents} shows the events in a list and allows filtering events with respect to their category (e.g. Sport, Outdoor, Party, \dots). After clicking on an event in one of the two views, the \texttt{EventDetailFragment} is displayed which makes the full event details available to the users, including an image gallery, description, time and place of the event. Furthermore, possible collisions of the event with the calendar are checked to give the user feedback if it is likely for him to be available during the event. Also, the user can join and unjoin an event and access the chatroom if he registered for the event.
+
 \begin{figure}[htb]
 \centering
 \begin{tikzpicture}[every node/.style={scale=0.8}]
@@ -201,6 +206,7 @@ We need to store 3 different types of data structures namely user accounts, chat
 \umlsimpleclass[x = 8, y=-2]{AccountOptions}
 
 \umlimpl{EventDetailFragment}{OnMapReadyCallback}
+\umlimpl{DashboardFragment}{OnMapReadyCallback}
 \umlVHVinherit{EventDetailFragment}{Fragment}
 \umlVHVinherit{AllEvents}{Fragment}
 \umlVHVinherit{DashboardFragment}{Fragment}
@@ -209,6 +215,8 @@ We need to store 3 different types of data structures namely user accounts, chat
 \caption{UML class hierarchy Fragments}
 \label{fig:fragments}
 \end{figure}
+
+Two services are continuously running to give the user feedback on changes in the Firebase database. \texttt{MyFirebaseInstanceIdService} is used to keep the users' ID which is necessary for Firebase Cloud Messaging (FCM)\footnote{\url{https://firebase.google.com/docs/cloud-messaging/}} up-to-date. The \texttt{ChatNotificationService} receives all notification messages from our FCM instance and displays them to the user. Like this, the user is always kept informed about new messages in the chats he joined.
 
 \begin{figure}[htb]
 \centering
