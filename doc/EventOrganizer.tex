@@ -15,8 +15,12 @@
 \usepackage{varwidth}
 \usepackage{amsmath,amssymb}
 \usepackage{amsthm}
-\usepackage{tikz-uml}
-\usepackage[underline=false]{pgf-umlsd}
+\usepackage{tikz}
+\usetikzlibrary{arrows, positioning}
+\usepackage{tikz-uml} % class diagrams
+\usepackage{pdflscape} % rotate pages
+\usepackage{afterpage} % push figure on own page
+\usepackage[underline=false]{pgf-umlsd} % sequence diagrams
 \usepackage[colorlinks, pdfpagelabels, pdfstartview = FitH, bookmarksopen = true, bookmarksnumbered = true,
 linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black, pagebackref = true, pdftex, pdfauthor={Berkay Köksal, Alexander Küchler, Saad Lamdouar}, pdftitle={Ready2Meet: Event Organizer}] {hyperref}
 
@@ -129,6 +133,48 @@ WeTorch is a free app that provides a selection of events which are close to the
 Event Manager and Event Manager by Billeto give overviews of the event for event managers and help event organizers to grow their event reach and manage it.
 
 While offering a platform is not the main focus, Facebook provides the functionality to invite friends to events or make them publicly available. In especial due to the large user community, it is an important competitor on the market.
+
+\section{UI Design and Click Stream}
+\afterpage{%
+    \clearpage% Flush earlier floats (otherwise order might not be correct)
+    \thispagestyle{empty}% empty page style (?)
+    \begin{landscape}
+      \begin{figure}[htb]
+      \hspace*{-4cm}
+      \centering
+      \begin{tikzpicture}[->,>=stealth']
+      
+      \node (LOGIN) {\includegraphics[width=.25\textwidth]{graphics/LoginScreen.png}};
+      \node[right=1.0cm of LOGIN] (START) {\includegraphics[width=.25\textwidth]{graphics/StartScreen.png}};
+      \node[right=1.0cm of START] (LIST) {\includegraphics[width=.25\textwidth]{graphics/EventList.png}};
+      \node[right=1.0cm of LIST] (DETAILS) {\includegraphics[width=.25\textwidth]{graphics/EventDetails.png}};
+      \node[right=1.0cm of DETAILS] (CHAT) {\includegraphics[width=.25\textwidth]{graphics/Chat.png}};
+      
+      \node[below=1.0cm of START] (ADD) {\includegraphics[width=.25\textwidth]{graphics/AddEvent.png}};
+      \node[right=1.0cm of ADD] (ADDCAT) {\includegraphics[width=.25\textwidth]{graphics/AddEvent_Categories.png}};
+      \node[right=1.0cm of ADDCAT] (ADDLOC) {\includegraphics[width=.25\textwidth]{graphics/AddEvent_Location.png}};
+      
+      \node[below=1.0cm of CHAT] (NOT) {\includegraphics[width=.25\textwidth]{graphics/ChatNotification.png}};
+      
+      \path	(LOGIN) edge [thick] (START)
+		(START) edge [thick] (LIST)
+		(LIST) edge [thick] (DETAILS)
+		(START) edge [bend left=55, thick] (DETAILS)
+		(DETAILS) edge [thick] (CHAT)
+		(START) edge [thick] (ADD)
+		(LIST) edge [thick] (ADD)
+		(DETAILS) edge [thick] (ADD) % Looks bad :(
+		(ADD) edge [thick] (ADDCAT)
+		(ADD) edge[bend right=50, thick] (ADDLOC)
+		(NOT) edge [thick] (CHAT);
+      
+      \end{tikzpicture}
+      \caption{Click stream of the app}
+      \label{fig:clickStream}
+      \end{figure}
+    \end{landscape}
+    \clearpage% Flush page
+}
 
 \section{Implementation}
 In this section, we discuss technical details of our implementation.
