@@ -31,6 +31,9 @@ linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black,
 \date{\today}
 \publishers{\centering\includegraphics[width=6cm]{graphics/Ready2Meet_Logo.png}} % We have no publishers but a logo we want to show ;)
 
+\newcommand{\todo}[1]{\textbf{\color{red} #1}}
+
+
 \renewcommand{\arraystretch}{1.25}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
@@ -135,6 +138,8 @@ Event Manager and Event Manager by Billeto give overviews of the event for event
 While offering a platform is not the main focus, Facebook provides the functionality to invite friends to events or make them publicly available. In especial due to the large user community, it is an important competitor on the market.
 
 \section{UI Design and Click Stream}
+\autoref{fig:clickStream} shows the overall design and click stream of the app.
+
 \afterpage{%
     \clearpage% Flush earlier floats (otherwise order might not be correct)
     \thispagestyle{empty}% empty page style (?)
@@ -175,6 +180,15 @@ While offering a platform is not the main focus, Facebook provides the functiona
     \end{landscape}
     \clearpage% Flush page
 }
+\todo{Write more here! I.e., discuss the following points:
+\begin{itemize}
+\item Login screen
+\item Start screen: Map which shows events in the user's surrounding. The size of the markers indicate the popularity of each event and are scaled according to the number of participants of the event in relation to the number of participants for the most popular event. By clicking on the marker, the title of the event is shown. After clicking on the title, the event details are displayed
+\item By swiping to the right from the start screen, the events are listed with increasing event time. It is possible for the user to filter events according to their categories. By clicking on one of the events, its details are shown
+\item Chat
+\item Adding an event: Many dialogs to make it interactive and to provide sanitized data.
+\item Notification is received when new messages are available in the chat
+\end{itemize}}
 
 \section{Implementation}
 In this section, we discuss technical details of our implementation.

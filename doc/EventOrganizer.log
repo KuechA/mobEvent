@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.3.26)  16 JAN 2018 19:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.3.26)  16 JAN 2018 20:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1102,20 +1102,20 @@ LaTeX Warning: Unused global option(s):
 (./EventOrganizer.aux)
 \openout1 = `EventOrganizer.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
 
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -1161,10 +1161,10 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box107
-Package hyperref Info: Link coloring ON on input line 52.
-LaTeX Info: Redefining \ref on input line 52.
-LaTeX Info: Redefining \pageref on input line 52.
-LaTeX Info: Redefining \nameref on input line 52.
+Package hyperref Info: Link coloring ON on input line 55.
+LaTeX Info: Redefining \ref on input line 55.
+LaTeX Info: Redefining \pageref on input line 55.
+LaTeX Info: Redefining \nameref on input line 55.
  (./EventOrganizer.out)
 (./EventOrganizer.out)
 \@outlinefile=\write5
@@ -1175,14 +1175,14 @@ LaTeX Info: Redefining \nameref on input line 52.
 File: graphics/EurecomLogo.png Graphic file (type png)
 
 <use graphics/EurecomLogo.png>
-Package pdftex.def Info: graphics/EurecomLogo.png used on input line 54.
+Package pdftex.def Info: graphics/EurecomLogo.png used on input line 57.
 (pdftex.def)             Requested size: 170.71652pt x 80.58139pt.
-LaTeX Font Info:    Try loading font information for U+msa on input line 54.
+LaTeX Font Info:    Try loading font information for U+msa on input line 57.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 54.
+LaTeX Font Info:    Try loading font information for U+msb on input line 57.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1191,98 +1191,101 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: graphics/Ready2Meet_Logo.png Graphic file (type png)
 
 <use graphics/Ready2Meet_Logo.png>
-Package pdftex.def Info: graphics/Ready2Meet_Logo.png used on input line 54.
+Package pdftex.def Info: graphics/Ready2Meet_Logo.png used on input line 57.
 (pdftex.def)             Requested size: 170.71652pt x 170.71768pt.
  [1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./graph
 ics/EurecomLogo.png> <./graphics/Ready2Meet_Logo.png>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 77.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 80.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 77.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 80.
 
-[2] [3] [4] <graphics/LoginScreen.png, id=113, 1080.035pt x 1853.92625pt>
+[2] [3]
+LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 191.
+ [4] <graphics/LoginScreen.png, id=110, 1080.035pt x 1853.92625pt>
 File: graphics/LoginScreen.png Graphic file (type png)
 
 <use graphics/LoginScreen.png>
-Package pdftex.def Info: graphics/LoginScreen.png used on input line 184.
+Package pdftex.def Info: graphics/LoginScreen.png used on input line 191.
 (pdftex.def)             Requested size: 104.56389pt x 179.46288pt.
 
-<graphics/StartScreen.png, id=114, 1084.05pt x 1927.2pt>
+<graphics/StartScreen.png, id=111, 1084.05pt x 1927.2pt>
 File: graphics/StartScreen.png Graphic file (type png)
 
 <use graphics/StartScreen.png>
-Package pdftex.def Info: graphics/StartScreen.png used on input line 184.
+Package pdftex.def Info: graphics/StartScreen.png used on input line 191.
 (pdftex.def)             Requested size: 104.56389pt x 185.87953pt.
 
-<graphics/EventList.png, id=115, 1084.05pt x 1927.2pt>
+<graphics/EventList.png, id=112, 1084.05pt x 1927.2pt>
 File: graphics/EventList.png Graphic file (type png)
 
 <use graphics/EventList.png>
-Package pdftex.def Info: graphics/EventList.png used on input line 184.
+Package pdftex.def Info: graphics/EventList.png used on input line 191.
 (pdftex.def)             Requested size: 104.56389pt x 185.87953pt.
 
-<graphics/EventDetails.png, id=116, 807.015pt x 2035.605pt>
+<graphics/EventDetails.png, id=113, 807.015pt x 2035.605pt>
 File: graphics/EventDetails.png Graphic file (type png)
 
 <use graphics/EventDetails.png>
-Package pdftex.def Info: graphics/EventDetails.png used on input line 184.
+Package pdftex.def Info: graphics/EventDetails.png used on input line 191.
 (pdftex.def)             Requested size: 104.56389pt x 263.73718pt.
 
-<graphics/Chat.png, id=117, 1084.05pt x 1927.2pt>
+<graphics/Chat.png, id=114, 1084.05pt x 1927.2pt>
 File: graphics/Chat.png Graphic file (type png)
  <use graphics/Chat.png>
-Package pdftex.def Info: graphics/Chat.png used on input line 184.
+Package pdftex.def Info: graphics/Chat.png used on input line 191.
 (pdftex.def)             Requested size: 104.56389pt x 185.87953pt.
 
-<graphics/AddEvent.png, id=118, 813.0375pt x 1445.4pt>
+<graphics/AddEvent.png, id=115, 813.0375pt x 1445.4pt>
 File: graphics/AddEvent.png Graphic file (type png)
 
 <use graphics/AddEvent.png>
-Package pdftex.def Info: graphics/AddEvent.png used on input line 184.
+Package pdftex.def Info: graphics/AddEvent.png used on input line 191.
 (pdftex.def)             Requested size: 104.56389pt x 185.87953pt.
 
-<graphics/AddEvent_Categories.png, id=119, 1083.04625pt x 1854.93pt>
+<graphics/AddEvent_Categories.png, id=116, 1083.04625pt x 1854.93pt>
 File: graphics/AddEvent_Categories.png Graphic file (type png)
 
 <use graphics/AddEvent_Categories.png>
-Package pdftex.def Info: graphics/AddEvent_Categories.png used on input line 18
-4.
+Package pdftex.def Info: graphics/AddEvent_Categories.png used on input line 19
+1.
 (pdftex.def)             Requested size: 104.56389pt x 179.07887pt.
 
-<graphics/AddEvent_Location.png, id=120, 1080.035pt x 1857.94125pt>
+<graphics/AddEvent_Location.png, id=117, 1080.035pt x 1857.94125pt>
 File: graphics/AddEvent_Location.png Graphic file (type png)
 
 <use graphics/AddEvent_Location.png>
-Package pdftex.def Info: graphics/AddEvent_Location.png used on input line 184.
+Package pdftex.def Info: graphics/AddEvent_Location.png used on input line 191.
 
 (pdftex.def)             Requested size: 104.56389pt x 179.85153pt.
 
-<graphics/ChatNotification.png, id=121, 1084.05pt x 1927.2pt>
+<graphics/ChatNotification.png, id=118, 1084.05pt x 1927.2pt>
 File: graphics/ChatNotification.png Graphic file (type png)
 
 <use graphics/ChatNotification.png>
-Package pdftex.def Info: graphics/ChatNotification.png used on input line 184.
+Package pdftex.def Info: graphics/ChatNotification.png used on input line 191.
 (pdftex.def)             Requested size: 104.56389pt x 185.87953pt.
 
 
-LaTeX Warning: Float too large for page by 80.67316pt on input line 184.
+LaTeX Warning: Float too large for page by 80.67316pt on input line 191.
 
 [5 <./graphics/LoginScreen.png> <./graphics/StartScreen.png> <./graphics/EventL
 ist.png> <./graphics/EventDetails.png> <./graphics/Chat.png> <./graphics/AddEve
 nt.png> <./graphics/AddEvent_Categories.png> <./graphics/AddEvent_Location.png>
  <./graphics/ChatNotification.png>]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 194.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 208.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 194.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 208.
 Missing character: There is no ( in font nullfont!
 Missing character: There is no U in font nullfont!
 Missing character: There is no s in font nullfont!
@@ -1301,12 +1304,7 @@ Missing character: There is no e in font nullfont!
 Missing character: There is no ) in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
- [6
 
-
-
-
-]
 
 Class scrartcl Warning: Usage of deprecated font command `\it'!
 (scrartcl)              You should note, that in 1994 font command `\it' has
@@ -1319,71 +1317,102 @@ Class scrartcl Warning: Usage of deprecated font command `\it'!
 (scrartcl)              Note also, that KOMA-Script will remove the definition
 (scrartcl)              of `\it' anytime until release of about version 3.20.
 (scrartcl)              But for now, KOMA-Script will replace deprecated `\it'
-(scrartcl)              by `\normalfont \itshape ' on input line 235.
+(scrartcl)              by `\normalfont \itshape ' on input line 249.
 
 
-Overfull \hbox (49.43196pt too wide) in paragraph at lines 251--252
+Overfull \hbox (49.43196pt too wide) in paragraph at lines 265--266
+ [][] 
+ []
+
+[6
+
+
+
+
+]
+Overfull \hbox (45.05327pt too wide) in paragraph at lines 288--289
  [][] 
  []
 
 
-Overfull \hbox (45.05327pt too wide) in paragraph at lines 274--275
- [][] 
- []
-
-
-Overfull \hbox (21.04501pt too wide) in paragraph at lines 279--280
+Overfull \hbox (21.04501pt too wide) in paragraph at lines 293--294
 \OT1/cmr/m/n/10.95 nec-es-sary for Fire-base Cloud Mes-sag-ing (FCM)[][][][][] 
 up-to-date. The \OT1/cmtt/m/n/10.95 ChatNotificationService
  []
 
-[7]
+[7] [8]
 \pgf@layerbox@umlsd@background=\box108
 \pgf@layerboxsaved@umlsd@background=\box109
 \pgf@layerbox@umlsd@threadlayer=\box110
 \pgf@layerboxsaved@umlsd@threadlayer=\box111
 
-Overfull \hbox (27.70255pt too wide) in paragraph at lines 351--352
+Overfull \hbox (27.70255pt too wide) in paragraph at lines 365--366
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 77.02875pt on input line 354.
+LaTeX Warning: Float too large for page by 77.02875pt on input line 368.
 
-[8]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 356.
- [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 356.
+[9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 370.
+ [10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 370.
  (./EventOrganizer.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 356.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 356.
-Package rerunfilecheck Info: File `EventOrganizer.out' has not changed.
-(rerunfilecheck)             Checksum: 5DB35DBD2883148ECDCE365197A3B70A;725.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 356.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 370.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 370.
+
+
+Package rerunfilecheck Warning: File `EventOrganizer.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `EventOrganizer.out':
+(rerunfilecheck)             Before: 32A08C5FFADA177BE0D62C6723C10311;725
+(rerunfilecheck)             After:  B53673F6F76DA867CC0ABA2723320C0E;725.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 370.
  ) 
 Here is how much of TeX's memory you used:
- 26701 strings out of 493089
- 535286 string characters out of 6134842
- 775827 words of memory out of 5000000
- 29611 multiletter control sequences out of 15000+600000
+ 26709 strings out of 493089
+ 535369 string characters out of 6134842
+ 774228 words of memory out of 5000000
+ 29613 multiletter control sequences out of 15000+600000
  22607 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,11n,88p,1076b,1036s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/l
-ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
-l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/loc
-al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loca
-l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local
-/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/
-texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on EventOrganizer.pdf (9 pages, 3988132 bytes).
+ 64i,11n,88p,1076b,1118s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{figure.16} has been referenced but does not exist
+, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.14} has been referenced but does not exist, 
+replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.15} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsection.12} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{section.11} has been referenced but does not exist,
+ replaced by a fixed one
+
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
+r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
+local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local
+/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on EventOrganizer.pdf (10 pages, 3998872 bytes).
 PDF statistics:
- 211 PDF objects out of 1000 (max. 8388607)
- 152 compressed objects within 2 object streams
- 32 named destinations out of 1000 (max. 500000)
+ 228 PDF objects out of 1000 (max. 8388607)
+ 167 compressed objects within 2 object streams
+ 38 named destinations out of 1000 (max. 500000)
  260 words of extra memory for PDF output out of 10000 (max. 10000000)
 
