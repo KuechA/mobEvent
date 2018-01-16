@@ -25,6 +25,7 @@ linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black,
 \subtitle{Ready2Meet: Event Organizer for Android}
 \author{Berkay K\"oksal \and Alexander K\"uchler \and Saad Lamdouar}
 \date{\today}
+\publishers{\centering\includegraphics[width=6cm]{graphics/Ready2Meet_Logo.png}} % We have no publishers but a logo we want to show ;)
 
 \renewcommand{\arraystretch}{1.25}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
@@ -52,7 +53,7 @@ linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black,
 %\newpage
 
 \section{Application Description}
-The event organizer (name Ready2Meet) is an Android app to facilitate creating events and inviting people. The core of the application, namely organizing an event, can be used in two different modes:
+The event organizer (name: Ready2Meet) is an Android app to facilitate creating events and inviting people. The core of the application, namely organizing an event, can be used in two different modes:
 \begin{enumerate}
 \item Planned event
 \item Spontaneous event
@@ -247,6 +248,15 @@ Two services are continuously running to give the user feedback on changes in th
 \end{figure}
 
 \subsection{Frontend/Backend Interaction}
+\autoref{fig:FrontBackInteraction} shows how the Android app interacts with the different backend components. Our backend completely relies on Firebase and makes use of multiple of its different features.
+
+First, the user authentication is based on Firebase's authentication features. This eases registering users, the log-in as well as advanced features like resetting passwords. We store additional data in the Firebase database to better address our users. Finally, every user has an own picture which is stored in Firebase storage.
+
+In order to add event, we first make Firebase DB create a new ID for an event in the DB. For this event ID, the event data (i.e., title, description, time and place) are stored under the event ID. Finally, a folder for the event is created in Firebase storage and the event picture is uploaded to the folder. When additional pictures are added, they are stored in this folder and a value containing a link to download the image is added to the event instance in the DB.
+
+If a user joins an event, he fetches the participants of the event to join from the DB and sends an updated participant list to the DB.
+
+Finally, every user can write messages to a chat for each event he participates in. As we want to provide targeted push-notifications to users which are part of the chat, we implemented a Node.js component which is running as Firebase function instance (short function). The function is a listener to the DB and is notified whenever a new message is written to the chat. The new message is sent from the DB to the function which then retrieves the users of the corresponding chat and finally assembles a notification which is sent to all of these users. A service of the app receives the notification and displays the notification on the screen.
 
 \begin{figure}[htb]
 \centering
@@ -266,9 +276,9 @@ Two services are continuously running to give the user feedback on changes in th
 
 \begin{sdblock}{Add Event}{User adds event}
   \mess{DEV}{Add event}{DB}
-  \mess{DEV}{Add chat for event}{DB}
   \mess{DB}{Event ID}{DEV}
   \mess{DEV}{Event ID $\rightarrow$ Event data}{DB}
+  \mess{DEV}{Add chat for event}{DB}
   \mess{DEV}{Event picture}{STORAGE}
 \end{sdblock}
 
@@ -279,6 +289,8 @@ Two services are continuously running to give the user feedback on changes in th
 
 \begin{sdblock}{Add Picture}{User adds photo to event}
   \mess{DEV}{Event picture}{STORAGE}
+  \mess{STORAGE}{Picture download URL}{DEV}
+  \mess{DEV}{Add download URL to event's pictures}{DB}
 \end{sdblock}
 
 \begin{sdblock}{Chat}{User writes chat message}
@@ -292,7 +304,7 @@ Two services are continuously running to give the user feedback on changes in th
 
 \end{sequencediagram}
 \caption{Component Interaction}
-\label{fig:interaction}
+\label{fig:FrontBackInteraction}
 \end{figure}
 
 \end{document}
