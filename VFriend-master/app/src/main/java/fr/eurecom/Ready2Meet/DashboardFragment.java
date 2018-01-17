@@ -1,6 +1,8 @@
 package fr.eurecom.Ready2Meet;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -31,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import fr.eurecom.Ready2Meet.database.Event;
 
@@ -39,7 +42,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 /**
  * Fragment for the landing page. Displays events in a map view.
  */
-public class DashboardFragment extends Fragment implements OnMapReadyCallback {
+public class DashboardFragment extends Fragment implements OnMapReadyCallback, SharedPreferences
+        .OnSharedPreferenceChangeListener {
 
     private GoogleMap googleMap;
 
@@ -50,6 +54,14 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private List<Event> eventlist = new ArrayList<>();
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(AllEvents.FILTER_KEY)) {
+            Set<String> filterStrings = sharedPreferences.getStringSet(key, null);
+            showEventsInMap(filterStrings);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -88,6 +100,20 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getPreferences(Context.MODE_PRIVATE)
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().getPreferences(Context.MODE_PRIVATE)
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
     /**
      * Iterate over the list of all events and display the events in the map.
      * <p>
@@ -117,9 +143,33 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             googleMap.setMyLocationEnabled(true);
         }
 
+        // Get strings of categories to filter events.
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Set<String> filterStrings = sharedPref.getStringSet(AllEvents.FILTER_KEY, null);
+        sharedPref.registerOnSharedPreferenceChangeListener(this);
+
+        showEventsInMap(filterStrings);
+
+    }
+
+    private void showEventsInMap(Set<String> filterStrings) {
+        googleMap.clear();
+        
         // Iterate over list of events to set the positions in the map
         for(Event event : eventlist) {
-            if(event.latitude != null && event.longitude != null) {
+            boolean categoryMatches = false;
+            if(filterStrings != null) {
+                for(String filter : filterStrings) {
+                    categoryMatches |= event.categories.containsKey(filter) && event.categories
+                            .get(filter);
+
+                }
+            } else {
+                categoryMatches = true;
+            }
+
+            // Only show events with matching category
+            if(categoryMatches && event.latitude != null && event.longitude != null) {
                 LatLng location = new LatLng(event.latitude, event.longitude);
                 MarkerOptions marker = new MarkerOptions().position(location);
                 marker.title(event.title);
@@ -161,7 +211,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 ft.commit();
             }
         });
-
     }
 
     @Override

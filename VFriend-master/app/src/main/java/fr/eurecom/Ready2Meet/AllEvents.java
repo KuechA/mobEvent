@@ -1,5 +1,7 @@
 package fr.eurecom.Ready2Meet;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import fr.eurecom.Ready2Meet.database.Event;
@@ -30,6 +33,7 @@ public class AllEvents extends Fragment {
 
     private List<Event> eventlist = new ArrayList<>();
     private ListViewAdapter_Event adapter;
+    public static final String FILTER_KEY = "CATEGORY_FILTER";
 
     /**
      * Set up the spinner for filtering events according to the categories and add the listener
@@ -61,6 +65,11 @@ public class AllEvents extends Fragment {
         categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
             @Override
             public void selectedStrings(List<String> strings) {
+                // Write filter strings to shared preferences
+                SharedPreferences.Editor editor = getActivity().getPreferences(Context
+                        .MODE_PRIVATE).edit();
+                editor.putStringSet(FILTER_KEY, new HashSet<>(strings));
+                editor.commit();
 
                 ListViewAdapter_Event.EventFilter filter = (ListViewAdapter_Event.EventFilter)
                         adapter.getFilter();
