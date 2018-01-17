@@ -253,28 +253,29 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
             }
         });
 
-        if(event.images == null) return;
+        if(event.images != null) {
+            for(Map.Entry<String, String> entry : event.images.entrySet()) {
+                storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(entry.getValue());
+                ii = new ImageButton(eventImages.getContext());
 
-        for(Map.Entry<String, String> entry : event.images.entrySet()) {
-            storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(entry.getValue());
-            ii = new ImageButton(eventImages.getContext());
+                ii.setPadding(0, 0, 4, 0);
+                test = new LinearLayout.LayoutParams(120, 120);
+                test.gravity = Gravity.CENTER;
+                ii.setLayoutParams(test);
+                Glide.with(eventImages.getContext()).using(new FirebaseImageLoader()).load
+                        (storageRef).fitCenter().into(ii);
 
-            ii.setPadding(0, 0, 4, 0);
-            test = new LinearLayout.LayoutParams(120, 120);
-            test.gravity = Gravity.CENTER;
-            ii.setLayoutParams(test);
-            Glide.with(eventImages.getContext()).using(new FirebaseImageLoader()).load
-                    (storageRef).fitCenter().into(ii);
-            eventImages.addView(ii);
-            final StorageReference sRef = storageRef;
-            ii.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Glide.with(getContext()).using(new FirebaseImageLoader()).load(sRef)
-                            .fitCenter().centerCrop().into((ImageView) view.findViewById(R.id
-                            .eventpicture));
-                }
-            });
+                eventImages.addView(ii);
+                final StorageReference sRef = storageRef;
+                ii.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Glide.with(getContext()).using(new FirebaseImageLoader()).load(sRef)
+                                .fitCenter().centerCrop().into((ImageView) view.findViewById(R.id
+                                .eventpicture));
+                    }
+                });
+            }
         }
 
         // Add button to take pictures dynamically to the end of the picture gallery.
@@ -284,7 +285,6 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(120, 120);
         layout.gravity = Gravity.CENTER;
         takePicture.setLayoutParams(layout);
-        eventImages.addView(takePicture);
         takePicture.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_a_photo_black));
         takePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,6 +294,7 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                 startActivityForResult(intent, PICK_GALLERY);
             }
         });
+        eventImages.addView(takePicture);
 
         view.findViewById(R.id.right_button).setOnClickListener(new View.OnClickListener() {
             @Override
