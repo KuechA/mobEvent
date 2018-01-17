@@ -138,11 +138,11 @@ Event Manager and Event Manager by Billeto give overviews of the event for event
 While offering a platform is not the main focus, Facebook provides the functionality to invite friends to events or make them publicly available. In especial due to the large user community, it is an important competitor on the market.
 
 \section{UI Design and Click Stream}
-\autoref{fig:clickStream} shows the overall design and click stream of the app.
+In this section, we present the click stream and thus the complete UI design of our app. \autoref{fig:clickStream} shows the overall click stream with all possible links between views. The app is designed such that every page can be reached with only 2 clicks after starting the app.
 
-\afterpage{%
+\afterpage{
     \clearpage% Flush earlier floats (otherwise order might not be correct)
-    \thispagestyle{empty}% empty page style (?)
+    \thispagestyle{empty}
     \begin{landscape}
       \begin{figure}[htb]
       \hspace*{-4cm}
@@ -150,6 +150,7 @@ While offering a platform is not the main focus, Facebook provides the functiona
       \begin{tikzpicture}[->,>=stealth']
       
       \node (LOGIN) {\includegraphics[width=.25\textwidth]{graphics/LoginScreen.png}};
+      \node[above=0.0cm of LOGIN]  {Only once};
       \node[right=1.0cm of LOGIN] (START) {\includegraphics[width=.25\textwidth]{graphics/StartScreen.png}};
       \node[right=1.0cm of START] (LIST) {\includegraphics[width=.25\textwidth]{graphics/EventList.png}};
       \node[right=1.0cm of LIST] (DETAILS) {\includegraphics[width=.25\textwidth]{graphics/EventDetails.png}};
@@ -162,7 +163,7 @@ While offering a platform is not the main focus, Facebook provides the functiona
       \node[below=1.0cm of CHAT] (NOT) {\includegraphics[width=.25\textwidth]{graphics/ChatNotification.png}};
       
       \path	(LOGIN) edge [thick] (START)
-		(START) edge [thick] (LIST)
+		(START) edge [thick] node [above] {swipe} (LIST)
 		(LIST) edge [thick] (DETAILS)
 		(START) edge [bend left=55, thick] (DETAILS)
 		(DETAILS) edge [thick] (CHAT)
@@ -180,15 +181,17 @@ While offering a platform is not the main focus, Facebook provides the functiona
     \end{landscape}
     \clearpage% Flush page
 }
-\todo{Write more here! I.e., discuss the following points:
-\begin{itemize}
-\item Login screen
-\item Start screen: Map which shows events in the user's surrounding. The size of the markers indicate the popularity of each event and are scaled according to the number of participants of the event in relation to the number of participants for the most popular event. By clicking on the marker, the title of the event is shown. After clicking on the title, the event details are displayed
-\item By swiping to the right from the start screen, the events are listed with increasing event time. It is possible for the user to filter events according to their categories. By clicking on one of the events, its details are shown
-\item Chat
-\item Adding an event: Many dialogs to make it interactive and to provide sanitized data.
-\item Notification is received when new messages are available in the chat
-\end{itemize}}
+The first screen of the app is the login page. Once a user has registered and logged in for the first time, the user credentials are stored so that this step is skipped in further uses of the app.
+
+Once the user is logged in, the start screen of the app is designed to provide an overview of interesting events for the user. We display all events the user might be interested in according to its last search results in a map. Also, the user's current location is used to show only events which are in his/her surrounding. To indicate the popularity of each event, the size of the markers of every event is scaled according to the number of participants of the event in relation to the number of participants for the most popular event. By clicking on the marker, the title of the event is shown. After clicking on the title, the event details are displayed. This page allows the user a quick orientation and aims at targeted presentation of events to the user.
+
+By swiping to the right from the start screen, the events are listed with increasing event time. It is possible for the user to filter events according to predefined event categories. After filtering, the search is stored in shared preferences for later uses of the app. This allows us to reduce the user's clicks as we can assume that his/her preferences for event categories do not change frequently. By clicking on one of the events, its details are shown.
+
+The event details show a complete overview of the event. On the top, every participant of an event can add photos to an image gallery. Afterwards, event details like a description, time and location as well as conflicts with the own calendar are given to all users of the app. Also, all participants are shown and a bar indicates how many slots have already been occupied. If the user participates on an event, he can be redirected to a chat.
+
+A unique chat for every event can be used by all participants of an event to communicate before or after an event and thus discuss organizational details or share impressions. If new messages arrive in one of the user's chats, a notification is received also if the app is closed and serves as a quick link to the chat.
+
+From every screen of the app (except the chat), the user can reach a screen to add new events with only one click. Several dialogs are used to make the creation of the event interactive and provide us with sanitized data.
 
 \section{Implementation}
 In this section, we discuss technical details of our implementation.
