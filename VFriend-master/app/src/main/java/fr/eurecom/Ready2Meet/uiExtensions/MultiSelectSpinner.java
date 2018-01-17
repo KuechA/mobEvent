@@ -13,6 +13,7 @@ import android.widget.SpinnerAdapter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @SuppressLint("AppCompatCustomView")
 /**
@@ -97,10 +98,7 @@ import java.util.List;
         mSelection = new boolean[_items.length];
         mSelectionAtStart = new boolean[_items.length];
         simple_adapter.clear();
-        simple_adapter.add(_items[0]);
         Arrays.fill(mSelection, false);
-        mSelection[0] = true;
-        mSelectionAtStart[0] = true;
     }
 
     public void removeAllSelections() {
@@ -114,6 +112,24 @@ import java.util.List;
         listener.selectedStrings(getSelectedStrings());
         simple_adapter.clear();
         simple_adapter.add(buildSelectedItemString());
+    }
+
+    public void setSelection(Set<String> strings) {
+        if(strings == null) {
+            return;
+        }
+
+        for(int i = 0; i < _items.length; i++) {
+            if(strings.contains(_items[i])) {
+                mSelection[i] = true;
+                mSelectionAtStart[i] = true;
+            }
+        }
+        simple_adapter.clear();
+        simple_adapter.add(buildSelectedItemString());
+        if(listener != null) {
+            listener.selectedStrings(getSelectedStrings());
+        }
     }
 
     public void setSelection(int index) {

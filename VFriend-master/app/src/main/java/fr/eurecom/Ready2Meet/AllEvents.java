@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import fr.eurecom.Ready2Meet.database.Event;
 import fr.eurecom.Ready2Meet.uiExtensions.MultiSelectSpinner;
@@ -62,6 +63,8 @@ public class AllEvents extends Fragment {
         });
 
         categorySpinner.setItems(AddEventActivity.eventCategories);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Set<String> filterStrings = sharedPref.getStringSet(AllEvents.FILTER_KEY, null);
         categorySpinner.setListener(new MultiSelectSpinner.OnMultipleItemsSelectedListener() {
             @Override
             public void selectedStrings(List<String> strings) {
@@ -87,9 +90,10 @@ public class AllEvents extends Fragment {
                         Log.d("AllEvents", "No filtering as adapter is null");
                     }
                 }
-                if(strings.size() > 1) filter.uniqueResults();
+                filter.uniqueResults();
             }
         });
+        categorySpinner.setSelection(filterStrings);
     }
 
     public AllEvents() {
@@ -109,7 +113,7 @@ public class AllEvents extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_all_events, container, false);
+        final View view = inflater.inflate(R.layout.fragment_all_events, container, false);
 
         final RecyclerView listView = (RecyclerView) view.findViewById(R.id.listofevents);
         DatabaseReference events = FirebaseDatabase.getInstance().getReference().child("Events");
@@ -132,14 +136,14 @@ public class AllEvents extends Fragment {
                 listView.setLayoutManager(new LinearLayoutManager(AllEvents.this.getContext()));
                 adapter.notifyItemMoved(0, adapter.getItemCount() - 1);
                 adapter.notifyDataSetChanged();
+
+                setCategoriesFilter(view);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-        setCategoriesFilter(view);
 
         return view;
     }
