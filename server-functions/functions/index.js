@@ -19,9 +19,15 @@ exports.sendMessageNotification = functions.database.ref('/Messages/{eventId}/{m
       message = snapshot.val();
       console.log('We have a new message for event: ', eventId, ', message: ', message);
     }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
+      console.log("Reading the message failed: " + errorObject.code);
   });
-  
+  var eventTitle;
+  admin.database().ref(`/Events/${eventId}/title`).on("value",
+    function(snapshot) {
+      eventTitle = snapshot.val();
+    }, function (errorObject) {
+      console.log("Reading the event title failed: " + errorObject.code);
+  });
 
   // Get the list of device notification tokens.
   const getDeviceTokensPromise = admin.database().ref(`/MessageNotifications/${eventId}/notificationTokens`).once('value');
@@ -38,9 +44,14 @@ exports.sendMessageNotification = functions.database.ref('/Messages/{eventId}/{m
 	// TODO: replace title with event title
     // Notification details.
     const payload = {
+      data: {
+        EventId: eventId,
+        EventTitle: eventTitle
+      },
       notification: {
-        title: 'Ready2Meet',
-        body: message
+        title: eventTitle,
+        body: message,
+        click_action : "fr.eurecom.Ready2Meet.ChatActivity"
       }
     };
 
