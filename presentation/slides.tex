@@ -37,7 +37,7 @@
 
 \definecolor{green}{rgb}{0.0, 0.5, 0.0}
 
-\date{18 December 2017}
+\date{14 February 2018}
 
 \moduletitle{Mobile Applications and Services} % optional
 
@@ -118,17 +118,33 @@ showstringspaces=false}
 \begin{itemize}
 \item Target users: Everyone
 \item Development currently only for Android
-\item Pricing:
-	\begin{itemize}
-	\item Free basis version (advertisements possible)
-	\item In-App purchases for extended features e.g. business customers
-	\end{itemize}
+
 \item Marketing strategy:
 	\begin{itemize}
 	\item Offer free events
 	\item Discounts for events
 	\item[$\Rightarrow$] Gain many users for the app
 	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Business Model -- Monetization}
+Possibilities:
+\begin{itemize}
+\item Completely free (i.e. open source)
+\item Advertisements
+\item Selling tickets for commercial events
+\item In-App sales:
+	\begin{itemize}
+	\item No ads
+	\item Extended features: Target business customers or unlimited events for the user\bigskip
+	\end{itemize}
+\end{itemize}
+
+Selected strategy:
+\begin{itemize}
+\item Free basis version (ads possible)
+\item In-App purchases for extended features
 \end{itemize}
 \end{frame}
 
@@ -330,11 +346,10 @@ showstringspaces=false}
 \node at (-1.3, -2.2) {Send Message};
 \draw[thick,->] (0, -2.5) -- (6, -2.5) node[midway, above] {Add Message};
 
-\node[inner sep=0pt] at (8, -1.6) {\includegraphics[width=.1\textwidth]{graphics/firebase.png}};
-\node(FIREBASE) at (8, -2.3) {Functions};
-\draw[thick] (8, -2.5) -- (8,-5);
-\draw[thick,->] (8, -3.0) -- (6, -3.0) node[midway, above] {Get Users};
-\draw[thick,->] (8, -3.8) -- (6, -3.8) node[midway, above] {Get New Message};
+\node[inner sep=0pt] at (8, -1.0) {\includegraphics[width=.1\textwidth]{graphics/CloudFunctions.png}};
+\draw[thick] (8, -1.6) -- (8,-5);
+\draw[thick,->] (6, -3.2) -- (8, -3.2) node[midway, above] {New Message};
+\draw[thick,->] (8, -3.8) -- (6, -3.8) node[midway, above] {Get Users};
 \draw[thick,->] (8, -4.3) -- (0, -4.3) node[midway, above] {Send Notification};
 
 \end{tikzpicture}
@@ -357,30 +372,48 @@ Frameworks used:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Status and Planning}
-SW development methodology:
+\begin{frame}{Status and Planning -- SW development methodology}
 \begin{itemize}
 \item Git (repo: \url{https://github.com/KuechA/mobEvent})
-\item Rapid application development: Prototyping, Adjustment of requirements
-\item Chaos model: Resolve most important issue first\bigskip
+\item Agile development using 2 techniques:
+	\begin{itemize}
+	\item Rapid application development: Prototyping, Adjustment of requirements
+	\item Chaos model: Resolve most important issue first
+	\end{itemize}
+\item Continuous discussion about own task attributions, issues etc. via WhatsApp
 \end{itemize}
-Project status:
+\end{frame}
+
+\begin{frame}{Status and Planning -- Project status}
 \begin{itemize}
-\item Core functionality already available
+%\item Core functionality available
 \item Creating and joining events
+\item Real-time information for the user
+\item User-preferences taken into account
+\item Interaction with calendar
 \item Photo gallery
 \item Chat for each event (incl. notifications)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Status and Planning}
-Work plan:
+\begin{frame}{Status and Planning -- Task attribution}
 \begin{itemize}
-\item Add proximity notifications\bigskip
-\end{itemize}
-Task attribution:
-\begin{itemize}
-\item No clear task distribution
+\item Berkay:
+	\begin{itemize}
+	\item User management
+	\item Event list
+	\item UI enhancements
+	\item Support for event details
+	\end{itemize}
+\item Alex:
+	\begin{itemize}
+	\item Adding events
+	\item Chat
+	\item Landing page
+	\item Event details
+	\item Backend (Firebase functions)
+	\end{itemize}
+\item Saad: UI
 \end{itemize}
 \end{frame}
 
