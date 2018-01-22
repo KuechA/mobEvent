@@ -154,7 +154,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback, S
 
     private void showEventsInMap(Set<String> filterStrings) {
         googleMap.clear();
-        
+
         // Iterate over list of events to set the positions in the map
         for(Event event : eventlist) {
             boolean categoryMatches = false;
@@ -176,8 +176,15 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback, S
 
                 // Get icon and scale its size depending on the number of current people in the
                 // event
+                Drawable drawableicon;
                 Bitmap icon;
-                Drawable drawableicon = getResources().getDrawable(R.drawable.ic_location_red);
+                if(event.categories.containsKey("Outdoor") && event.categories.get("Outdoor")) {
+                    drawableicon = getResources().getDrawable(R.drawable.ic_location_green);
+                } else if(event.categories.containsKey("Party") && event.categories.get("Party")) {
+                    drawableicon = getResources().getDrawable(R.drawable.ic_location_blue);
+                } else {
+                    drawableicon = getResources().getDrawable(R.drawable.ic_location_red);
+                }
                 if(drawableicon instanceof BitmapDrawable) {
                     icon = ((BitmapDrawable) drawableicon).getBitmap();
                 } else {
