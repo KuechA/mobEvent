@@ -12,11 +12,8 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,21 +42,19 @@ public class RecyclerViewAdapter_Message extends RecyclerView.Adapter<MessageVie
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v;
         if(viewType == VIEW_TYPE_OUTGOING) {
-
             v = inflater.inflate(R.layout.row_message_sent, parent, false);
             v.findViewById(R.id.message_bubble_sent).getBackground().setColorFilter(context
                     .getResources().getColor(R.color.light_grey), PorterDuff.Mode.MULTIPLY);
 
-            de.hdodenhof.circleimageview.CircleImageView senderpicture = (de.hdodenhof.circleimageview.CircleImageView) v.findViewById(R.id.sender);
-            //here
+            /*de.hdodenhof.circleimageview.CircleImageView senderpicture = (de.hdodenhof
+                    .circleimageview.CircleImageView) v.findViewById(R.id.sender);
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl
-                    ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    ("gs://ready2meet-e0286.appspot.com/ProfilePictures/" + FirebaseAuth
+                            .getInstance().getCurrentUser().getUid());
 
-
-            Glide.with(v.getContext()).using(new FirebaseImageLoader()).load
-                    (storageRef).fitCenter().into(senderpicture);
-
+            Glide.with(v.getContext()).using(new FirebaseImageLoader()).load(storageRef)
+                    .fitCenter().into(senderpicture);*/
         } else {
             v = inflater.inflate(R.layout.row_message, parent, false);
             v.findViewById(R.id.message_bubble).getBackground().setColorFilter(context

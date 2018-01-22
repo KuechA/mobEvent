@@ -158,7 +158,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback, S
         // Iterate over list of events to set the positions in the map
         for(Event event : eventlist) {
             boolean categoryMatches = false;
-            if(filterStrings != null) {
+            if(filterStrings != null && ! filterStrings.isEmpty()) {
                 for(String filter : filterStrings) {
                     categoryMatches |= event.categories.containsKey(filter) && event.categories
                             .get(filter);

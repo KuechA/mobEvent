@@ -5,12 +5,13 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10px"
     android:layout_marginTop="10px"
-    android:weightSum="1"
-    >
-<LinearLayout
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="1"/>
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:id="@+id/message_bubble_sent"
         android:layout_width="wrap_content"
@@ -33,13 +34,12 @@
             android:hint="12:00" />
 
 
-
     </LinearLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <!--<de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/sender"
         android:layout_gravity="right"
         android:layout_width="100px"
-        android:layout_height="100px" />
+        android:layout_height="100px" />-->
 
 </LinearLayout>
