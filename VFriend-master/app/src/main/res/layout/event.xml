@@ -300,7 +300,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:background="#ffffff"
-
                                         android:gravity="center|end"
                                         android:text="3"
                                         android:textAlignment="viewEnd"
@@ -331,7 +330,7 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
-                                    android:layout_weight="50">
+                                    android:layout_weight="40">
 
                                     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
                                         android:layout_marginLeft="4dp"
