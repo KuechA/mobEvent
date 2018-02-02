@@ -1,5 +1,7 @@
 package fr.eurecom.Ready2Meet;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import fr.eurecom.Ready2Meet.database.User;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -34,11 +40,9 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class AccountOptions extends Fragment {
-    private Button btnChangeEmail, btnChangePassword, btnSendResetEmail, btnRemoveUser,
-            changeEmail, changePassword, sendEmail, remove, signOut, changeDisplayName,
-            changeProfilePicture;
 
-    private EditText oldEmail, newEmail, password, newPassword, newDisplayName;
+    private String oldName, oldMail;
+
     private ProgressBar progressBar;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
@@ -58,14 +62,10 @@ public class AccountOptions extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account_options, container, false);
-
-        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // toolbar.setTitle(getString(R.string.app_name));
-        // setSupportActionBar(toolbar);
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -86,247 +86,91 @@ public class AccountOptions extends Fragment {
             }
         };
 
-        btnChangeEmail = (Button) view.findViewById(R.id.change_email_button);
-        btnChangePassword = (Button) view.findViewById(R.id.change_password_button);
-        btnSendResetEmail = (Button) view.findViewById(R.id.sending_pass_reset_button);
-        btnRemoveUser = (Button) view.findViewById(R.id.remove_user_button);
-        changeEmail = (Button) view.findViewById(R.id.changeEmail);
-        changePassword = (Button) view.findViewById(R.id.changePass);
-        sendEmail = (Button) view.findViewById(R.id.send);
-        remove = (Button) view.findViewById(R.id.remove);
-        signOut = (Button) view.findViewById(R.id.sign_out);
-        changeDisplayName = (Button) view.findViewById(R.id.change_display_name);
-        changeProfilePicture = (Button) view.findViewById(R.id.change_profile_picture);
+        final String uid = user.getUid();
 
-        oldEmail = (EditText) view.findViewById(R.id.old_email);
-        newEmail = (EditText) view.findViewById(R.id.new_email);
-        password = (EditText) view.findViewById(R.id.password);
-        newPassword = (EditText) view.findViewById(R.id.newPassword);
-        newDisplayName = (EditText) view.findViewById(R.id.newDisplayName);
+        final EditText nameText = (EditText) view.findViewById(R.id.username);
+        final EditText mailText = (EditText) view.findViewById(R.id.mail);
+        final CircleImageView imgView = (CircleImageView) view.findViewById(R.id
+                .change_profile_picture);
+        mailText.setText(user.getEmail());
+        oldMail = user.getEmail();
 
-        oldEmail.setVisibility(View.GONE);
-        newEmail.setVisibility(View.GONE);
-        password.setVisibility(View.GONE);
-        newPassword.setVisibility(View.GONE);
-        changeEmail.setVisibility(View.GONE);
-        changePassword.setVisibility(View.GONE);
-        sendEmail.setVisibility(View.GONE);
-        remove.setVisibility(View.GONE);
-        newDisplayName.setVisibility(View.GONE);
-
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
-        if(progressBar != null) {
-            progressBar.setVisibility(View.GONE);
-        }
-
-        btnChangeEmail.setOnClickListener(new View.OnClickListener() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users/" + uid);
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                oldEmail.setVisibility(View.GONE);
-                newEmail.setVisibility(View.VISIBLE);
-                password.setVisibility(View.GONE);
-                newPassword.setVisibility(View.GONE);
-                changeEmail.setVisibility(View.VISIBLE);
-                changePassword.setVisibility(View.GONE);
-                sendEmail.setVisibility(View.GONE);
-                remove.setVisibility(View.GONE);
-                newDisplayName.setVisibility(View.GONE);
+            public void onDataChange(DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                nameText.setText(user.DisplayName);
+                oldName = user.DisplayName;
+                Picasso.with(getContext()).load(user.ProfilePictureURL).fit().into(imgView);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO: Error handling
             }
         });
 
-        changeEmail.setOnClickListener(new View.OnClickListener() {
+        // Open image selection dialog by clicking on image
+        imgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                if(user != null && ! newEmail.getText().toString().trim().equals("")) {
-                    user.updateEmail(newEmail.getText().toString().trim()).addOnCompleteListener
-                            (new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "Email address is updated. Please "
-                                        + "sign in with new email id!", Toast.LENGTH_LONG).show();
-                                signOut();
-                                progressBar.setVisibility(View.GONE);
-                            } else {
-                                Toast.makeText(getActivity(), "Failed to update email!", Toast
-                                        .LENGTH_LONG).show();
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-                } else if(newEmail.getText().toString().trim().equals("")) {
-                    newEmail.setError("Enter email");
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        changeDisplayName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                oldEmail.setVisibility(View.GONE);
-                newEmail.setVisibility(View.GONE);
-                password.setVisibility(View.GONE);
-                newPassword.setVisibility(View.GONE);
-                changeEmail.setVisibility(View.GONE);
-                changePassword.setVisibility(View.GONE);
-                sendEmail.setVisibility(View.GONE);
-                remove.setVisibility(View.GONE);
-
-                if(newDisplayName.getVisibility() == View.VISIBLE) {
-                    FirebaseUser user = auth.getCurrentUser();
-
-                    String signupEUID = user.getUid();
-                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child("Users").child(signupEUID).child("DisplayName").setValue
-                            (newDisplayName.getText().toString());
-                    Toast.makeText(getActivity(), "Display Name Updated!", Toast.LENGTH_LONG)
-                            .show();
-                }
-                newDisplayName.setVisibility(View.VISIBLE);
-
-            }
-        });
-
-        changeProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                oldEmail.setVisibility(View.GONE);
-                newEmail.setVisibility(View.GONE);
-                password.setVisibility(View.GONE);
-                newPassword.setVisibility(View.GONE);
-                changeEmail.setVisibility(View.GONE);
-                changePassword.setVisibility(View.GONE);
-                sendEmail.setVisibility(View.GONE);
-                remove.setVisibility(View.GONE);
-                newDisplayName.setVisibility(View.GONE);
-
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_GALLERY);
-
             }
         });
 
-        btnChangePassword.setOnClickListener(new View.OnClickListener() {
+        // Cancel this dialog -> Go back
+        Button cancelButton = (Button) view.findViewById(R.id.cancel_action);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                oldEmail.setVisibility(View.GONE);
-                newEmail.setVisibility(View.GONE);
-                password.setVisibility(View.GONE);
-                newPassword.setVisibility(View.VISIBLE);
-                changeEmail.setVisibility(View.GONE);
-                changePassword.setVisibility(View.VISIBLE);
-                sendEmail.setVisibility(View.GONE);
-                remove.setVisibility(View.GONE);
-                newDisplayName.setVisibility(View.GONE);
-
+                getActivity().onBackPressed();
             }
         });
 
-        changePassword.setOnClickListener(new View.OnClickListener() {
+        Button okButton = (Button) view.findViewById(R.id.set_changes);
+        okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                if(user != null && ! newPassword.getText().toString().trim().equals("")) {
-                    if(newPassword.getText().toString().trim().length() < 6) {
-                        newPassword.setError("Password too short, enter minimum 6 characters");
-                        progressBar.setVisibility(View.GONE);
-                    } else {
-                        user.updatePassword(newPassword.getText().toString().trim())
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                // Try to set mail if it has changed
+                String newMail = mailText.getText().toString().trim();
+                if(! oldMail.equals(newMail)) {
+                    if(user != null && ! newMail.equals("")) {
+                        user.updateEmail(newMail).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) {
-                                    Toast.makeText(getActivity(), "Password is updated, sign in "
-                                            + "with new password!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Email address is updated. " +
+                                            "Please sign in with new email id!", Toast
+                                            .LENGTH_LONG).show();
                                     signOut();
                                     progressBar.setVisibility(View.GONE);
                                 } else {
-                                    Toast.makeText(getActivity(), "Failed to update password!",
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Failed to update email!",
+                                            Toast.LENGTH_LONG).show();
                                     progressBar.setVisibility(View.GONE);
                                 }
                             }
                         });
+                    } else if(newMail.equals("")) {
+                        mailText.setError("Enter email");
                     }
-                } else if(newPassword.getText().toString().trim().equals("")) {
-                    newPassword.setError("Enter password");
-                    progressBar.setVisibility(View.GONE);
+                }
+
+                String newName = nameText.getText().toString();
+                if(oldName.equals(newName)) {
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("Users").child(uid).child("DisplayName").setValue(newName);
+                    Toast.makeText(getActivity(), "Username Updated!", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
-        btnSendResetEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                oldEmail.setVisibility(View.VISIBLE);
-                newEmail.setVisibility(View.GONE);
-                password.setVisibility(View.GONE);
-                newPassword.setVisibility(View.GONE);
-                changeEmail.setVisibility(View.GONE);
-                changePassword.setVisibility(View.GONE);
-                sendEmail.setVisibility(View.VISIBLE);
-                remove.setVisibility(View.GONE);
-                newDisplayName.setVisibility(View.GONE);
-
-            }
-        });
-
-        sendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                if(! oldEmail.getText().toString().trim().equals("")) {
-                    auth.sendPasswordResetEmail(oldEmail.getText().toString().trim())
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "Reset password email is sent!",
-                                        Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
-                            } else {
-                                Toast.makeText(getActivity(), "Failed to send reset email!",
-                                        Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-                } else {
-                    oldEmail.setError("Enter email");
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        btnRemoveUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                if(user != null) {
-                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "Your profile is deleted:( Create "
-                                        + "a" + " account now!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getActivity(), SignupActivity.class));
-                                getActivity().finish();
-                                progressBar.setVisibility(View.GONE);
-                            } else {
-                                Toast.makeText(getActivity(), "Failed to delete your account!",
-                                        Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-
+        // Sign out
+        Button signOut = (Button) view.findViewById(R.id.sign_out);
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -334,18 +178,99 @@ public class AccountOptions extends Fragment {
             }
         });
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Users").child(user.getUid()).child("DisplayName").addValueEventListener
-                (new ValueEventListener() {
+        // Show dialog to change password
+        Button resetPassword = (Button) view.findViewById(R.id.change_password_button);
+        resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String post = dataSnapshot.getValue(String.class);
-                newDisplayName.setText(post);
-            }
+            public void onClick(View v) {
+                View dialogView = inflater.inflate(R.layout.reset_password_dialog, null);
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext
+                        ());
+                alertDialogBuilder.setView(dialogView);
 
+                final EditText newPassword = (EditText) dialogView.findViewById(R.id.newPassword);
+                final EditText newPasswordConfirmation = (EditText) dialogView.findViewById(R.id
+                        .newPasswordConfirmation);
+
+                // set dialog message
+                alertDialogBuilder.setCancelable(true).setPositiveButton("OK", new
+                        DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(newPassword.getText().toString().equals(newPasswordConfirmation
+                                .getText().toString())) {
+                            user.updatePassword(newPassword.getText().toString().trim())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(getActivity(), "Password is updated, " +
+                                                "please sign in with the new password!", Toast
+                                                .LENGTH_SHORT).show();
+                                        signOut();
+                                    } else {
+                                        Toast.makeText(getActivity(), "Failed to update " +
+                                                "password!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+            }
+        });
+
+        // Send mail to reset password
+        Button sendEmail = (Button) view.findViewById(R.id.sending_pass_reset_button);
+        sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+            public void onClick(View v) {
+                auth.sendPasswordResetEmail(oldMail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "Reset password email is sent!", Toast
+                                    .LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Failed to send reset email!", Toast
+                                    .LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        // Remove the user
+        Button btnRemoveUser = (Button) view.findViewById(R.id.remove_user_button);
+        btnRemoveUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(user != null) {
+                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                Toast.makeText(getActivity(), "Your profile is deleted:( Create "
+                                        + "a new account now!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getActivity(), SignupActivity.class));
+                                getActivity().finish();
+                            } else {
+                                Toast.makeText(getActivity(), "Failed to delete your account!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
             }
         });
 
@@ -355,7 +280,6 @@ public class AccountOptions extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -373,6 +297,7 @@ public class AccountOptions extends Fragment {
     }
 
     //sign out method
+
     public void signOut() {
         auth.signOut();
     }
@@ -381,7 +306,6 @@ public class AccountOptions extends Fragment {
 
         if(requestCode == PICK_GALLERY && resultCode == RESULT_OK) {
             Uri uri = data.getData();
-
             StorageReference storage = FirebaseStorage.getInstance().getReference().child
                     ("ProfilePictures").child(auth.getCurrentUser().getUid());
 
