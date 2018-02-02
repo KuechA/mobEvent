@@ -26,7 +26,7 @@ linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black,
 
 \titlehead{\centering\includegraphics[width=6cm]{graphics/EurecomLogo.png}}
 \title{MobServ Challenge Project 2017}
-\subtitle{Ready2Meet: Event Organizer for Android}
+\subtitle{Ready2Meet: More than an event organizer}
 \author{Berkay K\"oksal \and Alexander K\"uchler \and Saad Lamdouar}
 \date{\today}
 \publishers{\centering\includegraphics[width=6cm]{graphics/Ready2Meet_Logo.png}} % We have no publishers but a logo we want to show ;)
@@ -56,19 +56,19 @@ linkcolor = black, plainpages = false, hypertexnames = false, citecolor = black,
 \maketitle
 
 %\setcounter{tocdepth}{2}
-%\tableofcontents
-%\newpage
+\tableofcontents
+\newpage
 
 \section{Application Description}
-The event organizer (name: Ready2Meet) is an Android app to facilitate creating events and inviting people. The core of the application, namely organizing an event, can be used in two different modes:
+Ready2Meet is an Android app which aims at facilitating creating events and inviting people. The core of the application, namely organizing an event, can be used in two different modes:
 \begin{enumerate}
 \item Planned event
 \item Spontaneous event
 \end{enumerate}
 
-For both modes, the user creates an event (including a start and end time, location, type of event and eventually a name). In the planned event mode, the user can invite specific people (friends) while for the spontaneous event, it is also possible to send an invitation to people which are close to the user's current location. Like this, he is able to spontaneously gather people based on their location.
+For both modes, the user creates an event (including a start and end time, location, type of event and eventually a name). In the planned event mode, the user can invite specific people (friends) while for the spontaneous event, it is not possible to invite specific people. Instead, everyone will be able to join the event which should only be displayed to a user if he is close to the event's location. Like this, the organizer of the event is able to spontaneously meet with people based on their location.
 
-Apart from this, all people joining an event should be able to share pictures of the event in the app and influence the event's outcome e.g. by voting for music on a party. Also, a chatroom should be available to communicate with the people before or after the event.
+Once a user joined an event, she/he is able to share pictures of the event in the app and eventually influence the event's outcome e.g. by voting for music on a party. A chatroom is available to communicate with the people before or after the event and thus allow networking and spreading information to all participants.
 
 For all kinds of events, the organizing person can add a list of required material (e.g. drinks or food) so that the guests can register to bring some of the material and thus easing the organization.
 
@@ -79,63 +79,22 @@ The features of our event organization app include
 \begin{itemize}
 \item Create an event (e.g. party, sports, hiking, lunch, ...)
 	\begin{itemize}
-	\item Invite friends
+	\item Invite friends -- Further development
 	\item Invite people in a close area. I.e., the user can specify a radius to invite people and the people are notified if they are interested in this kind of events
 	\end{itemize}
 \item Chatroom for event
-\item Enable music organization/voting during the event
 \item Share pictures of the event
-\item Who brings what?
 \item Get some additional information for the event 
 	\begin{itemize}
 	\item Weather forecast for outdoor events
 	\item Check if timeslot is free in your calendar
 	\end{itemize}
-\item Share the event in other networks e.g. on facebook
+\item Share the event in other networks e.g. on facebook -- Further development
+\item Enable music organization/voting during the event -- Further development
+\item Who brings what? -- Further development
 \end{itemize}
 
 We therefore plan to use Google API (maps), firebase database to provide a real time database, and OpenWeatherMap API to retrieve the weather forecast.
-
-\section{Developer Team}
-The team consists of three people:
-\begin{itemize}
-\item Saad Lamdouar: UI developer
-\item Berkay K\"oksal: Core developer
-\item Alexander K\"uchler: Core developer
-\end{itemize}
-
-\section{Business Model}
-Different business models are possible to push the app on the market. In this section, we discuss potential models and pricing strategies and finally chose the most promising model. Furthermore, we discuss a marketing strategy for our application.
-
-\subsection{Monetization}
-A completely free (e.g. open source) app is the first possibility. While this potentially targets the highest number of users as the app is free to use and accessible also in alternative stores like F-Droid, the application would not lead to any profit.
-
-A second option is to use advertisements in the app in order to gain from the application. While this leads to a higher income, it contradicts the open-source strategy and thus would probably lead to a smaller target group. However, as the vast majority of Android users install apps from the Google Play Store, the decrease of users is acceptable.
-
-Together with the app using advertisement, it is possible to offer an for a small price and without ads. An app which has only a priced version does not appear to be promising to us as most users will not be willing to pay for the service.
-
-Also, In-App sales would be possible e.g. to enhance the possibilities of a user when creating events.
-In especial, this makes sense for business customers that could use the application to advertise their business. A possible scenario is creating events in the application which reflects the companies product portfolio (e.g. guided tours, sports, parties in a bar, \dots). Like this, the company can acquire new customers which are nearby e.g. during their holidays and thus our app presents a new marketing strategy. In the scenario of commercial users, it would be possible to earn a reward for every user which joins the respective event due to our platform. The reward could be negotiated as a percentage of the tickets for the event or as a fixed amount. However, both cases would require to include a ticket-selling system for the billing. This would be a possible extension of the app.
-
-In our case, the most promising strategy is to offer a free app with advertisements as well as a paid version without ads. In-App sales which target commercial customers of the app can make the app more powerful. E.g. an event could be permanent or the radius to invite people could be extended. Also, the creators of an event could have additional possibilities.
-
-\subsection{Marketing Strategy}
-As our app aims at making events available to the highest possible number of potential participants, organizing events is the main possibility to advertise the app.
-
-First, it is possible to offer free events to users which are organized by us. Second, we could offer discounts to our users for paid events which are organized by a third party. This is beneficial for both, the organizing party as they get additional participants and us, as we can make our app attractive for many users and thus gain a high number of users.
-
-Both techniques aim at attracting as many users as possible. Even if we have some expenses for the events and eventually for offering the discounts, this can decline once we have sufficient customers.
-
-\subsection{Competitors}
-In this section, we shortly present a couple of competitors. Please note that the list is not complete and only presents a rough overview of the market.
-
-Fever generates an event list taking into account the user's interests. However, it is only available in a few big cities and does not offer many events. Also, the focus is on commercial events while we aim at providing a platform to offer any kind of events, in especial, ``private'' and free ones.
-
-WeTorch is a free app that provides a selection of events which are close to the user's location. It only exists in spanish and the focus lies on cultural events as well as arts.
-
-Event Manager and Event Manager by Billeto give overviews of the event for event managers and help event organizers to grow their event reach and manage it.
-
-While offering a platform is not the main focus, Facebook provides the functionality to invite friends to events or make them publicly available. In especial due to the large user community, it is an important competitor on the market.
 
 \section{UI Design and Click Stream}
 In this section, we present the click stream and thus the complete UI design of our app. \autoref{fig:clickStream} shows the overall click stream with all possible links between views. The app is designed such that every page can be reached with only 2 clicks after starting the app.
@@ -192,6 +151,47 @@ The event details show a complete overview of the event. On the top, every parti
 A unique chat for every event can be used by all participants of an event to communicate before or after an event and thus discuss organizational details or share impressions. If new messages arrive in one of the user's chats, a notification is received also if the app is closed and serves as a quick link to the chat.
 
 From every screen of the app (except the chat), the user can reach a screen to add new events with only one click. Several dialogs are used to make the creation of the event interactive and provide us with sanitized data.
+
+\section{Developer Team}
+The team consists of three people:
+\begin{itemize}
+\item Saad Lamdouar: UI developer
+\item Berkay K\"oksal: Core developer
+\item Alexander K\"uchler: Core developer
+\end{itemize}
+
+\section{Business Model}
+Different business models are possible to push the app on the market. In this section, we discuss potential models and pricing strategies and finally chose the most promising model. Furthermore, we discuss a marketing strategy for our application.
+
+\subsection{Monetization}
+A completely free (e.g. open source) app is the first possibility. While this potentially targets the highest number of users as the app is free to use and accessible also in alternative stores like F-Droid, the application would not lead to any profit.
+
+A second option is to use advertisements in the app in order to gain from the application. While this leads to a higher income, it contradicts the open-source strategy and thus would probably lead to a smaller target group. However, as the vast majority of Android users install apps from the Google Play Store, the decrease of users is acceptable.
+
+Together with the app using advertisement, it is possible to offer an for a small price and without ads. An app which has only a priced version does not appear to be promising to us as most users will not be willing to pay for the service.
+
+Also, In-App sales would be possible e.g. to enhance the possibilities of a user when creating events.
+In especial, this makes sense for business customers that could use the application to advertise their business. A possible scenario is creating events in the application which reflects the companies product portfolio (e.g. guided tours, sports, parties in a bar, \dots). Like this, the company can acquire new customers which are nearby e.g. during their holidays and thus our app presents a new marketing strategy. In the scenario of commercial users, it would be possible to earn a reward for every user which joins the respective event due to our platform. The reward could be negotiated as a percentage of the tickets for the event or as a fixed amount. However, both cases would require to include a ticket-selling system for the billing. This would be a possible extension of the app.
+
+In our case, the most promising strategy is to offer a free app with advertisements as well as a paid version without ads. In-App sales which target commercial customers of the app can make the app more powerful. E.g. an event could be permanent or the radius to invite people could be extended. Also, the creators of an event could have additional possibilities.
+
+\subsection{Marketing Strategy}
+As our app aims at making events available to the highest possible number of potential participants, organizing events is the main possibility to advertise the app.
+
+First, it is possible to offer free events to users which are organized by us. Second, we could offer discounts to our users for paid events which are organized by a third party. This is beneficial for both, the organizing party as they get additional participants and us, as we can make our app attractive for many users and thus gain a high number of users.
+
+Both techniques aim at attracting as many users as possible. Even if we have some expenses for the events and eventually for offering the discounts, this can decline once we have sufficient customers.
+
+\subsection{Competitors}
+In this section, we shortly present a couple of competitors. Please note that the list is not complete and only presents a rough overview of the market.
+
+Fever generates an event list taking into account the user's interests. However, it is only available in a few big cities and does not offer many events. Also, the focus is on commercial events while we aim at providing a platform to offer any kind of events, in especial, ``private'' and free ones.
+
+WeTorch is a free app that provides a selection of events which are close to the user's location. It only exists in spanish and the focus lies on cultural events as well as arts.
+
+Event Manager and Event Manager by Billeto give overviews of the event for event managers and help event organizers to grow their event reach and manage it.
+
+While offering a platform is not the main focus, Facebook provides the functionality to invite friends to events or make them publicly available. In especial due to the large user community, it is an important competitor on the market.
 
 \section{Implementation}
 In this section, we discuss technical details of our implementation.
