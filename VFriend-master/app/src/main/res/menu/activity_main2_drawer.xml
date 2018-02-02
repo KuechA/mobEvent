@@ -4,15 +4,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_add_event"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_add_black"
             android:title="Add Event" />
         <item
             android:id="@+id/nav_allevents"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_view_list_black"
             android:title="All Events" />
         <item
             android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_message_black"
             android:title="Messages" />
         <item
             android:id="@+id/nav_manage"
@@ -26,10 +26,6 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
         </menu>
     </item>
 

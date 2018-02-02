@@ -148,8 +148,6 @@ public class Main2Activity extends ToolbarActivity {
             ft.commit();
         } else if(id == R.id.nav_share) {
             // TODO
-        } else if(id == R.id.nav_send) {
-            // TODO
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
