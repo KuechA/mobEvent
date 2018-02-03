@@ -299,6 +299,8 @@ Selected strategy:
 \end{frame}
 
 \begin{frame}{SW Architecture -- Services}
+\begin{figure}
+\centering
 \begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
 \umlsimpleclass[x=5]{FirebaseMessagingService}
 \umlsimpleclass[x = 5, y=-3]{ChatNotificationService}
@@ -308,9 +310,12 @@ Selected strategy:
 \umlVHVinherit{MyFirebaseInstanceIdService}{FirebaseInstanceIdService}
 \umlVHVinherit{ChatNotificationService}{FirebaseMessagingService}
 \end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \begin{frame}{SW Architecture -- Fragments}
+\begin{figure}
+\centering
 \begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
 \umlsimpleclass[type=interface, x=-5]{OnMapReadyCallback}
 \umlsimpleclass[x=2]{Fragment}
@@ -325,6 +330,7 @@ Selected strategy:
 \umlVHVinherit{DashboardFragment}{Fragment}
 \umlVHVinherit{AccountOptions}{Fragment}
 \end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Interaction with Backend}
@@ -386,12 +392,11 @@ Frameworks used:
 
 \begin{frame}{Status and Planning -- Project status}
 \begin{itemize}
-%\item Core functionality available
 \item Creating and joining events
 \item Real-time information for the user
 \item User-preferences taken into account
 \item Interaction with calendar
-\item Photo gallery
+\item Photo gallery for each event
 \item Chat for each event (incl. notifications)
 \end{itemize}
 \end{frame}
@@ -403,7 +408,7 @@ Frameworks used:
 	\item User management
 	\item Event list
 	\item UI enhancements
-	\item Support for event details
+	\item Support with event details
 	\end{itemize}
 \item Alex:
 	\begin{itemize}
@@ -412,6 +417,7 @@ Frameworks used:
 	\item Landing page
 	\item Event details
 	\item Backend (Firebase functions)
+	\item UI improvements
 	\end{itemize}
 \item Saad: UI
 \end{itemize}
