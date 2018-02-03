@@ -106,8 +106,9 @@ public class Main2Activity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager()
-                .getBackStackEntryCount() - 1).getName().equals(TAG_EVENT_DETAIL_FRAGMENT)) {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0 && getSupportFragmentManager
+                ().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1)
+                .getName().equals(TAG_EVENT_DETAIL_FRAGMENT)) {
             findViewById(R.id.tabs).setVisibility(View.VISIBLE);
         }
 

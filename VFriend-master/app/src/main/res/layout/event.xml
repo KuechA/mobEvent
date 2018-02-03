@@ -337,11 +337,11 @@
                                         android:id="@+id/eventprogress"
                                         android:layout_width="100dp"
                                         android:layout_height="match_parent"
-                                        app:rcBackgroundColor="#91bbff"
+                                        app:rcBackgroundColor="@color/colorPrimary"
                                         app:rcBackgroundPadding="0dp"
                                         app:rcMax="25"
                                         app:rcProgress="5"
-                                        app:rcProgressColor="#0061ff"
+                                        app:rcProgressColor="@color/colorPrimaryDark"
                                         app:rcRadius="2dp" />
 
 
@@ -422,6 +422,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14pt"
+                    android:layout_marginBottom="8dp"
                     android:textAlignment="center"
                     android:text="Owner options" />
 
@@ -433,8 +434,10 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="30"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="25"
+                        android:textSize="16sp"
                         android:text="Remove participant" />
 
                     <Spinner
@@ -442,14 +445,16 @@
                         android:layout_width="0dp"
                         android:dropDownWidth="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="40"></Spinner>
+                        android:layout_weight="50"></Spinner>
 
                     <Button
                         android:id="@+id/remove_participant_button"
                         android:layout_width="0dp"
+                        android:layout_gravity="center"
                         android:layout_height="wrap_content"
-                        android:layout_weight="30"
+                        android:layout_weight="25"
                         android:textAlignment="center"
+                        android:textColor="@color/red"
                         android:text="Remove" />
                 </LinearLayout>
 
@@ -458,6 +463,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
+                    android:background="@color/red"
+                    android:textStyle="bold"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/white"
                     android:text="Cancel event" />
 
             </LinearLayout>

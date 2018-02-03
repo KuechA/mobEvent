@@ -21,10 +21,9 @@
     <color name="dark_grey">#4d4d4d</color>
     <color name="grey">#a9a9a9</color>
     <color name="light_grey">#cccccc</color>
-    <color name="lighter_grey">#cccccc</color>
+    <color name="lighter_grey">#8fcccccc</color>
     <color name="accent_blue">#0073c9</color>
-
-
+    <color name="red">#dfff0000</color>
 
 
 </resources>
