@@ -275,13 +275,15 @@ To make our app more interactive, we have a couple of fragments. When the user s
 \begin{figure}[htb]
 \centering
 \begin{tikzpicture}[every node/.style={scale=0.8}]
-\umlsimpleclass[type=interface, x=-5]{OnMapReadyCallback}
-\umlsimpleclass[x=2]{Fragment}
+\umlsimpleclass[type=interface, x=-4.1]{LoaderCallbacks}
+\umlsimpleclass[type=interface, x=0]{OnMapReadyCallback}
+\umlsimpleclass[x=4]{Fragment}
 \umlsimpleclass[x = -4, y=-2]{EventDetailFragment}
 \umlsimpleclass[y=-2]{AllEvents}
 \umlsimpleclass[x = 4, y=-2]{DashboardFragment}
 \umlsimpleclass[x = 8, y=-2]{AccountOptions}
 
+\umlimpl{EventDetailFragment}{LoaderCallbacks}
 \umlimpl{EventDetailFragment}{OnMapReadyCallback}
 \umlimpl{DashboardFragment}{OnMapReadyCallback}
 \umlVHVinherit{EventDetailFragment}{Fragment}
