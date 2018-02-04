@@ -235,6 +235,63 @@
                             android:background="#ffffff" />
 
                         <LinearLayout
+                            android:id="@+id/forecast"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top"
+                                android:layout_marginTop="5dp"
+                                android:showDividers="middle">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center|start"
+                                    android:text="Weather forecast: " />
+
+                                <ImageView
+                                    android:id="@+id/weather_icon"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="8dp"
+                                    android:gravity="center|start"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/sunny" />
+
+                                <TextView
+                                    android:id="@+id/weather_temperature"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:background="#ffffff"
+                                    android:gravity="center|start"
+                                    android:text="15°C"
+                                    android:textSize="15sp"
+                                    android:ellipsize="none"
+                                    android:scrollHorizontally="false" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:textAlignment="textEnd"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="11sp"
+                                android:text="Powered by OpenWeatherMap" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp"
+                            android:background="#ffffff" />
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top"

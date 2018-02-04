@@ -16,7 +16,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -67,6 +69,8 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import fr.eurecom.Ready2Meet.database.Event;
 import fr.eurecom.Ready2Meet.uiExtensions.ImageArrayAdapter;
+import fr.eurecom.Ready2Meet.weather.JSONParser;
+import fr.eurecom.Ready2Meet.weather.WeatherData;
 
 import static android.Manifest.permission.READ_CALENDAR;
 import static android.Manifest.permission.WRITE_CALENDAR;
@@ -77,7 +81,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * identify the event, the event data are fetched from the Firebase database and thus should be
  * automatically updated when they change.
  */
-public class EventDetailFragment extends Fragment implements OnMapReadyCallback {
+public class EventDetailFragment extends Fragment implements OnMapReadyCallback, LoaderManager
+        .LoaderCallbacks<List<WeatherData>> {
 
     private Event event;
     private Date start = null;
@@ -500,6 +505,13 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
         showOwnerOptions();
         cancelEvent();
         removeParticipants();
+
+        if(! end.before(new Date()) && (start.getTime() - (new Date()).getTime()) < 5 * 24 * 60 *
+                60 * 1000) {
+            getLoaderManager().initLoader(0, null, this).forceLoad();
+        } else {
+            view.findViewById(R.id.forecast).setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -622,5 +634,51 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback 
                 builder.create().show();
             }
         });
+    }
+
+    @Override
+    public Loader<List<WeatherData>> onCreateLoader(int id, Bundle args) {
+        if(! end.before(new Date()) && (start.getTime() - (new Date()).getTime()) < 5 * 24 * 60 *
+                60 * 1000) {
+            JSONParser loader = new JSONParser(getContext(), new LatLng(event.latitude, event
+                    .longitude));
+            loader.forceLoad();
+            return loader;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<WeatherData>> loader, List<WeatherData> data) {
+        if(loader == null || data == null) return;
+
+        TextView temperature = (TextView) view.findViewById(R.id.weather_temperature);
+        ImageView weatherImage = (ImageView) view.findViewById(R.id.weather_icon);
+        WeatherData forecastData = null;
+        if(start.before(new Date())) {
+            forecastData = data.get(0);
+        } else {
+            for(WeatherData weatherData : data) {
+                if(new Date().getTime() > weatherData.dt) {
+                    forecastData = weatherData;
+                    break;
+                }
+            }
+            if(forecastData == null) {
+                temperature.setText("No weather forecast available at the moment");
+                return;
+            }
+        }
+        temperature.setText(forecastData.temp + " °C");
+
+        String imageURL = "http://openweathermap.org/img/w/" + forecastData.icon + ".png";
+        Picasso.with(getContext()).load(imageURL).into(weatherImage);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<WeatherData>> loader) {
+        if(loader == null) return;
+
     }
 }
