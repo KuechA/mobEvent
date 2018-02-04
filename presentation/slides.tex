@@ -212,7 +212,7 @@ Selected strategy:
 
 \begin{frame}{Use Case -- Creating an event}
 \begin{itemize}
-\item User has an idea for an event
+\item User has an idea for an event but doesn't know anyone
 \item User opens the app and creates the event (time, place, category, capacity, \dots)
 \item User can manage participants
 \item Participants can organize themselves in a chatroom which is automatically created
@@ -281,14 +281,18 @@ Selected strategy:
 \end{frame}
 
 \begin{frame}{SW Architecture -- Fragments}
+\begin{figure}
+\centering
 \begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
-\umlsimpleclass[type=interface, x=-5]{OnMapReadyCallback}
-\umlsimpleclass[x=2]{Fragment}
+\umlsimpleclass[type=interface, x=-4.1]{LoaderCallbacks}
+\umlsimpleclass[type=interface, x=0.5]{OnMapReadyCallback}
+\umlsimpleclass[x=4]{Fragment}
 \umlsimpleclass[x = -4, y=-3]{EventDetailFragment}
 \umlsimpleclass[y=-3]{AllEvents}
 \umlsimpleclass[x = 4, y=-3]{DashboardFragment}
 \umlsimpleclass[x = 8, y=-3]{AccountOptions}
 
+\umlimpl{EventDetailFragment}{LoaderCallbacks}
 \umlimpl{EventDetailFragment}{OnMapReadyCallback}
 \umlimpl{DashboardFragment}{OnMapReadyCallback}
 \umlVHVinherit{EventDetailFragment}{Fragment}
@@ -296,6 +300,7 @@ Selected strategy:
 \umlVHVinherit{DashboardFragment}{Fragment}
 \umlVHVinherit{AccountOptions}{Fragment}
 \end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \begin{frame}{SW Architecture -- Services}
@@ -309,26 +314,6 @@ Selected strategy:
 
 \umlVHVinherit{MyFirebaseInstanceIdService}{FirebaseInstanceIdService}
 \umlVHVinherit{ChatNotificationService}{FirebaseMessagingService}
-\end{tikzpicture}
-\end{figure}
-\end{frame}
-
-\begin{frame}{SW Architecture -- Fragments}
-\begin{figure}
-\centering
-\begin{tikzpicture}[scale=0.6, every node/.style={scale=0.6}]
-\umlsimpleclass[type=interface, x=-5]{OnMapReadyCallback}
-\umlsimpleclass[x=2]{Fragment}
-\umlsimpleclass[x = -4, y=-3]{EventDetailFragment}
-\umlsimpleclass[y=-3]{AllEvents}
-\umlsimpleclass[x = 4, y=-3]{DashboardFragment}
-\umlsimpleclass[x = 8, y=-3]{AccountOptions}
-
-\umlimpl{EventDetailFragment}{OnMapReadyCallback}
-\umlVHVinherit{EventDetailFragment}{Fragment}
-\umlVHVinherit{AllEvents}{Fragment}
-\umlVHVinherit{DashboardFragment}{Fragment}
-\umlVHVinherit{AccountOptions}{Fragment}
 \end{tikzpicture}
 \end{figure}
 \end{frame}
@@ -397,6 +382,7 @@ Frameworks used:
 \item User-preferences taken into account
 \item Interaction with calendar
 \item Photo gallery for each event
+\item Weather forecast for event time (OpenWeatherMap)
 \item Chat for each event (incl. notifications)
 \end{itemize}
 \end{frame}
@@ -413,9 +399,9 @@ Frameworks used:
 \item Alex:
 	\begin{itemize}
 	\item Adding events
-	\item Chat
+	\item Chat (incl. notifications)
 	\item Landing page
-	\item Event details
+	\item Event details (incl. calendar query, weather)
 	\item Backend (Firebase functions)
 	\item UI improvements
 	\end{itemize}
