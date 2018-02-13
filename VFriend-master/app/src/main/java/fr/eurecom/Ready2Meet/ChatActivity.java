@@ -15,8 +15,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(eventTitle);
 
         final RecyclerView listView = (RecyclerView) findViewById(R.id.list_chat);
-        DatabaseReference messages = FirebaseDatabase.getInstance().getReference().child
+        final DatabaseReference messages = FirebaseDatabase.getInstance().getReference().child
                 ("Messages").child(eventId);
         messages.keepSynced(true);
         messages.orderByChild("time").addValueEventListener(new ValueEventListener() {
@@ -71,6 +74,18 @@ public class ChatActivity extends AppCompatActivity {
                     Message message = snapshot.getValue(Message.class);
                     messageList.add(message);
                 }
+                Collections.sort(messageList, new Comparator<Message>() {
+                    @Override
+                    public int compare(Message o1, Message o2) {
+                        try {
+                            return MESSAGE_DATE.parse(o1.time).compareTo(MESSAGE_DATE.parse
+                                    (o2.time));
+                        } catch(ParseException e) {
+                            e.printStackTrace();
+                        }
+                        return 0;
+                    }
+                });
                 adapter = new RecyclerViewAdapter_Message(getApplicationContext(), messageList);
 
                 listView.setAdapter(adapter);
