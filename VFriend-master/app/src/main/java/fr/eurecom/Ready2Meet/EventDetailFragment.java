@@ -243,9 +243,11 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback,
         ImageButton ii = new ImageButton(eventImages.getContext());
 
         ii.setPadding(0, 0, 4, 0);
-        LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(100, 100);
+        LinearLayout.LayoutParams test = new LinearLayout.LayoutParams(120, 120);
         test.gravity = Gravity.CENTER;
         ii.setLayoutParams(test);
+        ii.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+        ii.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
         Glide.with(eventImages.getContext()).using(new FirebaseImageLoader()).load(storageRef)
                 .fitCenter().into(ii);
         eventImages.addView(ii);
@@ -263,7 +265,8 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback,
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(entry.getValue());
                 ii = new ImageButton(eventImages.getContext());
 
-                ii.setPadding(0, 0, 4, 0);
+                ii.setPadding(5, 0, 0, 0);
+                ii.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
                 test = new LinearLayout.LayoutParams(120, 120);
                 test.gravity = Gravity.CENTER;
                 ii.setLayoutParams(test);
@@ -285,7 +288,9 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback,
 
         // Add button to take pictures dynamically to the end of the picture gallery.
         ImageButton takePicture = new ImageButton(eventImages.getContext());
-        takePicture.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        takePicture.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+        //takePicture.setBackgroundColor(ContextCompat.getColor(getContext(), R.color
+        // .colorPrimary));
         takePicture.setPadding(5, 0, 0, 0);
         LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(120, 120);
         layout.gravity = Gravity.CENTER;
