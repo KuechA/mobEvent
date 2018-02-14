@@ -650,13 +650,19 @@ public class EventDetailFragment extends Fragment implements OnMapReadyCallback,
             loader.forceLoad();
             return loader;
         } else {
+            // Hide weather forecast thing if nothing to show
+            view.findViewById(R.id.forecast).setVisibility(View.GONE);
             return null;
         }
     }
 
     @Override
     public void onLoadFinished(Loader<List<WeatherData>> loader, List<WeatherData> data) {
-        if(loader == null || data == null) return;
+        if(loader == null || data == null) {
+            // Hide weather forecast thing if nothing to show
+            view.findViewById(R.id.forecast).setVisibility(View.GONE);
+            return;
+        }
 
         TextView temperature = (TextView) view.findViewById(R.id.weather_temperature);
         ImageView weatherImage = (ImageView) view.findViewById(R.id.weather_icon);
