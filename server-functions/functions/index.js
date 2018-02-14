@@ -41,7 +41,6 @@ exports.sendMessageNotification = functions.database.ref('/Messages/{eventId}/{m
     }
     console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
 
-	// TODO: replace title with event title
     // Notification details.
     const payload = {
       data: {
