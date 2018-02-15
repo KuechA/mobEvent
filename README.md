@@ -1,6 +1,6 @@
  Ready2Meet
  ===================
- More than an event orgnaizer
+ More than an event organizer
 ----
 
 ![picture alt](https://github.com/KuechA/mobEvent/blob/master/VFriend-master/app/src/main/res/mipmap-hdpi/ic_launcher.png)
